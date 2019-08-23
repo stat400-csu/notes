@@ -1,0 +1,31 @@
+@page {
+  size: 8.5in 11in; /* var(--pagedjs-width) doesn't work in browser when printing */
+}
+@page :blank {
+
+}
+
+
+.pagedjs_page {
+  --pagedjs-pagebox-width: 8.5in;
+  --pagedjs-pagebox-height: 11in;
+}
+
+
+
+.level1 {
+  break-before: avoid;
+}
+
+.red {
+  color: red;
+}
+
+.yourturn {
+  color: blue;
+  font-size: 2em;
+}
+
+.pagebreak {
+  break-after: always;
+}

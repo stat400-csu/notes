@@ -3,7 +3,7 @@ title: "Chapter 0: Some Useful Tools"
 output:
   pagedown::html_paged:
     # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
-    css: ["../../../style/my-style-page.css", "default-fonts", "default-page", "default"]
+    css: ["../style/my-style-page.css", "default-fonts", "default-page", "default"]
     self_contained: true
     number_sections: true
 ---
@@ -14,7 +14,7 @@ We will start the class with some tools that will be useful for success in this 
 <br />
 <br />
 
-![Adapted from R for Data Science, Wickham & Grolemund (2017)](../../images/data_analysis_pipeline.png)
+![Adapted from R for Data Science, Wickham & Grolemund (2017)](../images/data_analysis_pipeline.png)
 
 <br />
 <br />
