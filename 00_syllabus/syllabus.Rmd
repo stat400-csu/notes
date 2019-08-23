@@ -1,0 +1,94 @@
+---
+title: "STAT400: Statistical Computing"
+author: "Fall 2019"
+date: "http://andeekaplan.com/stat400"
+output:
+  pagedown::html_paged:
+    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
+    css: ["../../../style/my-style-page.css", "default-fonts", "default-page", "default"]
+    self_contained: true
+    number_sections: false
+---
+
+Dr. Andee Kaplan  
+208 Statistics Building  
+Office Hours: TR 11:00am - 12:00pm in Statistics 208
+Lectures: TR 9:30am - 10:45am in Military Sciences 115   
+andee.kaplan@colostate.edu
+
+## Course Objectives
+
+Computationally intensive statistical methods are a key component to modern data analysis methods. After completing this course, a successful student will be able to use statistical software to implement both traditional and state-of-the-art methods in computational statistics as well as recognize situations where these methods are required.
+
+## Prerequisites
+
+CS160 or CS163 or CS164 or (MATH151 and MATH153)  
+STAT 420 or concurrent enrollment.
+
+## Texts
+
+Statistical Computing with R (2019), M. L. Rizzo
+
+Optional reference: Computational Statistics (2013), G. Givens and J. Hoeting -- Available online at CSU library
+
+## Computing
+
+We will use RStudio (https://rstudio.com), R (https://r-project.org), GitHub (https://github.com), and ggplot2 (https://ggplot2.tidyverse.org). All software is free and open source.
+
+**Please install** on your own computer, but you can also use the computers in Weber 205. 
+
+Please read the following website regarding use of the Weber lab: https://www.cs.colostate.edu/~dzubera/lab.html.
+
+## Classwork and Grading
+
+**Homework (40%)** Homework will be assigned weekly. All homework assignments are due at the beginning of lecture on the due date. Each homework assignment will receive equal weight in the final grade and the two lowest homework assignment grades will be dropped. Late work is not accepted except in rare cases (see Documented emergencies below).
+
+**Exam (30%)** There will be one midterm exam on October 24, 2019 in class.
+
+**Project (30%)** There will be a final project that will consist of either 
+
+1. an analysis of real data using the computational tools learned in class, or 
+2. an implementation of a computational task beyond the scope of lecture and homework. 
+
+You will write a paper and give an in class presentation. More details will be announced later.
+
+Grades will be assigned according to the following intervals:
+
+```{r echo = FALSE}
+grades <- data.frame(Grade = c("A", "A-", "B+", "B", "B-", "C+", "C", "D", "F"),
+                     Interval = c("[100, 95]", "(95, 90]", "(90, 87]", 
+                                  "(87, 83]", "(83, 80]", "(80, 77]", "(77, 70]", 
+                                  "(70, 60]", "(60, 0]"))
+
+knitr::kable(t(grades), row.names = FALSE)
+```
+
+Any homework or exam grading dispute must be submitted in writing to me within one week after the work is returned.
+
+**Extra credit** Any extra credit will be announced in lecture only. If you miss lecture, you *may* miss chances for extra credit.
+
+## Policy Regarding Academic Honesty
+
+Statisticians need to have high ethical standards. Thus, I expect each of you to hold high ethical standards and to act with academic integrity in this class. If you have questions about what integrity means, please feel free to ask me. Behavior that will not be tolerated in this class includes turning in a copy of somebody else's homework or code as your own, copying from somebody's exam, or failure to cite sources.
+
+This course adheres to the CSU Academic Integrity Policy as found on the Students' Responsibilities pages of the CSU General Catalog in the Student Conduct Code. Violations will result in zero points for the assignment as a minimum penalty. In addition, CSU policy requires instructors to report violations to CSU's Office of Conflict Resulution. 
+
+## Attendance
+
+Attendance is required every class.
+
+## Documented Emergencies
+
+If you have a problem that will require you to miss an exam or homework due date, please discuss this with me in advance if possible. I can grant a rare exception when the reason relates to severe and unavoidable medical or personal emergency. Documentation will be required. Things that typically are not an emergency: vacation, family reunions, ordinary work commitments, job seeking, or other voluntary events. Please schedule these so that they do not conflict with your classes.
+
+## Support Services Available
+
+**CSU Health Network Counceling Services** A variety of services are offered (151 W. Lake St., Drop-in hours: Monday-Friday 9am-4pm). If you are having difficulty coping, are feeling depressed, or need other psychological assitance, please contact the counceling center.
+
+**CSU Disability Center** Located in the TILT building. Students with both permanent and temporary limitations and health conditions (physical and mental health) are eligible for support. If you need specific accommodations in this class, please meet with me outside of class to discuss your needs as early in the class as possible.
+
+**CSU TILT** The Institute for Learning and Teaching has programs to help students improve their study habits, reduce test anxiety, learn about academic integrity, and more.
+
+## Disclaimer
+
+I reserve the right to make amendments to the syllabus and the schedule throughout the semester. Any updates will be posted on the class website and announced via e-mail and in class.
