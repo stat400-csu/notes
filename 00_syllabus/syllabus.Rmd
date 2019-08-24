@@ -1,7 +1,7 @@
 ---
 title: "STAT400: Statistical Computing"
 author: "Fall 2019"
-date: "http://andeekaplan.com/stat400"
+date: "http://stat400-csu.github.io"
 output:
   pagedown::html_paged:
     # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
@@ -12,8 +12,8 @@ output:
 
 Dr. Andee Kaplan  
 208 Statistics Building  
-Office Hours: TR 11:00am - 12:00pm in Statistics 208
 Lectures: TR 9:30am - 10:45am in Military Sciences 115   
+Office Hours: TR 11:00am - 12:00pm in Statistics 208  
 andee.kaplan@colostate.edu
 
 ## Course Objectives
