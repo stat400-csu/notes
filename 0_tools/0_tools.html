@@ -8,20 +8,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta name="viewport" content="width=device-width">
-<meta property="og:title" content="Chapter 0: Some Useful Tools" />
+<meta property="og:title" content="Chapter 0: Some Useful Computing Tools" />
 
 
 
 
 
 
-<meta name="description" content="Chapter 0: Some Useful Tools">
+<meta name="description" content="Chapter 0: Some Useful Computing Tools">
 
 <script id="pandoc-meta" type="application/json">
-{"output":{"pagedown::html_paged":{"self_contained":true,"css":["../style/my-style-page.css","default-fonts","default-page","default"],"number_sections":true}},"title":"Chapter 0: Some Useful Tools"}
+{"output":{"pagedown::html_paged":{"self_contained":true,"css":["../style/my-style-page.css","default-fonts","default-page","default"],"number_sections":true}},"title":"Chapter 0: Some Useful Computing Tools"}
 </script>
 
-<title>Chapter 0: Some Useful Tools</title>
+<title>Chapter 0: Some Useful Computing Tools</title>
 
 
 <style type="text/css">@font-face {
@@ -28416,7 +28416,7 @@ break-after: always;
 
 <div class="front-page">
 <div id="header" class="title-page">
-<h1 class="title">Chapter 0: Some Useful Tools</h1>
+<h1 class="title">Chapter 0: Some Useful Computing Tools</h1>
 </div>
 </div>
 
@@ -28437,9 +28437,9 @@ break-after: always;
 <br /></p>
 <p>In STAT400, we will cover each part of the data analysis pipeline using</p>
 <ol style="list-style-type: decimal">
-<li><!--Tools like `R` and RStudio--></li>
-<li><!--Packages in `R`--></li>
-<li><!--Computational ideas in Statistics (implemented in `R`)--></li>
+<li><p>Tools like <code>R</code> and RStudio</p></li>
+<li><p>Packages in <code>R</code></p></li>
+<li><p>Computational ideas in Statistics (implemented in <code>R</code>)</p></li>
 </ol>
 <div id="r" class="section level1">
 <h1><span class="header-section-number">1</span> <code>R</code></h1>
@@ -28787,9 +28787,128 @@ break-after: always;
 </div>
 <div id="basic-programming" class="section level2">
 <h2><span class="header-section-number">1.4</span> Basic Programming</h2>
+<p>We will cover three basic programming ideas: functions, conditionals, and loops.</p>
+<div id="functions" class="section level3">
+<h3><span class="header-section-number">1.4.1</span> Functions</h3>
+<p>We have used many functions that are already built into <code>R</code> already. For example – <code>exp()</code>, <code>log()</code>, <code>sin()</code>, <code>rep()</code>, <code>seq()</code>, <code>head()</code>, <code>tail()</code>, etc.</p>
+<p>But what if we want to use a function that doesn’t exist?</p>
+<p><strong>We can write it!</strong></p>
+<p>Idea: We want to avoid repetitive coding because errors will creep in.
+Solution: Extract common core of the code, wrap it in a function, and make it reusable.</p>
+<p>The basic structure for writing a function is as follows:</p>
+<ul>
+<li>Name</li>
+<li>Input arguments (including names and default values)</li>
+<li>Body (code)</li>
+<li>Output values</li>
+</ul>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1"></a><span class="co"># we store a function in a named value</span></span>
+<span id="cb99-2"><a href="#cb99-2"></a><span class="co"># function is itself a function to create functions!</span></span>
+<span id="cb99-3"><a href="#cb99-3"></a><span class="co"># we specify the inputs that we can use inside the function</span></span>
+<span id="cb99-4"><a href="#cb99-4"></a><span class="co"># we can specify default values, but it is not necessary</span></span>
+<span id="cb99-5"><a href="#cb99-5"></a>name &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">input =</span> <span class="ot">FALSE</span>) {</span>
+<span id="cb99-6"><a href="#cb99-6"></a>  <span class="co"># body code goes here</span></span>
+<span id="cb99-7"><a href="#cb99-7"></a>  </span>
+<span id="cb99-8"><a href="#cb99-8"></a>  <span class="co"># return output vaues</span></span>
+<span id="cb99-9"><a href="#cb99-9"></a>  <span class="kw">return</span>(input)</span>
+<span id="cb99-10"><a href="#cb99-10"></a>}</span></code></pre></div>
+<p>Here is a more realistic first example:</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1"></a>my_mean &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb100-2"><a href="#cb100-2"></a>  <span class="kw">sum</span>(x)<span class="op">/</span><span class="kw">length</span>(x)</span>
+<span id="cb100-3"><a href="#cb100-3"></a>}</span></code></pre></div>
+<p>Let’s test it out.</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1"></a><span class="kw">my_mean</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">15</span>)</span></code></pre></div>
+<pre><code>## [1] 8</code></pre>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1"></a><span class="kw">my_mean</span>(<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">15</span>, <span class="ot">NA</span>))</span></code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<p>Some advice for function writing:</p>
+<ol style="list-style-type: decimal">
+<li>Start simple, then extend.</li>
+<li>Test out each step of the way.</li>
+<li>Don’t try too much at once.</li>
+</ol>
+</div>
+<div id="conditionals" class="section level3">
+<h3><span class="header-section-number">1.4.2</span> Conditionals</h3>
+<p>Conditionals are functions that control the flow of analysis. Conditionals determine if a specified condition is met (or not), then direct subsequent analysis or action depending on whether the condition is met (or not).</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1"></a><span class="cf">if</span>(condition) {</span>
+<span id="cb105-2"><a href="#cb105-2"></a>  <span class="co"># Some code that runs if condition is TRUE</span></span>
+<span id="cb105-3"><a href="#cb105-3"></a>} <span class="cf">else</span> {</span>
+<span id="cb105-4"><a href="#cb105-4"></a>  <span class="co"># Some code that runs if condition is TRUE</span></span>
+<span id="cb105-5"><a href="#cb105-5"></a>}</span></code></pre></div>
+<ul>
+<li><code>condition</code> is a length one logical value, i.e. either <code>TRUE</code> or <code>FALSE</code></li>
+<li>We can use <code>&amp;</code> and <code>|</code> to combine several conditions</li>
+<li><code>!</code> negates condition</li>
+</ul>
+<p>For example, if we wanted to do something with <code>na.rm</code> from our function,</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1"></a><span class="cf">if</span>(na.rm) x &lt;-<span class="st"> </span><span class="kw">na.omit</span>(x) <span class="co"># na.omit is a function that removes NA values</span></span></code></pre></div>
+<p>might be a good option.</p>
+</div>
+<div id="loops" class="section level3">
+<h3><span class="header-section-number">1.4.3</span> Loops</h3>
+<p>Loops (and their cousins the <code>apply()</code> function) are useful when we want to repeat the same block of code many times. Reducing the amount of typing we do can be nice, and if we have a lot of code that is essentially the same we can take advantage of looping. <code>R</code> offers several loops: for, while, repeat.</p>
+<p>For loops will run through a specified index and perform a set of code for each value of the indexing variable.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1"></a><span class="cf">for</span>(i <span class="cf">in</span> index values) {</span>
+<span id="cb107-2"><a href="#cb107-2"></a>  <span class="co"># block of code</span></span>
+<span id="cb107-3"><a href="#cb107-3"></a>  <span class="co"># can print values also</span></span>
+<span id="cb107-4"><a href="#cb107-4"></a>  <span class="co"># code in here will most likely depend on i</span></span>
+<span id="cb107-5"><a href="#cb107-5"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) {</span>
+<span id="cb108-2"><a href="#cb108-2"></a>  <span class="kw">print</span>(i)</span>
+<span id="cb108-3"><a href="#cb108-3"></a>}</span></code></pre></div>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3</code></pre>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1"></a><span class="cf">for</span>(species <span class="cf">in</span> <span class="kw">unique</span>(iris<span class="op">$</span>Species)) {</span>
+<span id="cb110-2"><a href="#cb110-2"></a>  subset_iris &lt;-<span class="st"> </span>iris[iris<span class="op">$</span>Species <span class="op">==</span><span class="st"> </span>species,]</span>
+<span id="cb110-3"><a href="#cb110-3"></a>  avg &lt;-<span class="st"> </span><span class="kw">mean</span>(subset_iris<span class="op">$</span>Sepal.Length)</span>
+<span id="cb110-4"><a href="#cb110-4"></a>  <span class="kw">print</span>(<span class="kw">paste</span>(species, avg))</span>
+<span id="cb110-5"><a href="#cb110-5"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;setosa 5.006&quot;
+## [1] &quot;versicolor 5.936&quot;
+## [1] &quot;virginica 6.588&quot;</code></pre>
+<p>While loops will run until a specified condition is no longer true.</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1"></a>condition &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb112-2"><a href="#cb112-2"></a><span class="cf">while</span>(condition) {</span>
+<span id="cb112-3"><a href="#cb112-3"></a>  <span class="co"># do stuff</span></span>
+<span id="cb112-4"><a href="#cb112-4"></a>  <span class="co"># don&#39;t forget to eventually set the condition to false</span></span>
+<span id="cb112-5"><a href="#cb112-5"></a>  <span class="co"># in the toy example below I check if the current seconds is divisible by 5</span></span>
+<span id="cb112-6"><a href="#cb112-6"></a>  time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</span>
+<span id="cb112-7"><a href="#cb112-7"></a>  <span class="cf">if</span>(<span class="kw">as.numeric</span>(<span class="kw">format</span>(time, <span class="dt">format =</span> <span class="st">&quot;%S&quot;</span>)) <span class="op">%%</span><span class="st"> </span><span class="dv">5</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) condition &lt;-<span class="st"> </span><span class="ot">FALSE</span></span>
+<span id="cb112-8"><a href="#cb112-8"></a>}</span>
+<span id="cb112-9"><a href="#cb112-9"></a><span class="kw">print</span>(time)</span></code></pre></div>
+<pre><code>## [1] &quot;2019-08-24 09:07:00 MDT&quot;</code></pre>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1"></a><span class="co"># we can also use while loops to iterate</span></span>
+<span id="cb114-2"><a href="#cb114-2"></a>i &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb114-3"><a href="#cb114-3"></a><span class="cf">while</span> (i <span class="op">&lt;=</span><span class="st"> </span><span class="dv">5</span>) {</span>
+<span id="cb114-4"><a href="#cb114-4"></a>    <span class="kw">print</span>(i)</span>
+<span id="cb114-5"><a href="#cb114-5"></a>    i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb114-6"><a href="#cb114-6"></a>}</span></code></pre></div>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5</code></pre>
+<p><span class="pagebreak"></span></p>
+<p><span class="yourturn"><strong>Your Turn</strong></span></p>
+<ol style="list-style-type: decimal">
+<li><p>Alter your <code>my_mean()</code> function to take a second argument (<code>na.rm</code>) with default value <code>FALSE</code> that removes <code>NA</code> values if <code>TRUE</code>.</p></li>
+<li><p>Add checks to your function to make sure the input data is either numeric or logical. If it is logical convert it to numeric.</p></li>
+<li><p>The diamonds data set is included in the <code>ggplot2</code> package (not by default in <code>R</code>). It can be read into your environment with the following function.</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1"></a><span class="kw">data</span>(<span class="st">&quot;diamonds&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;ggplot2&quot;</span>)</span></code></pre></div>
+<p>Loop over the columns of the diamonds data set and apply your mean function to all of the numeric columns (Hint: look at the <code>class()</code> function).</p></li>
+</ol>
+<p><span class="pagebreak"></span></p>
+</div>
 </div>
 <div id="packages" class="section level2">
 <h2><span class="header-section-number">1.5</span> Packages</h2>
+<p>Commonly used <code>R</code> functions are installed with base <code>R</code>.</p>
+<p><code>R</code> packages containing more specialized <code>R</code> functions can be installed freely from CRAN servers using function <code>install.packages()</code>.</p>
+<p>After packages are installed, their functions can be loaded into the current <code>R</code> session using the function <code>library()</code>.</p>
+<p>Packages are contrbuted by <code>R</code> users just like you!</p>
+<p>We will use some great packages in this class. Feel free to venture out and find your favorites (google R package + what you’re trying to do to find more packages).</p>
 </div>
 <div id="additional-resources" class="section level2">
 <h2><span class="header-section-number">1.6</span> Additional resources</h2>

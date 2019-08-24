@@ -1,5 +1,5 @@
 ---
-title: "Chapter 0: Some Useful Tools"
+title: "Chapter 0: Some Useful Computing Tools"
 output:
   pagedown::html_paged:
     # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
@@ -22,11 +22,11 @@ We will start the class with some tools that will be useful for success in this 
 
 In STAT400, we will cover each part of the data analysis pipeline using
 
-1. <!--Tools like `R` and RStudio-->
+1. Tools like `R` and RStudio
 
-2. <!--Packages in `R`-->
+2. Packages in `R`
 
-3. <!--Computational ideas in Statistics (implemented in `R`)-->
+3. Computational ideas in Statistics (implemented in `R`)
 
 # `R`
 
@@ -362,9 +362,165 @@ There are other data structures available to you in `R`, namely lists and matric
 
 ## Basic Programming
 
+We will cover three basic programming ideas: functions, conditionals, and loops.
+
+### Functions
+
+We have used many functions that are already built into `R` already. For example -- `exp()`, `log()`, `sin()`, `rep()`, `seq()`, `head()`, `tail()`, etc.
+
+But what if we want to use a function that doesn't exist?
+
+**We can write it!**
+
+Idea: We want to avoid repetitive coding because errors will creep in.
+Solution: Extract common core of the code, wrap it in a function, and make it reusable.
+
+The basic structure for writing a function is as follows:
+
+- Name
+- Input arguments (including names and default values)
+- Body (code)
+- Output values
+
+```{r}
+# we store a function in a named value
+# function is itself a function to create functions!
+# we specify the inputs that we can use inside the function
+# we can specify default values, but it is not necessary
+name <- function(input = FALSE) {
+  # body code goes here
+  
+  # return output vaues
+  return(input)
+}
+```
+
+Here is a more realistic first example:
+
+```{r}
+my_mean <- function(x) {
+  sum(x)/length(x)
+}
+```
+
+Let's test it out.
+
+```{r}
+my_mean(1:15)
+my_mean(c(1:15, NA))
+```
+
+Some advice for function writing:
+
+1. Start simple, then extend. 
+2. Test out each step of the way. 
+3. Don’t try too much at once.
+
+### Conditionals
+
+Conditionals are functions that control the flow of analysis. Conditionals determine if a specified condition is met (or not), then direct subsequent analysis or action depending on whether the condition is met (or not).
+
+```{r eval=FALSE}
+if(condition) {
+  # Some code that runs if condition is TRUE
+} else {
+  # Some code that runs if condition is TRUE
+}
+```
+
+- `condition` is a length one logical value, i.e. either `TRUE` or `FALSE`
+- We can use `&` and `|` to combine several conditions 
+- `!` negates condition
+
+For example, if we wanted to do something with `na.rm` from our function,
+
+```{r eval=FALSE}
+if(na.rm) x <- na.omit(x) # na.omit is a function that removes NA values
+```
+
+might be a good option.
+
+### Loops
+
+Loops (and their cousins the `apply()` function) are useful when we want to repeat the same block of code many times. Reducing the amount of typing we do can be nice, and if we have a lot of code that is essentially the same we can take advantage of looping. `R` offers several loops: for, while, repeat.
+
+For loops will run through a specified index and perform a set of code for each value of the indexing variable.
+
+```{r eval=FALSE}
+for(i in index values) {
+  # block of code
+  # can print values also
+  # code in here will most likely depend on i
+}
+```
+
+```{r}
+for(i in 1:3) {
+  print(i)
+}
+```
+
+```{r}
+for(species in unique(iris$Species)) {
+  subset_iris <- iris[iris$Species == species,]
+  avg <- mean(subset_iris$Sepal.Length)
+  print(paste(species, avg))
+}
+```
+
+While loops will run until a specified condition is no longer true.
+
+```{r}
+condition <- TRUE
+while(condition) {
+  # do stuff
+  # don't forget to eventually set the condition to false
+  # in the toy example below I check if the current seconds is divisible by 5
+  time <- Sys.time()
+  if(as.numeric(format(time, format = "%S")) %% 5 == 0) condition <- FALSE
+}
+print(time)
+```
+
+```{r}
+# we can also use while loops to iterate
+i <- 1
+while (i <= 5) {
+    print(i)
+    i <- i + 1
+}
+```
+
+[ ]{.pagebreak}
+
+[**Your Turn**]{.yourturn}
+
+1. Alter your `my_mean()` function to take a second argument (`na.rm`) with default value `FALSE` that removes `NA` values if `TRUE`.
+
+2. Add checks to your function to make sure the input data is either numeric or logical. If it is logical convert it to numeric.
+
+3. The diamonds data set is included in the `ggplot2` package (not by default in `R`). It can be read into your environment with the following function.
+
+    ```{r}
+    data("diamonds", package = "ggplot2")
+    ```
+
+    Loop over the columns of the diamonds data set and apply your mean function to all of the numeric columns (Hint: look at the `class()` function).
+
+[ ]{.pagebreak}
 
 
 ## Packages
+
+Commonly used `R` functions are installed with base `R`.
+
+`R` packages containing more specialized `R` functions can be installed freely from CRAN servers using function `install.packages()`.
+
+After packages are installed, their functions can be loaded into the current `R` session using the function `library()`.
+
+Packages are contrbuted by `R` users just like you! 
+
+We will use some great packages in this class. Feel free to venture out and find your favorites (google R package + what you're trying to do to find more packages).
 
 ## Additional resources
 
