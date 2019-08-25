@@ -5,7 +5,7 @@ date: "http://stat400-csu.github.io"
 output:
   pagedown::html_paged:
     # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
-    css: ["../../../style/my-style-page.css", "default-fonts", "default-page", "default"]
+    css: ["../style/my-style-page.css", "default-fonts", "default-page", "default"]
     self_contained: true
     number_sections: false
 ---
@@ -41,7 +41,9 @@ Please read the following website regarding use of the Weber lab: https://www.cs
 
 ## Classwork and Grading
 
-**Homework (40%)** Homework will be assigned weekly. All homework assignments are due at the beginning of lecture on the due date. Each homework assignment will receive equal weight in the final grade and the two lowest homework assignment grades will be dropped. Late work is not accepted except in rare cases (see Documented emergencies below).
+All graded classwork must be fully **reproducible** by the instructor and TA. In other words, we need to be able to run your code and have it produce the product you turned in. If this is not the case, it will be reflected in the grading.
+
+**Homework (40%)** Homework will be assigned weekly. All homework assignments are due at **4pm on the due date**. Each homework assignment will receive equal weight in the final grade and the two lowest homework assignment grades will be dropped. Late work is not accepted except in rare cases (see Documented emergencies below).
 
 **Exam (30%)** There will be one midterm exam on October 24, 2019 in class.
 
