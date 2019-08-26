@@ -41,7 +41,7 @@ Please read the following website regarding use of the Weber lab: https://www.cs
 
 ## Classwork and Grading
 
-All graded classwork must be fully **reproducible** by the instructor and TA. In other words, we need to be able to run your code and have it produce the product you turned in. If this is not the case, it will be reflected in the grading.
+All graded classwork must be fully **reproducible** by the instructor and TA. In other words, we need to be able to run your code and have it produce the product you turned in. If this is not the case, it will be reflected in the grading. A copy of your homework will need to be turned in to https://canvas.colostate.edu and the corresponding document used to generate your homework will need to exist on https://rstudio.cloud for full credit.
 
 **Homework (40%)** Homework will be assigned weekly. All homework assignments are due at **4pm on the due date**. Each homework assignment will receive equal weight in the final grade and the two lowest homework assignment grades will be dropped. Late work is not accepted except in rare cases (see Documented emergencies below).
 
@@ -93,4 +93,4 @@ If you have a problem that will require you to miss an exam or homework due date
 
 ## Disclaimer
 
-I reserve the right to make amendments to the syllabus and the schedule throughout the semester. Any updates will be posted on the class website and announced via e-mail and in class.
+I reserve the right to make amendments to the syllabus and schedule throughout the semester. Updates will be posted on the class website and announced via e-mail and in class.
