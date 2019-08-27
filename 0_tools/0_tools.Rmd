@@ -822,7 +822,76 @@ Ch. 3 of R4DS (https://r4ds.had.co.nz/data-visualisation.html)
 
 # tidyverse
 
+The tidyverse is a suite of packages released by RStudio that work very well together ("verse") to make data analysis run smoothly ("tidy"). It's also a package in `R` that loads all the packages in the tidyverse at once.
+
+```{r, eval=FALSE}
+library(tidyverse)
+```
+
+You actually already know one member of the tidyverse -- `ggplot2`! We will highlight three more packages in the tidyverse for data analysis.
+
+![Adapted from R for Data Science, Wickham & Grolemund (2017)](../images/data_analysis_pipeline.png)
+
 ## `readr`
+
+The first step in (almost) any data analysis task is reading data into `R`. Data can take many formats, but we will focus on text files.
+
+> But what about `.xlsx`??
+
+File extensions `.xls` and `.xlsx` are proprietary Excel formats/ These are binary files (meaning if you open one outside of Excel it will not be human readable). An alternable for rectangular data is a `.csv`.
+
+`.csv` is an extension for *comma separated value* files. They are text files -- directly readable -- where each column is separated by a comma and each row a new line.
+
+```
+president,president_name,title,date,city,state,building,room
+33,Harry Truman,Commencement Address at Princeton University.,6/17/47,Princeton,NJ,Princeton University,Nassau Hall
+33,Harry Truman,Commencement Address at the University of California.,6/12/48,Berkeley,CA,,
+33,Harry Truman,Commencement Address at the University of Missouri.,6/9/50,Columbia,MO,,
+33,Harry Truman,Commencement Address at Howard University.,6/13/52,Washington,DC,Howard University,unknown
+```
+
+`.tsv` is an extension for *tab separated value* files. These are also text files, but the columns are separated by tabs instead of commas. Sometimes these will be `.txt` extension files.
+
+```
+president   president_name    title    date    city    state    building    room
+33    Harry Truman    Commencement Address at Princeton University.    6/17/47    Princeton    NJ    Princeton University    Nassau Hall
+33    Harry Truman    Commencement Address at the University of California.    6/12/48    Berkeley    CA    
+33    Harry Truman    Commencement Address at the University of Missouri.    6/9/50    Columbia,MO        
+33    Harry Truman    Commencement Address at Howard University.    6/13/52    Washington    DC    Howard University    unknown
+```
+
+The package `readr` provides a fast and friendly way to ready rectangular text data into `R`.
+
+Here is an example csv file from fivethirtyeight.com on how to choose your college major (https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/).
+
+```{r}
+# load readr
+library(readr)
+
+# read a csv
+recent_grads <- read_csv(file = "https://raw.githubusercontent.com/fivethirtyeight/data/master/college-majors/recent-grads.csv")
+```
+
+`read_csv()` is just one way to read a file using the `readr` package.
+
+- `read_delim()`: the most generic function. Use the delim argument to read a file with any type of delimiter
+- `read_tsv()`: read tab separated files
+- `read_lines()`: read a file into a vector that has one element per line of the file
+- `read_file()`: read a file into a single character element
+- `read_table()`: read a file separated by space
+
+[ ]{.pagebreak}
+
+[**Your Turn**]{.yourturn}
+
+
+1. Read the NFL salaries dataset from https://raw.githubusercontent.com/ada-lovecraft/ProcessingSketches/master/Bits%20and%20Pieces/Football_Stuff/data/nfl-salaries.tsv into `R`. 
+
+2. What is the highest NFL salary in this dataset? Who is the highest paid player?
+
+3. Make a histogram and describe the distribution of NFL salaries.
+
+[ ]{.pagebreak}
 
 ## `dplyr`
 
