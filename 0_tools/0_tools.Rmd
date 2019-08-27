@@ -9,7 +9,7 @@ output:
 ---
 
 ```{r echo = FALSE, message = FALSE}
-knitr::opts_chunk$set(fig.height = 3.5)
+knitr::opts_chunk$set(fig.height = 3)
 ```
 
 We will start the class with some tools that will be useful for success in this class. Going forward, we will use these tools for any [computing]{.red} and [data analysis]{.red} tasks.
@@ -124,6 +124,16 @@ y/2
 
 A vector must contain all values of the same type (i.e., numeric, integer, character, etc.).
 
+We can also make sequences of numbers using either `:` or `seq()`.
+
+```{r}
+# sequences
+a <- 1:5
+a
+b <- seq(1, 5, by = 1)
+b
+```
+
 [ ]{.pagebreak}
 
 [**Your Turn**]{.yourturn}
@@ -134,17 +144,7 @@ A vector must contain all values of the same type (i.e., numeric, integer, chara
 
 [ ]{.pagebreak}
 
-We can also make sequences of numbers using either `:` or `seq()`
-
-```{r}
-# sequences
-a <- 1:5
-a
-b <- seq(1, 5, by = 1)
-b
-```
-
-and we can **extract** values by index.
+We can **extract** values by index.
 
 ```{r}
 a[3]
@@ -188,7 +188,7 @@ a[a < 3]
 
 1. Create a vector of 1300 values evenly spaced between 1 and 100.
 
-2. How many of these values are greater than 791? (Hint: see `sum()` as a helpful functions.)
+2. How many of these values are greater than 91? (Hint: see `sum()` as a helpful function.)
 
 [ ]{.pagebreak}
 
@@ -224,9 +224,11 @@ a
 
 Using the vector you created of 1300 values evenly spaced between 1 and 100,
 
-1. Modify the elements greater than 1000 to equal 9999.
+1. Modify the elements greater than 90 to equal 9999.
 
-2. View (not modify) the first 100 values in your vector.
+2. View (not modify) the first 10 values in your vector.
+
+3. View (not modify) the last 10 values in your vector.
 
 [ ]{.pagebreak}
 
@@ -273,7 +275,7 @@ quantile(b, c(.25, .75))
 
 ## Data Frames
 
-Data frames are the data structure you will (probably) use the most in `R`. You can think of a data frame as any sort of rectangular data. It is easy to conceptualize as a table, where wach column is a vector. Recall, each vector must have the same data type *within* the vector (column), but columns in a data frame need not be of the same type. Let's look at an example!
+Data frames are the data structure you will (probably) use the most in `R`. You can think of a data frame as any sort of rectangular data. It is easy to conceptualize as a table, where each column is a vector. Recall, each vector must have the same data type *within* the vector (column), but columns in a data frame need not be of the same type. Let's look at an example!
 
 ```{r}
 # look at top 6 rows
@@ -358,7 +360,7 @@ df
 
 2. Select only rows with value "a" in column 2 using logical vector
 
-3. `mtcars` is a built-in data set like `iris`: Extract the 4th row of the mtcars data.
+3. `mtcars` is a built-in data set like `iris`: Extract the 4th row of the `mtcars` data.
 
 [ ]{.pagebreak}
 
@@ -501,7 +503,7 @@ while (i <= 5) {
 
 1. Alter your `my_mean()` function to take a second argument (`na.rm`) with default value `FALSE` that removes `NA` values if `TRUE`.
 
-2. Add checks to your function to make sure the input data is either numeric or logical. If it is logical convert it to numeric.
+2. Add checks to your function to make sure the input data is either numeric or logical. If it is logical convert it to numeric (Hint: look at the `stopifnot()` function).
 
 3. The diamonds data set is included in the `ggplot2` package (not by default in `R`). It can be read into your environment with the following function.
 
@@ -542,7 +544,7 @@ Advanced R (https://adv-r.hadley.nz)
 
 # ggplot2
 
-We will be using the `ggplot2` package for doing graphics in this class.
+We will be using the `ggplot2` package for making graphics in this class.
 
 The first time on your machine you’ll need to install the package:
 
@@ -625,9 +627,10 @@ Statistical graphic specifications are expressed using the following components.
 
 This works by mapping values in the data to visual properties of the geom (aesthetics) like size, color, and locations.
 
-Let's build a graphic. We start with the data. We will use the `diamonds` dataset, and we want to explor the relationship between carat and price.
+Let's build a graphic. We start with the data. We will use the `diamonds` dataset, and we want to explore the relationship between carat and price.
 
 ```{r}
+head(diamonds)
 ggplot(data = diamonds)
 ```
 
@@ -681,7 +684,7 @@ Scatterplots are used for investigating relationships between two numeric variab
 
 > Do cars with big engines use more fuel than cars with small engines?
 
-We will use the `mpg` dataset in the `ggplot2` package to answer the question. This dataset contains observations collected by the US Environmental Protection Agency on 38 models of car.
+We will use the `mpg` dataset in the `ggplot2` package to answer the question. This dataset contains observations collected by the US Environmental Protection Agency on `r length(unique(mpg$model))` models of car.
 
 ```{r}
 dim(mpg)
@@ -689,7 +692,7 @@ summary(mpg)
 head(mpg)
 ```
 
-`mpg` contains the following variables: `displ`, a car’s engine size, in litres, and `hwy`, a car’s fuel efficiency on the highway, in miles per gallon (mpg).
+`mpg` contains the following variables: `displ`, a car’s engine size, in liters, and `hwy`, a car’s fuel efficiency on the highway, in miles per gallon (mpg).
 
 ```{r}
 ggplot(data = mpg) +
@@ -752,7 +755,7 @@ We can look at the distribution of continuous variables using **histograms** and
 ```{r}
 ggplot(data = mpg) +
   geom_histogram(mapping = aes(hwy), bins = 30) 
-## boxplots will look very different sometimes with different binwidths
+## histograms will look very different sometimes with different binwidths
 
 ggplot(data = mpg) +
   geom_boxplot(mapping = aes(drv, hwy)) 
@@ -782,7 +785,7 @@ ggplot(data = diamonds, mapping = aes(carat, price)) +
   geom_point(aes(color = cut))
 ```
 
-When this is the case, we can *facet* to display plots for different subsets. To do this, we specify row variables ~ column variables (. for none).
+When this is the case, we can *facet* to display plots for different subsets. To do this, we specify row variables ~ column variables (or . for none).
 
 ```{r}
 ggplot(data = diamonds, mapping = aes(carat, price)) +
