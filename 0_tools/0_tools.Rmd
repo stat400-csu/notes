@@ -846,21 +846,17 @@ File extensions `.xls` and `.xlsx` are proprietary Excel formats/ These are bina
 `.csv` is an extension for *comma separated value* files. They are text files -- directly readable -- where each column is separated by a comma and each row a new line.
 
 ```
-president,president_name,title,date,city,state,building,room
-33,Harry Truman,Commencement Address at Princeton University.,6/17/47,Princeton,NJ,Princeton University,Nassau Hall
-33,Harry Truman,Commencement Address at the University of California.,6/12/48,Berkeley,CA,,
-33,Harry Truman,Commencement Address at the University of Missouri.,6/9/50,Columbia,MO,,
-33,Harry Truman,Commencement Address at Howard University.,6/13/52,Washington,DC,Howard University,unknown
+Rank,Major_code,Major,Total,Men,Women,Major_category,ShareWomen
+1,2419,PETROLEUM ENGINEERING,2339,2057,282,Engineering,0.120564344
+2,2416,MINING AND MINERAL ENGINEERING,756,679,77,Engineering,0.101851852
 ```
 
 `.tsv` is an extension for *tab separated value* files. These are also text files, but the columns are separated by tabs instead of commas. Sometimes these will be `.txt` extension files.
 
 ```
-president   president_name    title    date    city    state    building    room
-33    Harry Truman    Commencement Address at Princeton University.    6/17/47    Princeton    NJ    Princeton University    Nassau Hall
-33    Harry Truman    Commencement Address at the University of California.    6/12/48    Berkeley    CA    
-33    Harry Truman    Commencement Address at the University of Missouri.    6/9/50    Columbia,MO        
-33    Harry Truman    Commencement Address at Howard University.    6/13/52    Washington    DC    Howard University    unknown
+Rank    Major_code    Major    Total    Men    Women    Major_category    ShareWomen
+1    2419    PETROLEUM ENGINEERING    2339    2057    282    Engineering    0.120564344
+2    2416    MINING AND MINERAL ENGINEERING    756    679    77    Engineering    0.101851852
 ```
 
 The package `readr` provides a fast and friendly way to ready rectangular text data into `R`.
@@ -898,7 +894,283 @@ recent_grads <- read_csv(file = "https://raw.githubusercontent.com/fivethirtyeig
 
 ## `dplyr`
 
+We almost never will read in data and have it in exactly the right form for visualizing and modeling. Often we need to create variable or summaries.
+
+To facilitate easy transformation of data, we're going to learn how to use the `dplyr` package. `dplyr` uses 6 main verbs, which correspond to some main tasks we may want to perform in an analysis. 
+
+We will do this with the `recent_grads` data from fivethiryeight.com we just read into `R` using `readr`.
+
+### `%>%`
+
+Before we get into the verbs in `dplyr`, I want to introduce a new paradigm. All of the functions in the tidyverse are structured such that the first argument is a data frame and they also return a data frame. This allows for efficient use of the pipe operator `%>%` (pronounce this as "then").
+
+```{r, eval=FALSE}
+a %>% b()
+```
+
+Taked the result on the left and passes it to the first argument on the right. This is equivalent to
+
+```{r, eval=FALSE}
+b(a)
+```
+
+This is useful when we want to chain together many operations in an analysis.
+
+### `filter()`
+
+`filter()` lets us subset observations based on their values. This is similar to using `[]` to subset a data frame, but simpler.
+
+The first argument is the name of the data frame. The second and subsequent arguments are the expressions that filter the data frame. 
+
+Let's subset the `recent_grad` data set to focus on Statistics majors.
+
+```{r}
+recent_grads %>% filter(Major == "STATISTICS AND DECISION SCIENCE")
+```
+
+Alternatively, we could look at all Majors in the same category, "Computers & Mathematics", for comparison.
+
+```{r}
+recent_grads %>% filter(Major_category == "Computers & Mathematics")
+```
+
+Notice we are using `%>%` to pass the data frame to the first argument in `filter()` and we do not need to use `recent_grads$Colum Name` to subset our data.
+
+`dplyr` functions never modify their inputs, so if we need to save the result, we have to do it using `<-`.
+
+```{r}
+math_grads <- recent_grads %>% filter(Major_category == "Computers & Mathematics")
+```
+
+Everything we've already learned about logicals and comparisons comes in handy here, since the second argument of `filter()` is a comparitor expression telling `dplyr` what rows we care about.
+
+### `arrange()`
+
+`arrange()` works similarly to `filter()` except that it changes the order of rows rather than subsetting. Again, the first parameter is a data frame and the additional parameters are a set of column names to order by. 
+
+```{r}
+math_grads %>% arrange(ShareWomen)
+```
+
+If we provide more than one column name, each additional column will be used to break ties in the values of preceding columns.
+
+We can use `desc()` to re-order by a column in descending order.
+
+```{r}
+math_grads %>% arrange(desc(ShareWomen))
+```
+
+### `select()`
+
+Sometimes we have data sets with a ton of variables and often we want to narrow down the ones that we actually care about. `select()` allows us to do this based on the names of the variables.
+
+```{r}
+math_grads %>% select(Major, ShareWomen, Total, Full_time, P75th)
+```
+
+We can also use 
+
+- `:` to select all columns between two columns
+- `-` to select all columns except those specified
+- `starts_with("abc")` matches names that begin with "abc"
+- `ends_with("xyz")` matches names that end with "xyz"
+- `contains("ijk")` matches names that contain "ijk"
+- `everything()` mathes all columns
+
+```{r}
+math_grads %>% select(Major, College_jobs:Low_wage_jobs)
+```
+
+`rename()` is a function that will rename an existing column and select all columns.
+
+```{r}
+math_grads %>% rename(Code_major = Major_code)
+```
+
+### `mutate()`
+
+Besides selecting sets of existing columns, we can also add new columns that are functions of existing columns with `mutate()`. `mutate()` always adds new columns at the end of the data frame.
+
+```{r}
+math_grads %>% mutate(Full_time_rate = Full_time_year_round/Total)
+
+# we can't see everything
+math_grads %>% 
+  mutate(Full_time_rate = Full_time_year_round/Total) %>% 
+  select(Major, ShareWomen, Full_time_rate)
+```
+
+### `summarise()`
+
+The last major verb is summarise(). It collapses a data frame to a single row based on a summary function.
+
+```{r}
+math_grads %>% summarise(mean_major_size = mean(Total))
+```
+
+A useful summary function is a count (`n()`), or a count of non-missing values (`sum(!is.na())`).
+
+```{r}
+math_grads %>% summarise(mean_major_size = mean(Total), num_majors = n())
+```
+
+### `group_by()`
+
+`summarise()` is not super useful unless we pair it with `group_by()`. This changes the unit of analysis from the complete dataset to individual groups. Then, when we use the `dplyr` verbs on a grouped data frame they'll be automatically applied "by group".
+
+```{r}
+recent_grads %>%
+  group_by(Major_category) %>%
+  summarise(mean_major_size = mean(Total, na.rm = TRUE)) %>%
+  arrange(desc(mean_major_size))
+```
+
+We can group by multiple variables and if we need to remove grouping, and return to operations on ungrouped data, we use `ungroup()`.
+
+Grouping is also useful for `arrange()` and `mutate()` within groups.
+
+[ ]{.pagebreak}
+
+[**Your Turn**]{.yourturn}
+
+Using the NFL salaries from https://raw.githubusercontent.com/ada-lovecraft/ProcessingSketches/master/Bits%20and%20Pieces/Football_Stuff/data/nfl-salaries.tsv that you loaded into `R` in the previous your turn, perform the following.
+
+1. What is the team with the highest paid roster?
+
+2. What are the top 5 paid players?
+
+3. What is the highest paid position on average? the lowest? the most variable?
+
+[ ]{.pagebreak}
+
 ## `tidyr`
+
+ > "Happy families are all alike; every unhappy family is unhappy in its own way." –– Leo Tolstoy
+
+> "Tidy datasets are all alike, but every messy dataset is messy in its own way." –– Hadley Wickham
+
+*Tidy data* is an organization strategy for data that makes it easier to work with, analyze, and visualize. `tidyr` is a package that can help us tidy our data in a less painful way.
+
+The following all contain the same data, but show different levels of "tidiness".
+
+```{r}
+table1
+
+table2
+
+table3
+
+# spread across two data frames
+table4a
+
+table4b
+```
+
+While these are all representations of the same underlying data, they are not equally easy to use. 
+
+There are three interrelated rules which make a dataset tidy:
+
+1. Each variable must have its own column.
+2. Each observation must have its own row.
+3. Each value must have its own cell.
+
+In the above example, 
+
+`table2` isn't tidy because each variable doesn't have its own column.
+
+`table3` isn't tidy because each value doesn't have its own cell.
+
+`table4a` and `table4b` aren't tidy because each observation doesn't have its own row.
+
+[`table1` is tidy!]{.red}
+
+Being tidy with our data is useful because it's a consistent set of rules to follow for working with data and because it allows `R` to be efficient.
+
+```{r}
+# Compute rate per 10,000
+table1 %>% 
+  mutate(rate = cases / population * 10000)
+
+# Visualize cases over time
+library(ggplot2)
+ggplot(table1, aes(year, cases)) + 
+  geom_line(aes(group = country)) + 
+  geom_point(aes(colour = country))
+```
+
+### Pivoting
+
+Unfortunately, most of the data you will find in the "wild" is not tidy. So, we need tools to help us tidy unruly data.
+
+The main tools in `tidyr` are the ideas of `pivot_longer()` and `pivot_wider()`. As the names imply, `pivot_longer()` "lengthens" our data, increasing the number of rows and decreasing the number of columns. `pivot_wider` does the opposite, increasing the number of columns and decreasing the number of rows.
+
+These two functions resolve one of two common problems:
+
+1. One variable might be spread across multiple columns. (`pivot_longer()`)
+2. One observation might be scattered across multiple rows. (`pivot_wider()`)
+
+A common issue with data is when values are used as column names.
+
+```{r}
+table4a
+```
+
+We can fix this using `pivot_longer()`.
+
+```{r}
+table4a %>%
+  pivot_longer(-country, names_to = "year", values_to = "cases")
+```
+
+Notice we specified with columns we wanted to consolidate by telling the function the column we *didn't* want to change (`-country`). We can use the `dplyr::select()` syntax here for specifying the columns to pivot.
+
+We can do the same thing with `table4b` and then **join** the databases together by specifying unique identifying attributes.
+
+```{r}
+table4a %>%
+  pivot_longer(-country, names_to = "year", values_to = "cases") %>%
+  left_join(table4b %>% pivot_longer(-country, names_to = "year", values_to = "population"))
+```
+
+If, instead, variables don't have their own column, we can `pivot_wider()`.
+
+```{r}
+table2
+
+table2 %>%
+  pivot_wider(names_from = type, values_from = count)
+```
+
+### Separating and Uniting
+
+So far we have tidied `table2` and `table4a` and `table4b`, but what about `table3`?
+
+```{r}
+table3
+```
+
+We need to split the `rate` column into the cases and population columns so that each value has its own cell. The function we will use is `separate()`. We need to specify the column, the value to split on ("/"), and the names of the new coumns.
+
+```{r}
+table3 %>%
+  separate(rate, into = c("cases", "population"), sep = "/")
+```
+
+By default, `separate()` will split values wherever it sees a character that isn't a number or letter.
+
+`unite()` is the opposite of `separate()` -- it combines multiple columns into a single column.
+
+[ ]{.pagebreak}
+
+[**Your Turn**]{.yourturn}
+
+1. Is the NFL salaries from https://raw.githubusercontent.com/ada-lovecraft/ProcessingSketches/master/Bits%20and%20Pieces/Football_Stuff/data/nfl-salaries.tsv that you loaded into `R` in a previous your turn tidy? Why or why not?
+
+2. There is a data set in `tidyr` called `world_bank_pop` that contains information about population from the World Bank (https://data.worldbank.org/). Why is this data not tidy? You may want to read more about the data to answer (`?world_bank_pop`).
+
+3. Use functions in `tidyr` to turn this into a tidy form.
+
+[ ]{.pagebreak}
 
 ## Additional resources
 
@@ -910,8 +1182,87 @@ recent_grads <- read_csv(file = "https://raw.githubusercontent.com/fivethirtyeig
 
 # Rmarkdown
 
+**Markdown** is a particular type of markup language that is designed to produce documents from text.
+
+Markdown is becoming a standard. Many websites will generate HTML from Markdown (e.g. GitHub, Stack Overflow, reddit, ...) and this course website is written in markdown as well.
+
+Markdown is easy for humans to read and write.
+
+```
+*italic*   
+**bold**
+```
+
+```
+# Header 1
+## Header 2
+### Header 3
+```
+
+```
+* Item 1
+* Item 2
+    + Item 2a
+    + Item 2b
+
+1. Item 1
+2. Item 2
+3. Item 3
+    + Item 3a
+    + Item 3b
+```
+
+```
+[linked phrase](http://example.com)
+
+A friend once said:
+
+> It's always better to give 
+> than to receive.
+```
+
+**Rmarkdown** is an authoring format that lets you incorporate the results from `R` code in your documents.
+
+It combines the core syntax of markdown with embedded `R` code chunks that are run so their output can be included in the final document.
+
+You no longer have to copy/paste plots into your homework!
+
+Documents built from Rmarkdown are fully reproducible, i.e. they are automatically regenerated whenever embedded `R` code changes.
+
+To include an `R` chunk in an Rmarkdown document, you use backticks.
+
+`r ''````{r}
+
+```
+
+In order to create a new Rmarkdown document in RStudio, File > New File > R markdown.
+
+There are many options that can affect the aesthetics of the resulting document and the results and appearance of R chunks. For a list of chunk options, see https://yihui.name/knitr/options/. Here are some useful ones:
+
+- `echo` - should the code be printed?
+- `message` and `warning` - should message and warnings be printed?
+- `eval` - should the code be evaluated?
+- `fig.height` & `fig.width` -  figure height and width
+- `fig.cap` - figure caption
+
+[ ]{.pagebreak}
+
+[**Your Turn**]{.yourturn}
+
+1. Create a new Rmarkdown document.
+
+2. Alter the template to use a `ggplot2` figure and specify the size to be a height of `6`.
+
+3. Add a caption to your figure.
+
+4. Compile your document to pdf.
+
+[ ]{.pagebreak}
+
 ## Additional resources
 
 Documentation and cheat sheets (https://rmarkdown.rstudio.com)
 
 R Markdown: The Definitive Guide (https://bookdown.org/yihui/rmarkdown/)
+
+
