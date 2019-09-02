@@ -13,7 +13,7 @@ output:
 Dr. Andee Kaplan  
 208 Statistics Building  
 Lectures: TR 9:30am - 10:45am in Military Sciences 115   
-Office Hours: TR 11:00am - 12:00pm in Statistics 208  
+Office Hours: W 10am - 11am, R 11am - 12pm in Statistics 208  
 andee.kaplan@colostate.edu
 
 ## Course Objectives
