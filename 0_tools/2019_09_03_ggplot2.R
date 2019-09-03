@@ -119,7 +119,7 @@ ggplot(data = diamonds, mapping = aes(carat, price)) +
 
 ggplot(mpg) +
   geom_histogram(aes(hwy)) +
-  facet_wrap(. ~ drv, scales = ’free_x’)
+  facet_wrap(. ~ drv, scales = 'free_x')
 
 # 2. Make a scatterplot that incorporates color, shape, size, and facets.
 
@@ -130,5 +130,5 @@ ggplot(mpg) +
 # 3. BONUS - Color your histograms from 1. by `cyl`. Did this do what you thought it would? (Look at `fill` and `group` as options instead).
 
 ggplot(mpg) +
-  geom_histogram(aes(hwy, fill = cyl, group = cyl), position = ‘dodge’) +
+  geom_histogram(aes(hwy, fill = cyl, group = cyl), position = 'dodge') +
   facet_wrap(. ~ drv)
