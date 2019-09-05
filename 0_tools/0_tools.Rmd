@@ -1098,7 +1098,9 @@ ggplot(table1, aes(year, cases)) +
   geom_point(aes(colour = country))
 ```
 
-### Pivoting
+### **Development Version** Pivoting
+
+[**Note: this section discusses the development functions `pivot_wider()` and `pivot_longer()`. These functions are not yet available in the production version of `tidyr`. See section \@ref(spread-and-gather) for currently working code.**]{.red}
 
 Unfortunately, most of the data you will find in the "wild" is not tidy. So, we need tools to help us tidy unruly data.
 
@@ -1117,7 +1119,7 @@ table4a
 
 We can fix this using `pivot_longer()`.
 
-```{r}
+```{r, eval=FALSE}
 table4a %>%
   pivot_longer(-country, names_to = "year", values_to = "cases")
 ```
@@ -1126,7 +1128,7 @@ Notice we specified with columns we wanted to consolidate by telling the functio
 
 We can do the same thing with `table4b` and then **join** the databases together by specifying unique identifying attributes.
 
-```{r}
+```{r, eval=FALSE}
 table4a %>%
   pivot_longer(-country, names_to = "year", values_to = "cases") %>%
   left_join(table4b %>% pivot_longer(-country, names_to = "year", values_to = "population"))
@@ -1134,11 +1136,56 @@ table4a %>%
 
 If, instead, variables don't have their own column, we can `pivot_wider()`.
 
-```{r}
+```{r, eval=FALSE}
 table2
 
 table2 %>%
   pivot_wider(names_from = type, values_from = count)
+```
+
+### Spread and Gather
+
+[**Note: this section discusses the soon-to-be-deprecated functions `spread()` and `gather()`. These functions will soon be replaced by `pivot_wider()` and `pivot_longer()`. See section \@ref(development-version-pivoting) for code when this happens.**]{.red}
+
+Unfortunately, most of the data you will find in the "wild" is not tidy. So, we need tools to help us tidy unruly data.
+
+The main tools in `tidyr` are the ideas of `spread()` and `gather()`. `gather()` "lengthens" our data, increasing the number of rows and decreasing the number of columns. `spread()` does the opposite, increasing the number of columns and decreasing the number of rows.
+
+These two functions resolve one of two common problems:
+
+1. One variable might be spread across multiple columns. (`gather()`)
+2. One observation might be scattered across multiple rows. (`spread()`)
+
+A common issue with data is when values are used as column names.
+
+```{r}
+table4a
+```
+
+We can fix this using `gather()`.
+
+```{r}
+table4a %>%
+  gather(-country, key = "year", value = "cases")
+```
+
+Notice we specified with columns we wanted to consolidate by telling the function the column we *didn't* want to change (`-country`). We can use the `dplyr::select()` syntax here for specifying the columns to pivot.
+
+We can do the same thing with `table4b` and then **join** the databases together by specifying unique identifying attributes.
+
+```{r}
+table4a %>%
+  gather(-country, key = "year", value = "cases") %>%
+  left_join(table4b %>% gather(-country, key = "year", value = "population"))
+```
+
+If, instead, variables don't have their own column, we can `spread()`.
+
+```{r}
+table2
+
+table2 %>%
+  spread(key = type, value = count)
 ```
 
 ### Separating and Uniting
