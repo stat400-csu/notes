@@ -1,0 +1,475 @@
+---
+title: "Chapter 2: Probability for Statistical Computing"
+output:
+  pagedown::html_paged:
+    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
+    css: ["../style/my-style-page.css", "default-fonts", "default-page", "default"]
+    self_contained: true
+    number_sections: true
+---
+
+```{r echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(fig.height = 3)
+```
+
+```{r, echo = FALSE}
+library(ggplot2)
+set.seed(100)
+```
+
+We will **briefly** review some definitions and concepts in probability and statistics that will be helpful for the remainder of the class.
+
+Just like we reviewed computational tools (`R` and packages), we will now do the same for probability and statistics.
+
+**Note:** This is not meant to be comprehensive. I am assuming you already know this and maybe have forgotten a few things.
+
+
+![https://xkcd.com/892/](https://imgs.xkcd.com/comics/null_hypothesis.png)
+
+Alternative text: "Hell, my eighth grade science class managed to conclusively reject it just based on a classroom experiment. It's pretty sad to hear about million-dollar research teams who can't even manage that."
+
+# Random Variables and Probability
+
+```{definition}
+A *random variable* is a function that maps sets of all possible outcomes of an experiment (sample space $\Omega$) to $\mathbb{R}$.
+```
+
+<br/>
+
+```{example}
+
+```
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+```{example}
+
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+```{example}
+
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+Types of random variables -- 
+
+**Discrete** take values in a countable set.
+
+<br/>
+<br/>
+
+
+**Continuous** take values in an uncountable set (like $\mathbb{R}$)
+
+<br/>
+<br/>
+
+
+## Distribution and Density Functions {data-short-title="CDFs and PDFs"}
+
+```{definition}
+The *probability mass function (pmf)* of a random variable $X$ is $f_X$ defined by
+$$
+f_X(x) = P(X = x)  
+$$
+where $P(\cdot)$ denotes the probability of its argument.
+```
+
+There are a few requirements of a **valid** pmf
+
+1. <br/><br/>
+2. <br/><br/>
+3. <br/><br/>
+
+```{example}
+Let $\Omega =$ all possible values of a roll of a single die $= \{1, \dots, 6\}$ and $X$ be the outcome of a single roll of one die $\in \{1, \dots, 6\}$.
+```
+
+<br />
+<br />
+
+A pmf is defined for **discrete variables**, but what about **continuous**? Continuous variables do not have positive probability pass at any single point. 
+
+```{definition}
+The *probability density function (pdf)* of a random variable $X$ is $f_X$ defined by
+$$
+P(X \in A) = \int\limits_{x \in A} f_X(x) dx.
+$$
+```
+
+$X$ is a continuous random variable if there exists this function $f_X \ge 0$ such that for all $x \in \mathbb{R}$, this probability exists.
+
+For $f_X$ to be a valid pdf,
+
+1. <br/><br/>
+2. <br/><br/>
+
+There are many named pdfs and cdfs that you have seen in other class, e.g.
+
+<br/>
+
+```{example}
+Let 
+$$
+f(x) = \begin{cases}
+c(4x - 2x^2) & 0 < x < 2 \\
+0 & \text{otherwise}  
+\end{cases}
+$$
+  
+Find $c$ and then find $P(X > 1)$
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+```{definition}
+The *cumulative distribution function (cdf)* for a random variable $X$ is $F_X$ defined by
+$$
+F_X(x) = P(X \le x), \quad x \in \mathbb{R}.
+$$
+```
+
+The cdf has the following properties
+
+1. <br/><br/>
+2. <br/><br/>
+3. <br/><br/>
+
+A random variable $X$ is *continuous* if $F_X$ is a continuous function and *discrete* if $F_X$ is a step function.
+
+```{example}
+Find the cdf for the previous example.
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+Note $f(x) = F'(x) = \frac{dF(x)}{dx}$ in the continuous case.
+
+## Two Continuous Random Variables
+
+```{definition}
+The *joint pdf* of the continuous vector $(X,Y)$ is defined as
+$$
+P((X, Y) \in A) = \iint\limits_{A} f_{X,Y}(x, y) dx dy
+$$
+for any set $X \subset \mathbb{R}^2$.
+```
+
+Joint pdfs have the following properties
+
+1. <br/><br/>
+2. <br/><br/>
+
+and a support defined to be $\{(x, y):f_{X,Y}(x,y) > 0\}$.
+
+```{example}
+
+```
+
+<br/>
+<br/>
+
+The *marginal densities* of $X$ and $Y$ are given by
+
+$$
+f_X(x) = \int\limits_\infty^\infty f_{X,Y}(x,y) dy \qquad\text{and}\qquad f_Y(y) = \int\limits_\infty^\infty f_{X,Y}(x,y) dx;
+$$
+
+```{r joint-marginal-dsn, echo = FALSE, cache=TRUE}
+library(MASS)
+library(ggExtra)
+
+# sample data
+sample <- data.frame(mvrnorm(500000, mu = c(0, 0), Sigma = matrix(c(1, 2, 2, 10), nrow = 2)))
+names(sample) <- c("X", "Y")
+
+ggplot(sample) +
+  geom_point(aes(X, Y), alpha = 0) +
+  geom_density_2d(aes(X, Y)) -> p
+
+ggMarginal(p, type = "density")
+
+```
+
+```{example}
+(From Devore (2008) Example 5.3, pg. 187) A bank operates both a drive-up facility and a walk-up window. On a ramdonly selected day, let $X$ be the proportion of time that the drive-up facility is in use and $Y$ is the proportion of time that the walk-up window is in use. 
+
+The the set of possible values for $(X, Y)$ is the square $D = \{(x, y): 0 \le x \le 1, 0 \le y \le 1\}$. Suppose the joint pdf is given by
+$$
+f_{X, Y}(x, y) = \begin{cases}
+\frac{6}{5}(x^2 + y^2) &  x \in [0,1], y \in [0,1] \\
+0 & \text{otherwise}
+\end{cases}
+$$
+```
+
+Evaluate the probability that both the drive-up and the walk-up windows are used a quarter of the time or less.
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+Find the marginal densities for $X$ and $Y$.
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+Compute the probability that the drive-up facility is used a quarter of the time or less.
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+# Expected Value and Variance
+
+```{definition}
+The *expected value* (average or mean) of a random variable $X$ with pdf or pmf $f_X$ is defined as
+$$
+E[X] =
+\begin{cases}
+\sum\limits_{x \in \mathcal{X}} x f_X(x_i) & X \text{ is discrete} \\
+\int\limits_{x \in \mathcal{X}} x f_X(x) dx & X \text{ is continuous.} \\
+\end{cases}
+$$
+Where $\mathcal{X} = \{x: f_X(x) > 0\}$ is the support of $X$.
+```
+
+This is a weighted average of all possible values $\mathcal{X}$ by the probability distribution.
+
+```{example}
+Let $X \sim \text{Bernoulli}(p)$. Find $E[X]$.
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+```{example}
+Let $X \sim \text{Exp}(\lambda)$. Find $E[X]$.
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+```{definition}
+Let $g(X)$ be a function of a continuous random variable $X$ with pdf $f_X$. Then,
+$$
+E[g(X)] = \int_{x \in \mathcal{X}} g(x) f_X(x) dx.
+$$
+```
+
+```{definition}
+The *variance* (a measure of spread) is defined as 
+\begin{align*}
+Var[X] &= E\left[(X - E[X])^2\right] \\
+&= E[X^2] - \left(E[X]\right)^2
+\end{align*} 
+```
+
+<br/>
+<br/>
+
+```{example}
+Let $X$ be the number of cylinders in a car engine. The following is the pmf function for the size of car engines.
+```
+
+```{r, echo = FALSE}
+car_engines <- data.frame(x = c(4, 6, 8), f = c(.5, .3, .2))
+knitr::kable(t(car_engines))
+```
+
+Find
+
+$E[X]$
+
+<br/>
+<br/>
+<br/>
+
+$Var[X]$
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+*Covariance* measures how two random variables vary together (their linear relationship).
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+```{definition}
+The *covariance* of $X$ and $Y$ is defined by
+\begin{align*}
+Cov[X,Y] &= E\left[(X - E[X])(Y - E[Y])\right] \\
+&= E[XY] - E[X]E[Y]
+\end{align*} 
+and the *correlation* of $X$ and $Y$ is defined as
+$$
+\rho(X, Y) = \frac{Cov[X, Y]}{\sqrt{Var[X]Var[Y]}}.  
+$$  
+```
+
+Two variables $X$ and $Y$ are *uncorrelated* if $\rho(X,Y) = 0$.
+
+# Independence and Conditional Probability
+
+In classical probability, the *conditional probability* of an event $A$ given that event $B$ has occured is
+$$
+P(A|B) = \frac{P(A\cap B)}{P(B)}.
+$$
+```{definition}
+Two events $A$ and $B$ are *independent* if $P(A|B) = P(A)$. The converse is also true, so
+$$
+A \text{ and } B \text{ are independent} \Leftrightarrow P(A | B) = P(A) \Leftrightarrow P(A \cap B) = .  
+$$
+```
+
+<br/>
+
+```{theorem, name = "Bayes' Theorem"}
+Let $A$ and $B$ be events. Then,
+$$
+P(A|B) = \frac{P(A \cap B)}{P(B)} = .
+$$
+```
+
+## Random variables
+
+The same ideas hold for random variables. If $X$ and $Y$ have joint pdf $f_{X,Y}(x,y)$, then the conditional density of $X$ given $Y = y$ is
+$$
+f_{X|Y = y}(x) = \frac{f_{X,Y}(x,y)}{f_{Y}(y)}.
+$$
+
+<br/><br/>
+
+Thus, two random variables $X$ and $Y$ are independent if and only if
+$$
+f_{X,Y}(x,y) = f_X(x)f_Y(y).
+$$
+<br/><br/>
+
+Also, if $X$ and $Y$ are independent, then
+$$
+f_{X|Y = y}(x) = \qquad\qquad\qquad\qquad\qquad\qquad\qquad
+$$
+
+# Properties of Expected Value and Variance
+
+Suppose that $X$ and $Y$ are random variables, and $a$ and $b$ are constants. Then the following hold:
+
+1. $E[aX + b] =$
+<br/><br/><br/>
+2. $E[X + Y] =$
+<br/><br/><br/>
+3. If $X$ and $Y$ are independent, then $E[XY] =$
+<br/><br/><br/>
+4. $Var[b] =$
+<br/><br/><br/>
+5. $Var[aX + b] =$
+<br/><br/><br/>
+6. If $X$ and $Y$ are independent, $Var[X + Y] =$
+<br/><br/><br/>
+
+# Random Samples
+
+```{definition}
+Random variables $\{X_1, \dots, X_n\}$ are defined as a *random sample* from $f_X$ if $X_1, \dots, X_n \stackrel{iid}{\sim}f_X$.
+```
+
+<br/>
+
+```{example}
+
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+```{theorem}
+If $X_1, \dots, X_n \stackrel{iid}{\sim}f_X$, then
+$$
+f(x_1, \dots, x_n) = \prod\limits_{i = 1}^n f_X(x_i).
+$$  
+```
+
+<br/>
+
+```{example}
+Let $X_1, \dots, X_n$ be iid. Derive the expected value and variance of the sample mean $\overline{X}_n = \frac{1}{n}\sum\limits_{i = 1}^n X_i.
+```
+
+# `R` Tips
+
+From here on in the course we will be dealing with a lot of **randomness**. In other words, running our code will return a **random** result.
+
+> But what about reproducibility??
+
+When we generate "random" numbers in `R`, we are actually generating numbers that *look* random, but are *pseudo-random* (not really random). The vast majority of computer languages operate this way.
+
+This means all is not lost for reproducibility!
+
+
+```{r}
+set.seed(400)
+```
+
+Before running our code, we can fix the starting point (`seed`) of the pseudorandom number generator so that we can reproduce results.
+
+Speaking of generating numbers, we can generate numbers (also evaluate densities, distribution functions, and quantile functions) from named distributions in `R`.
+
+```{r, eval = FALSE}
+rnorm(100)
+dnorm(x)
+pnorm(x)
+qnorm(y)
+```
+
+
