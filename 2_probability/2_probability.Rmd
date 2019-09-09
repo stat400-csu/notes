@@ -28,7 +28,7 @@ Just like we reviewed computational tools (`R` and packages), we will now do the
 
 Alternative text: "Hell, my eighth grade science class managed to conclusively reject it just based on a classroom experiment. It's pretty sad to hear about million-dollar research teams who can't even manage that."
 
-# Random Variables and Probability
+# Random Variables and Probability {data-short-title="RVs and Probability"}
 
 ```{definition}
 A *random variable* is a function that maps sets of all possible outcomes of an experiment (sample space $\Omega$) to $\mathbb{R}$.
@@ -167,7 +167,34 @@ Find the cdf for the previous example.
 
 Note $f(x) = F'(x) = \frac{dF(x)}{dx}$ in the continuous case.
 
-## Two Continuous Random Variables
+Recall an indicator function is defined as
+
+$$
+\mathbb{1}_{\{A\}} = \begin{cases} 1 & \text{if } A \text{ is true} \\ 0 & \text{otherwise} \end{cases}.
+$$
+```{example}
+
+```
+
+<br/>
+<br/>
+
+```{example}
+If $X \sim N(0,1)$, the pdf is $f(x) = \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{x^2}{2}\right)$ for $-\infty < x < \infty$.
+
+If $f(x) = \frac{c}{\sqrt{2\pi}} \exp\left(-\frac{x^2}{2}\right)\mathbb{1}_{\{x > 0\}}$, what is $c$?
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+## Two Continuous Random Variables {data-short-title="Two continuous RVs"}
 
 ```{definition}
 The *joint pdf* of the continuous vector $(X,Y)$ is defined as
@@ -197,7 +224,7 @@ $$
 f_X(x) = \int\limits_\infty^\infty f_{X,Y}(x,y) dy \qquad\text{and}\qquad f_Y(y) = \int\limits_\infty^\infty f_{X,Y}(x,y) dx;
 $$
 
-```{r joint-marginal-dsn, echo = FALSE, cache=TRUE}
+```{r joint-marginal-dsn, echo = FALSE, cache=TRUE, fig.height=2.5}
 library(MASS)
 library(ggExtra)
 
@@ -214,12 +241,12 @@ ggMarginal(p, type = "density")
 ```
 
 ```{example}
-(From Devore (2008) Example 5.3, pg. 187) A bank operates both a drive-up facility and a walk-up window. On a ramdonly selected day, let $X$ be the proportion of time that the drive-up facility is in use and $Y$ is the proportion of time that the walk-up window is in use. 
+(From Devore (2008) Example 5.3, pg. 187) A bank operates both a drive-up facility and a walk-up window. On a randomly selected day, let $X$ be the proportion of time that the drive-up facility is in use and $Y$ is the proportion of time that the walk-up window is in use. 
 
 The the set of possible values for $(X, Y)$ is the square $D = \{(x, y): 0 \le x \le 1, 0 \le y \le 1\}$. Suppose the joint pdf is given by
 $$
 f_{X, Y}(x, y) = \begin{cases}
-\frac{6}{5}(x^2 + y^2) &  x \in [0,1], y \in [0,1] \\
+\frac{6}{5}(x + y^2) &  x \in [0,1], y \in [0,1] \\
 0 & \text{otherwise}
 \end{cases}
 $$
@@ -323,11 +350,9 @@ $E[X]$
 
 <br/>
 <br/>
-<br/>
 
 $Var[X]$
 
-<br/>
 <br/>
 <br/>
 <br/>
@@ -339,9 +364,7 @@ $Var[X]$
 <br/>
 <br/>
 <br/>
-<br/>
-<br/>
-<br/>
+
 
 ```{definition}
 The *covariance* of $X$ and $Y$ is defined by
@@ -366,7 +389,7 @@ $$
 ```{definition}
 Two events $A$ and $B$ are *independent* if $P(A|B) = P(A)$. The converse is also true, so
 $$
-A \text{ and } B \text{ are independent} \Leftrightarrow P(A | B) = P(A) \Leftrightarrow P(A \cap B) = .  
+A \text{ and } B \text{ are independent} \Leftrightarrow P(A | B) = P(A) \Leftrightarrow P(A \cap B) =   
 $$
 ```
 
@@ -375,7 +398,7 @@ $$
 ```{theorem, name = "Bayes' Theorem"}
 Let $A$ and $B$ be events. Then,
 $$
-P(A|B) = \frac{P(A \cap B)}{P(B)} = .
+P(A|B) = \frac{P(A \cap B)}{P(B)} = 
 $$
 ```
 
@@ -443,7 +466,7 @@ $$
 <br/>
 
 ```{example}
-Let $X_1, \dots, X_n$ be iid. Derive the expected value and variance of the sample mean $\overline{X}_n = \frac{1}{n}\sum\limits_{i = 1}^n X_i.
+Let $X_1, \dots, X_n$ be iid. Derive the expected value and variance of the sample mean $\overline{X}_n = \frac{1}{n}\sum\limits_{i = 1}^n X_i$.
 ```
 
 # `R` Tips
@@ -472,26 +495,7 @@ pnorm(x)
 qnorm(y)
 ```
 
-# Food for thought
 
-Recall an indicator function is defined as
 
-$$
-\mathbb{1}_{\{A\}} = \begin{cases} 1 & \text{if } A \text{ is true} \\ 0 & \text{otherwise} \end{cases}.
-$$
-```{example}
-
-```
-
-<br/>
-<br/>
-<br/>
-<br/>
-
-```{example}
-If $X \sim N(0,1)$, the pdf is $f(x) = \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{x^2}{2}\right)$ for $-\infty < x < \infty$.
-
-If $f(x) = \frac{c}{\sqrt{2\pi}} \exp\left(-\frac{x^2}{2}\right)\mathbb{1}_{\{x > 0\}}$, what is $c$?
-```
 
 
