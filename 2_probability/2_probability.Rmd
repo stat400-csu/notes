@@ -472,4 +472,26 @@ pnorm(x)
 qnorm(y)
 ```
 
+# Food for thought
+
+Recall an indicator function is defined as
+
+$$
+\mathbb{1}_{\{A\}} = \begin{cases} 1 & \text{if } A \text{ is true} \\ 0 & \text{otherwise} \end{cases}.
+$$
+```{example}
+
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+```{example}
+If $X \sim N(0,1)$, the pdf is $f(x) = \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{x^2}{2}\right)$ for $-\infty < x < \infty$.
+
+If $f(x) = \frac{c}{\sqrt{2\pi}} \exp\left(-\frac{x^2}{2}\right)\mathbb{1}_{\{x > 0\}}$, what is $c$?
+```
+
 
