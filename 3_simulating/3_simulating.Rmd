@@ -1,0 +1,547 @@
+---
+title: "Chapter 3: Methods for Simulating Data"
+output:
+  pagedown::html_paged:
+    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
+    css: ["../style/my-style-page.css", "default-fonts", "default-page", "default"]
+    self_contained: true
+    number_sections: true
+---
+
+```{r echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(fig.height = 3)
+```
+
+```{r, echo = FALSE}
+library(ggplot2)
+library(knitr)
+```
+
+Statisticians (and other users of data) need to simulate data for many reasons.
+
+For example, I simulate as a way to check whether a model is appropriate. If the observed data are similar to the data I generated, then this is one way to show my model may be a good one.
+
+It is also sometimes useful to simulate data from a distribution when I need to estimate an expected value (approximate an integral).
+
+`R` can already generate data from many (named) distributions:
+
+```{r}
+set.seed(400) #reproducibility
+
+rnorm(10) # 10 observations of a N(0,1) r.v.
+rnorm(10, 0, 5) # 10 observations of a N(0,5^2) r.v.
+rexp(10) # 10 observations from an Exp(1) r.v.
+```
+
+**But what about when we don't have a function to do it?**
+
+# Inverse Transform Method
+
+```{theorem, name = "Probability Integral Transform"}
+If $X$ is a continuous r.v. with cdf $F_X$, then $U = F_X(X) \sim \text{Uniform}[0, 1]$.
+```
+
+<br/><br/>
+
+This leads to to the following method for simulating data.
+
+<br/><br/><br/>
+
+**Inverse Transform Method**:
+
+First, generate $u$ from Uniform$[0,1]$. Then, $x = F_X^{-1}(u)$ is a realization from $F_X$.
+
+<br/>
+**Note:**
+<br/><br/><br/>
+
+## Algorithm
+
+1. Derive the inverse function $F_X^{-1}$. <br/><br/>
+
+2. Write a function to compute $x = F_X^{-1}(u)$. <br/><br/>
+
+3. For each realization, 
+    
+    a. <br/><br/>
+    
+    b. <br/><br/>
+
+[ ]{.pagebreak}
+    
+```{example}
+Simulate a random sample of size $1000$ from the pdf $f_X(x) = 3x^2, 0 \le x \le 1$. 
+```
+
+1. <br/><br/><br/><br/><br/>
+2. <br/><br/><br/><br/><br/>
+3. 
+
+    ```{r}
+    # write code for inverse transform example
+    # f_X(x) = 3x^2, 0 <= x \<= 1
+    ```
+
+<br/><br/>
+
+```{example}
+Generate 1000 samples from the following discrete distribution.
+```
+
+```{r}
+x <- 1:3
+p <- c(0.1, 0.2, 0.7)
+```
+
+```{r, echo = FALSE}
+kable(t(data.frame(x = x, f = p)))
+```
+
+```{r}
+# write code to sample from discrete dsn
+n <- 1000
+```
+
+# Acceptance-Reject Method
+
+The goal is to generate realizations from a *target density*, $f$.
+
+Most cdfs cannot be inverted in closed form.
+
+The Acceptance-Reject (or "Accept-Reject") samples from a distribution that is *similar* to $f$ and then adjusts by only accepting a certain proportion of those samples.
+
+<br/><br/>
+
+The method is outlined below:
+
+Let $g$ denote another density from which we **know how to sample** and we can **easily calculate $g(x)$**.
+
+Let $e(\cdot)$ denote an *envelope*, having the property $e(x) = c g(x) \ge f(x)$ for all $x \in \mathcal{X} = \{x:f(x) > 0\}$ for a given constant $c \ge 1$.
+
+The Accept-Reject method then follows by sampling $Y \sim g$ and $U \sim \text{Unif}(0,1)$. 
+
+If $U < f(Y)/e(Y)$, accept $Y$. Set $X = Y$ and consider $X$ to be an element of the target random sample.
+
+**Note:** $1/c$ is the expected proportion of candidates that are accepted.
+
+<br/><br/>
+
+## Algorithm
+
+1. Find a suitable density $g$ and envelope $e$.
+
+2. Sample $Y \sim g$.
+
+3. Sample $U \sim \text{Unif}(0, 1)$.
+
+4. If $U < f(Y)/e(Y)$, accept $Y$.
+
+5. Repeat from Step 2 until you have generated your desired sample size.
+
+[ ]{.pagebreak}
+
+```{r echo = FALSE}
+x <- seq(-5, 10, length.out = 100)
+f <- .5*dnorm(x, 0, 1) + .25*dnorm(x, 3, 2) + .1*dnorm(x, -3, .5) + .15*dnorm(3, .25)
+e <- dnorm(x, -5, 10)*7
+
+ggplot() +
+  geom_line(aes(x, f)) +
+  geom_ribbon(aes(x, ymin = f, ymax = e)) +
+  geom_segment(aes(x = x[41], xend = x[41], y = 0, yend = f[41]), colour = "blue") +
+  geom_segment(aes(x = x[41], xend = x[41], y = f[41], yend = e[41]), colour = "red")
+
+```
+
+<br/><br/><br/>
+
+## Envelopes
+
+Good envelopes have the following properties:
+
+<br/><br/><br/><br/><br/><br/>
+
+A simple approach to finding the envelope:
+
+<br/><br/><br/><br/><br/><br/>
+
+[ ]{.pagebreak}
+
+
+```{example}
+We want to generate a random variable with pdf $f(x) = 60x^3(1-x^2)$, $0 \le x \le 1$. This is a Beta$(4, 3)$ distribution.
+```
+
+Can we invert $F(x)$ analytically?
+
+<br/>
+
+If not, find the maximum of $f(x)$.
+
+<br/><br/><br/><br/><br/><br/><br/><br/>
+
+```{r, fig.height=3}
+# pdf function, could use dbeta() instead
+f <- function(x) {
+    60*x^3*(1-x)^2
+}
+
+# plot pdf
+x <- seq(0, 1, length.out = 100)
+ggplot() +
+  geom_line(aes(x, f(x)))
+```
+
+```{r, eval = FALSE}
+envelope <- function(x) {
+  ## create the envelope function
+}
+
+# Accept reject algorithm
+n <- 1000 # number of samples wanted
+accepted <- 0 # number of accepted samples
+samples <- rep(NA, n) # store the samples here
+
+while(accepted < n) {
+  # sample y from g
+  
+  # sample u from uniform(0,1)
+  u <- runif(1)
+  
+  if(u < f(y)/envelope(y)) {
+    # accept
+    accepted <- accepted + 1
+    samples[accepted] <- y
+  }
+}
+```
+
+```{r, echo = FALSE}
+envelope <- function(x) {
+  ## create the envelope function
+    f(3/5)
+}
+
+# Accept reject algorithm
+n <- 1000 # number of samples wanted
+accepted <- 0 # number of accepted samples
+sample <- rep(NA, n) # store the samples here
+
+while(accepted < n) {
+  # sample y from g
+  y <- runif(1)
+  
+  # sample u from uniform(0,1)
+  u <- runif(1)
+  
+  if(u < f(y)/envelope(y)) {
+    # accept
+    accepted <- accepted + 1
+    sample[accepted] <- y
+  }
+}
+```
+
+```{r}
+ggplot() +
+  geom_histogram(aes(sample, y = ..density..), bins = 50, ) +
+  geom_line(aes(x, f(x)), colour = "red") +
+  xlab("x") + ylab("f(x)")
+```
+
+## Why does this work?
+
+Recall that we require
+$$
+cg(y) \ge f(y) \qquad \forall y \in \{y: f(y) > 0\}.
+$$
+Thus,
+
+<br/><br/><br/><br/><br/>
+
+The larger the ratio $\frac{f(y)}{cg(y)}$, the more the random variable $Y$ looks like a random variable distributed with pdf $f_X$ and the more likely $Y$ is to be accepted.
+
+## Additional Resources
+
+See p.g. 69-70 of Rizzo for a proof of the validity of the method.
+
+
+# Transformation Methods
+
+We have already used one transformation method -- **Probability Inverse Transforms** -- but there are many other transformations we can apply to random variables.
+
+1. If $Z \sim N(0, 1)$, then $V = Z^2 \sim$
+
+2. If $U \sim \chi^2_{m}$ and $V \sim \chi^2_{n}$ are independent, then $F = \frac{U/m}{V/n} \sim$
+
+3. If $Z \sim N(0, 1)$ and $V \sim \chi^2_{n}$ are independendent, then $T = \frac{Z}{\sqrt{V/n}}\sim$
+
+4. If $U \sim \text{Gamma}(r, \lambda)$ and $V \sim \text{Gamma}(s, \lambda)$ are independent, then $X = \frac{U}{U + V}\sim$
+
+<br/>
+
+```{definition}
+A *transformation* is any function of one or more random variables.
+```
+
+Sometimes we want to transform random variables if observed data don't fit a model that might otherwise be appropriate. Sometimes we want to perform inference about a new statistic.
+
+```{example}
+If $X_1, \dots, X_n \stackrel{iid}{\sim} \text{Bernoulli}(p)$. What is the distribution of $\sum_{i = 1}^n X_i$?
+```
+
+<br/><br/>
+
+```{example}
+If $X\sim N(0,1)$, what is the distribution of $X + 5$?
+```
+
+<br/><br/>
+
+```{example}
+For $X_1, \dots, X_n$ iid random variables, what is the distribution of the median of $X_1, \dots, X_n$? What is the distribution of the order statistics? $X_{[i]}$?
+```
+
+<br/><br/>
+
+There are many approaches to deriving the pdf of a transformed variable.
+
+
+<br/><br/>
+
+
+But the theory isn't always available. What can we do?
+
+## Algorithm
+
+Let $X_1, \dots, X_p$ be a set of independent random variables with pdfs $f_{X_1}, \dots, f_{X_p}$, respectively, and let $g(X_1, \dots, X_p)$ be some transformation we are interested in simulating from.
+
+1. Simulate $X_1 \sim f_{X_1}, \dots, X_p \sim f_{X_p}$.
+
+2. Compute $G = g(X_1, \dots, X_p)$. This is one draw from $g(X_1, \dots, X_p)$.
+
+3. Repeat Steps 1-2 many times to simulate from the target distribution.
+
+<br/><br/>
+
+```{example}
+It is possible to show for $X_1, \dots, X_p \stackrel{iid}{\sim} N(0,1)$, $Z = \sum_{i = 1}^p X_i^2 \sim \chi^2_p$. Imagine that we cannot use the `rchisq` function. How would you simulate $Z$?
+```
+
+<br/>
+
+```{r, message=FALSE}
+library(tidyverse)
+
+# function for squared r.v.s
+squares <- function(x) x^2
+
+sample_z <- function(n, p) {
+  # store the samples
+  samples <- data.frame(matrix(rnorm(n*p), nrow = n))
+
+  samples %>% 
+    mutate_all("squares") %>% # square the rvs
+    rowSums() # sum over rows
+}
+
+# get samples
+n <- 1000 # number of samples
+
+# apply our function over different degrees of freedom
+samples <- data.frame(chisq_2 = sample_z(n, 2),
+                      chisq_5 = sample_z(n, 5),
+                      chisq_10 = sample_z(n, 10),
+                      chisq_100 = sample_z(n, 100))
+
+# plot results
+samples %>%
+  gather(distribution, sample, everything()) %>% # make easier to plot w/ facets
+  separate(distribution, into = c("dsn_name", "df")) %>% # get the df
+  mutate(df = as.numeric(df)) %>% # make numeric
+  mutate(pdf = dchisq(sample, df)) %>% # add density function values 
+  ggplot() + # plot
+  geom_histogram(aes(sample, y = ..density..)) + # samples
+  geom_line(aes(sample, pdf), colour = "red") + # true pdf
+  facet_wrap(~df, scales = "free")
+```
+
+
+# Mixture Distributions
+
+The `faithful` dataset in `R` contains data on eruptions of Old Faithful (Geyser in Yellowstone National Park).
+
+```{r}
+head(faithful)
+
+faithful %>%
+  gather(variable, value) %>%
+  ggplot() +
+  geom_histogram(aes(value), bins = 50) +
+  facet_wrap(~variable, scales = "free")
+```
+
+What is the shape of these distributions?
+
+<br/><br/>
+
+```{definition}
+A random variable $Y$ is a discrete mixture if the distribution of $Y$ is a weighted sum $F_Y(y) = \sum \theta_i F_{X_i}(y)$ for some sequence of random variables $X_1, X_2, \dots$ and $\theta_i > 0$ such that $\sum \theta_i = 1$.
+```
+
+For $2$ r.v.s,
+
+[ ]{.pagebreak}
+
+```{example}
+
+```
+
+```{r}
+x <- seq(-5, 25, length.out = 100)
+
+mixture <- function(x, means, sd) {
+  # x is the vector of points to evaluate the function at
+  # means is a vector, sd is a single number
+  f <- rep(0, length(x))
+  for(mean in means) { 
+    f <- f + dnorm(x, mean, sd)/length(means) # why do I divide?
+  }
+  f
+}
+
+# look at mixtures of N(mu, 4) for different values of mu
+data.frame(x, 
+           f1 = mixture(x, c(5, 10, 15), 2), 
+           f2 = mixture(x, c(5, 6, 7), 2),
+           f3 = mixture(x, c(5, 10, 20), 2),
+           f4 = mixture(x, c(1, 10, 20), 2)) %>%
+  gather(mixture, value, -x) %>%
+  ggplot() +
+  geom_line(aes(x, value)) +
+  facet_wrap(.~mixture, scales = "free_y")
+```
+
+## Mixtures vs. Sums
+
+Note that mixture distributions are *not* the same as the distribution of a sum of r.v.s.
+
+
+```{example}
+Let $X_1 \sim N(0, 1)$ and $X_2 \sim N(4, 1)$, independent.
+```
+
+$S = \frac{1}{2}(X_1 + X_2)$
+
+<br/><br/><br/><br/><br/><br/><br/><br/>
+
+$Z$ such that $f_Z(z) = 0.5f_{X_1}(z) + 0.5f_{X_2}(z)$.
+
+```{r}
+n <- 1000
+u <- rbinom(n, 1, 0.5)
+
+z <- u*rnorm(n) + (1 - u)*rnorm(n, 4, 1)
+
+ggplot() +
+  geom_histogram(aes(z), bins = 50)
+```
+
+What about $f_Z(z) = 0.7f_{X_1}(z) + 0.3f_{X_2}(z)$?
+
+[ ]{.pagebreak}
+
+## Models for Count Data (refresher) {data-short-title="Count Data"}
+
+Recall that the Poisson$(\lambda)$ distribution is useful for modeling count data.
+
+$$
+f(x) = \frac{\lambda^x \exp\{-\lambda\}}{x!}, \quad x = 0, 1, 2, \dots
+$$
+Where $X =$ number of events occuring in a fixed period of time or space.
+
+When the mean $\lambda$ is low, then the data consists of mostly low values (i.e. $0, 1, 2$, etc.) and less frequently higher values.
+
+As the mean count increases, the skewness goes away and the distribution becomes approximately normal.
+
+With the Poisson distribution, $$E[X] = Var X = \lambda$$.
+
+```{example}
+
+```
+
+<br/><br/><br/><br/>
+
+```{example}
+The Colorado division of Parks and Wildlife has hired you to analyze their data on the number of fish caught in Horsetooth resevoir by visitors. Each visitor was asked
+- How long did you stay?
+- How many fish did you catch?
+- Other questions: How many people in your group, were children in your group, etc.
+
+Some visiters do not fish, but there is not data on if a visitor fished or not. Some visitors who did fish did not catch any fish.
+
+Note, this is modified from https://stats.idre.ucla.edu/r/dae/zip/.
+```
+
+```{r, message=FALSE}
+fish <- read_csv("https://stats.idre.ucla.edu/stat/data/fish.csv")
+```
+
+[ ]{.pagebreak}
+
+```{r}
+# with zeroes
+ggplot(fish) + geom_histogram(aes(count), binwidth = 1)
+
+# without zeroes
+fish %>%
+  filter(count > 0) %>%
+  ggplot() + 
+  geom_histogram(aes(count), binwidth = 1)
+```
+
+[ ]{.pagebreak}
+
+A *zero-inflated* model assumes that the zero observations have two different origins -- structural and sampling zeroes.
+
+```{example}
+
+```
+
+<br/><br/><br/><br/><br/><br/><br/><br/>
+
+A zero-inflated model is a **mixture model** because the distribution is a weighted average of the sampling model (i.e. Poisson) and a point-mass at $0$.
+
+For $Y\sim ZIP(\lambda)$,
+
+$$
+Y \sim \begin{cases}
+0 & \text{with probability } \pi \\
+\text{Poisson}(\lambda) & \text{with probability } 1-\pi
+\end{cases}
+$$
+So that,
+
+$$
+Y_i = \qquad \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad
+$$
+
+To simulate from this distribution,
+
+<br/><br/><br/><br/><br/><br/><br/>
+
+```{r}
+n <- 1000
+lambda <- 5
+pi <- 0.3
+
+u <- rbinom(n, 1, pi)
+zip <- u*0 + (1-u)*rpois(n, lambda)
+
+# zero inflated model
+ggplot() + geom_histogram(aes(zip), binwidth = 1)
+
+# Poisson(5)
+ggplot() + geom_histogram(aes(rpois(n, lambda)), binwidth = 1)
+
+```
