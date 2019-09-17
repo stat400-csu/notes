@@ -84,6 +84,16 @@ Simulate a random sample of size $1000$ from the pdf $f_X(x) = 3x^2, 0 \le x \le
 
 <br/><br/>
 
+## Discrete RVs
+
+If $X$ is a discrete random variable and $\cdots < x_{i-1} < x_i < \cdots$ are the points of discontinuity of $F_X(x)$, then the inverse transform is $F_X^{-1}(u) = x_i$ where $F_X(x_{i-1}) < u \le F_X(x_i)$. This leads to the following algorithm:
+
+1. Generate a r.v. $U$ from Unif$(0,1)$.
+
+2. Select $x_i$ where $F_X(x_{i-1}) < U \le F_X(x_{i})$.
+
+[ ]{.pagebreak}
+
 ```{example}
 Generate 1000 samples from the following discrete distribution.
 ```
@@ -169,7 +179,7 @@ A simple approach to finding the envelope:
 
 
 ```{example}
-We want to generate a random variable with pdf $f(x) = 60x^3(1-x^2)$, $0 \le x \le 1$. This is a Beta$(4, 3)$ distribution.
+We want to generate a random variable with pdf $f(x) = 60x^3(1-x)^2$, $0 \le x \le 1$. This is a Beta$(4, 3)$ distribution.
 ```
 
 Can we invert $F(x)$ analytically?
@@ -259,7 +269,7 @@ Thus,
 
 <br/><br/><br/><br/><br/>
 
-The larger the ratio $\frac{f(y)}{cg(y)}$, the more the random variable $Y$ looks like a random variable distributed with pdf $f_X$ and the more likely $Y$ is to be accepted.
+The larger the ratio $\frac{f(y)}{cg(y)}$, the more the random variable $Y$ looks like a random variable distributed with pdf $f$ and the more likely $Y$ is to be accepted.
 
 ## Additional Resources
 
@@ -268,7 +278,7 @@ See p.g. 69-70 of Rizzo for a proof of the validity of the method.
 
 # Transformation Methods
 
-We have already used one transformation method -- **Probability Inverse Transforms** -- but there are many other transformations we can apply to random variables.
+We have already used one transformation method -- **Inverse transform method** -- but there are many other transformations we can apply to random variables.
 
 1. If $Z \sim N(0, 1)$, then $V = Z^2 \sim$
 
@@ -306,9 +316,7 @@ For $X_1, \dots, X_n$ iid random variables, what is the distribution of the medi
 
 There are many approaches to deriving the pdf of a transformed variable.
 
-
-<br/><br/>
-
+[ ]{.pagebreak}
 
 But the theory isn't always available. What can we do?
 
@@ -464,7 +472,7 @@ When the mean $\lambda$ is low, then the data consists of mostly low values (i.e
 
 As the mean count increases, the skewness goes away and the distribution becomes approximately normal.
 
-With the Poisson distribution, $$E[X] = Var X = \lambda$$.
+With the Poisson distribution, $$E[X] = Var X = \lambda.$$
 
 ```{example}
 
@@ -523,7 +531,7 @@ $$
 So that,
 
 $$
-Y_i = \qquad \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad
+Y = \qquad \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad
 $$
 
 To simulate from this distribution,

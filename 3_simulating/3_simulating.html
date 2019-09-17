@@ -28531,6 +28531,15 @@ break-after: always;
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co"># f_X(x) = 3x^2, 0 &lt;= x \&lt;= 1</span></a></code></pre></div></li>
 </ol>
 <p><br /><br /></p>
+</div>
+<div id="discrete-rvs" class="section level2">
+<h2><span class="header-section-number">1.2</span> Discrete RVs</h2>
+<p>If <span class="math inline">\(X\)</span> is a discrete random variable and <span class="math inline">\(\cdots &lt; x_{i-1} &lt; x_i &lt; \cdots\)</span> are the points of discontinuity of <span class="math inline">\(F_X(x)\)</span>, then the inverse transform is <span class="math inline">\(F_X^{-1}(u) = x_i\)</span> where <span class="math inline">\(F_X(x_{i-1}) &lt; u \le F_X(x_i)\)</span>. This leads to the following algorithm:</p>
+<ol style="list-style-type: decimal">
+<li><p>Generate a r.v. <span class="math inline">\(U\)</span> from Unif<span class="math inline">\((0,1)\)</span>.</p></li>
+<li><p>Select <span class="math inline">\(x_i\)</span> where <span class="math inline">\(F_X(x_{i-1}) &lt; U \le F_X(x_{i})\)</span>.</p></li>
+</ol>
+<p><span class="pagebreak"></span></p>
 
 <div class="example">
 <span id="exm:unnamed-chunk-7" class="example"><strong>Example 1.2  </strong></span>Generate 1000 samples from the following discrete distribution.
@@ -28593,7 +28602,7 @@ break-after: always;
 <p><span class="pagebreak"></span></p>
 
 <div class="example">
-<span id="exm:unnamed-chunk-12" class="example"><strong>Example 2.1  </strong></span>We want to generate a random variable with pdf <span class="math inline">\(f(x) = 60x^3(1-x^2)\)</span>, <span class="math inline">\(0 \le x \le 1\)</span>. This is a Beta<span class="math inline">\((4, 3)\)</span> distribution.
+<span id="exm:unnamed-chunk-12" class="example"><strong>Example 2.1  </strong></span>We want to generate a random variable with pdf <span class="math inline">\(f(x) = 60x^3(1-x)^2\)</span>, <span class="math inline">\(0 \le x \le 1\)</span>. This is a Beta<span class="math inline">\((4, 3)\)</span> distribution.
 </div>
 
 <p>Can we invert <span class="math inline">\(F(x)\)</span> analytically?</p>
@@ -28645,7 +28654,7 @@ cg(y) \ge f(y) \qquad \forall y \in \{y: f(y) &gt; 0\}.
 \]</span>
 Thus,</p>
 <p><br /><br /><br /><br /><br /></p>
-<p>The larger the ratio <span class="math inline">\(\frac{f(y)}{cg(y)}\)</span>, the more the random variable <span class="math inline">\(Y\)</span> looks like a random variable distributed with pdf <span class="math inline">\(f_X\)</span> and the more likely <span class="math inline">\(Y\)</span> is to be accepted.</p>
+<p>The larger the ratio <span class="math inline">\(\frac{f(y)}{cg(y)}\)</span>, the more the random variable <span class="math inline">\(Y\)</span> looks like a random variable distributed with pdf <span class="math inline">\(f\)</span> and the more likely <span class="math inline">\(Y\)</span> is to be accepted.</p>
 </div>
 <div id="additional-resources" class="section level2">
 <h2><span class="header-section-number">2.4</span> Additional Resources</h2>
@@ -28654,7 +28663,7 @@ Thus,</p>
 </div>
 <div id="transformation-methods" class="section level1">
 <h1><span class="header-section-number">3</span> Transformation Methods</h1>
-<p>We have already used one transformation method – <strong>Probability Inverse Transforms</strong> – but there are many other transformations we can apply to random variables.</p>
+<p>We have already used one transformation method – <strong>Inverse transform method</strong> – but there are many other transformations we can apply to random variables.</p>
 <ol style="list-style-type: decimal">
 <li><p>If <span class="math inline">\(Z \sim N(0, 1)\)</span>, then <span class="math inline">\(V = Z^2 \sim\)</span></p></li>
 <li><p>If <span class="math inline">\(U \sim \chi^2_{m}\)</span> and <span class="math inline">\(V \sim \chi^2_{n}\)</span> are independent, then <span class="math inline">\(F = \frac{U/m}{V/n} \sim\)</span></p></li>
@@ -28687,7 +28696,7 @@ Thus,</p>
 
 <p><br /><br /></p>
 <p>There are many approaches to deriving the pdf of a transformed variable.</p>
-<p><br /><br /></p>
+<p><span class="pagebreak"></span></p>
 <p>But the theory isn’t always available. What can we do?</p>
 <div id="algorithm-2" class="section level2">
 <h2><span class="header-section-number">3.1</span> Algorithm</h2>
@@ -28825,7 +28834,7 @@ f(x) = \frac{\lambda^x \exp\{-\lambda\}}{x!}, \quad x = 0, 1, 2, \dots
 Where <span class="math inline">\(X =\)</span> number of events occuring in a fixed period of time or space.</p>
 <p>When the mean <span class="math inline">\(\lambda\)</span> is low, then the data consists of mostly low values (i.e. <span class="math inline">\(0, 1, 2\)</span>, etc.) and less frequently higher values.</p>
 <p>As the mean count increases, the skewness goes away and the distribution becomes approximately normal.</p>
-<p>With the Poisson distribution, <span class="math display">\[E[X] = Var X = \lambda\]</span>.</p>
+<p>With the Poisson distribution, <span class="math display">\[E[X] = Var X = \lambda.\]</span></p>
 
 <div class="example">
 <span id="exm:unnamed-chunk-29" class="example"><strong>Example 4.3  </strong></span>
@@ -28871,7 +28880,7 @@ Y \sim \begin{cases}
 \]</span>
 So that,</p>
 <p><span class="math display">\[
-Y_i = \qquad \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad
+Y = \qquad \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad
 \]</span></p>
 <p>To simulate from this distribution,</p>
 <p><br /><br /><br /><br /><br /><br /><br /></p>
