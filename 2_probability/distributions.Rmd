@@ -1,0 +1,35 @@
+---
+output: pdf_document
+header-includes:
+   - \usepackage{float}
+---
+
+# Continuous Distributions
+
+\begin{table}[H]
+\begin{tabular}{l l l l l}
+\hline
+Distribution & pdf & Mean & Variance & \texttt{R} function \\
+\hline
+Beta$(\alpha, \beta)$ & $\frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha - 1}(1 - x)^{\beta - 1}; x \in [0, 1]; \alpha > 0, \beta > 0$ & $\frac{\alpha}{\alpha + \beta}$ & $\frac{\alpha\beta}{(\alpha + \beta)^2(\alpha + \beta + 1)}$ & \texttt{rbeta}\\[10pt]
+Gamma$(\alpha, \beta)$ & $\frac{\beta^\alpha}{\Gamma(\alpha)}x^{\alpha - 1}e^{-\beta x}; x > 0; \alpha > 0; \beta > 0$& $\frac{\alpha}{\beta}$& $\frac{\alpha}{\beta^2}$& \texttt{rgamma}\\[10pt]
+Exponential$(\lambda)$ & $\lambda e^{-\lambda x}; x \ge 0; \lambda > 0$& $\frac{1}{\lambda}$ & $\frac{1}{\lambda^2}$ & \texttt{rexp}\\[10pt]
+Normal$(\mu, \sigma^2)$ & $\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x - \mu)^2}{2\sigma^2}}; x \in \mathbb{R}; \mu \in \mathbb{R}; \sigma^2 > 0$& $\mu$& $\sigma^2$& \texttt{rnorm}\\[10pt]
+Uniform$(a, b)$ & $\frac{1}{b - a}; x \in [a, b]; -\infty < a < b < \infty$& $\frac{1}{2}(a + b)$& $\frac{1}{12}(b - a)^2$& \texttt{runif}\\[10pt]
+\end{tabular}
+\end{table}
+
+# Discrete Distributions
+
+\begin{table}[H]
+\begin{tabular}{l l l l l}
+\hline
+Distribution & pmf & Mean & Variance & \texttt{R} function \\
+\hline
+Bernoulli$(p)$ & $p^x(1-p)^{1-x}; x \in \{0,1\}; p \in [0,1]$& $p$& $p(1-p)$& \texttt{rbinom(size = 1)}\\[10pt]
+Binomial$(n, p)$ & ${n\choose x} p^x(1-p)^{n - x}; x \in \{0, 1, \dots, n\}; p \in [0, 1]$& $np$& $np(1-p$& \texttt{rbinom}\\[10pt]
+Discrete Uniform$(N)$ & $\frac{1}{N}; x \in \{1, \dots, N\}; N \in \mathbb{N} $& $\frac{N + 1}{2}$ & $\frac{N^2 - 1}{12}$ & \texttt{sample}\\[10pt]
+Geometric$(p)$ & $(1 - p)^{x-1}p; x \in \{1, 2, 3, \dots\}; p \in [0,1]$& $\frac{1}{p}$& $\frac{1-p}{p^2}$& \texttt{rgeom}\\[10pt]
+Poisson$(\lambda)$ & $\frac{\lambda^{x}e^{-\lambda}}{x!}; x \in \{0, 1, 2, \dots\}; \lambda > 0$ & $\lambda$& $\lambda$& \texttt{rpois}\\[10pt]
+\end{tabular}
+\end{table}
