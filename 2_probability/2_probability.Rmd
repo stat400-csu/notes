@@ -12,8 +12,10 @@ output:
 knitr::opts_chunk$set(fig.height = 3)
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, message = FALSE}
 library(ggplot2)
+library(dplyr)
+library(tidyr)
 set.seed(100)
 ```
 
@@ -495,7 +497,315 @@ pnorm(x)
 qnorm(y)
 ```
 
+# Limit Theorems
 
+**Motivation**
+
+For some new statistics, we may want to derive features of the distribution of the statistic.
+
+When we can't do this analytically, we need to use statistical computing methods to *approximate* them.
+
+We will return to some basic theory to motivate and evaluate the computational methods to follow.
+
+## Laws of Large Numbers
+
+*Limit theorems* describe the behavior of sequences of random variables as the sample size increases ($n \rightarrow \infty$).
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+Often we describe these limits in terms of how close the sequence is to the truth.
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+We can evaluate this distance in several ways.
+
+Some modes of convergence --
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+Laws of large numbers --
+
+[ ]{.pagebreak}
+
+## Central Limit Theorem
+
+```{theorem, name = "Central Limit Theorem (CLT)"}
+Let $X_1, \dots, X_n$ be a random sample from a distribution with mean $\mu$ and finite variance $\sigma^2 > 0$, then the limiting distribution of $Z_n = \frac{\overline{X}_n - \mu}{\sigma/\sqrt{n}}$ is $N(0, 1)$.
+```
+
+Interpretation:
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+Note that the CLT doesn't require the population distribution to be Normal.
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+# Estimates and Estimators
+
+Let $X_1, \dots, X_n$ be a random sample from a population.
+
+Let $T_n = T(X_1, \dots, X_n)$ be a function of the sample.
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+*Statistics* estimate *parameters*.
+
+```{example}
+
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+```{definition}
+An *estimator* is a rule for calculating an estimate of a given quantity.
+```
+
+```{definition}
+An *estimate* is the result of applying an estimator to observed data samples in order to estimate a given quantity.
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+We need to be careful not to confuse the above ideas:
+
+$\overline{X}_n$
+
+
+$\overline{x}_n$
+
+
+$\mu$
+
+<br/>
+
+We can make any number of estimators to estimate a given quantity. How do we know the "best" one?
+
+# Evaluating Estimators
+
+There are many ways we can describe how good or bad (evaluate) an estimator is.
+
+## Bias
+
+```{definition}
+Let $X_1, \dots, X_n$ be a random sample from a population, $\theta$ a parameter of interest, and $\hat{\theta}_n = $T(X_1, \dots, X_n)$ an estimator. Then the *bias* of $\hat{\theta}_n$ is defined as
+$$
+bias(\hat{\theta}_n) = E[\hat{\theta}_n] - \theta.
+$$  
+```
+
+```{definition}
+An *unbiased estimator* is defined to be an estimator  $\hat{\theta}_n = $T(X_1, \dots, X_n)$ where
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+```{example}
+
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+```{example}
+
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+```{example}
+
+```
+
+[ ]{.pagebreak}
+
+## Mean Squared Error (MSE)
+
+```{definition}
+The *mean squared error (MSE)* of an estimator $\hat{\theta}_n$ for parameter $\theta$ is defined as
+\begin{align*}
+MSE(\hat{\theta}_n) &= E\left[(\theta - \hat{\theta}_n)^2\right] \\
+&= Var(\hat{\theta}_n) + \left(bias(\hat{\theta}_n)\right)^2.
+\end{align*}
+```
+
+Generally, we want estimators with
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+Sometimes an unbiased estimator $\hat{\theta}_n$ can have a larger variance than a biased estimator $\tilde{\theta}_n$.
+
+```{example}
+Let's compare two estimators of $\sigma^2$.
+$$
+s^2 = \frac{1}{n-1}\sum(X_i - \overline{X}_n)^2 \qquad \hat{\sigma}^2 = \frac{1}{n}\sum(X_i - \overline{X}_n)^2
+$$
+```
+
+
+[ ]{.pagebreak}
+
+## Standard Error
+
+```{definition}
+The *standard error* of an estimator $\hat{\theta}_n$ of $\theta$ is defined as
+$$
+se(\hat{\theta}_n) = \sqrt{Var(\hat{\theta}_n)}.  
+$$
+```
+
+
+We seek estimators with small $se(\hat{\theta}_n)$.
+
+```{example}
+
+```
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+# Comparing Estimators
+
+We typically compare statistical estimators based on the following basic properties:
+
+1. <br/><br/><br/>
+1. <br/><br/><br/>
+1. <br/><br/><br/>
+1. <br/><br/><br/>
+
+```{r, fig.height=5, echo = FALSE}
+# https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2
+circle <- function(center = c(0,0), diameter = 1, npoints = 100){
+    r = diameter / 2
+    tt <- seq(0,2*pi,length.out = npoints)
+    xx <- center[1] + r * cos(tt)
+    yy <- center[2] + r * sin(tt)
+    return(data.frame(x = xx, y = yy))
+}
+
+dat1 <- circle()
+dat2 <- circle(diameter = 2)
+dat3 <- circle(diameter = 3)
+
+ggplot() + 
+  geom_path(aes(x, y), data = dat1) +
+  geom_path(aes(x, y), data = dat2) + 
+  geom_path(aes(x, y), data = dat3) +
+  theme(aspect.ratio = 1) +
+  xlab("") + ylab("") -> p1
+
+gridExtra::grid.arrange(p1 + ggtitle("Unbiased and Inefficient"), 
+                        p1 + ggtitle("Biased and Inefficient"), 
+                        p1 + ggtitle("Biased and Efficient"), 
+                        p1 + ggtitle("Unbiased and Efficient"), nrow = 2)
+
+
+```
+
+```{example}
+Let us consider the efficiency of estimates of the center of a distribution. A **measure of central tendency** estimates the central or typical value for a probability distribution.
+
+Mean and median are two measures of central tendency. They are both **unbiased**, which is more efficient?
+```
+
+```{r, fig.show = "hold", fig.width=3.2}
+set.seed(400)
+
+times <- 10000 # number of times to make a sample
+n <- 100 # size of the sample
+uniform_results <- data.frame(mean = numeric(times), median = numeric(times))
+normal_results <- data.frame(mean = numeric(times), median = numeric(times))
+
+for(i in 1:times) {
+  x <- runif(n)
+  y <- rnorm(n)
+  uniform_results[i, "mean"] <- mean(x)
+  uniform_results[i, "median"] <- median(x)
+  normal_results[i, "mean"] <- mean(y)
+  normal_results[i, "median"] <- median(y)
+}
+
+uniform_results %>%
+  gather(statistic, value, everything()) %>%
+  ggplot() +
+  geom_density(aes(value, lty = statistic)) +
+  ggtitle("Unif(0, 1)") +
+  theme(legend.position = "bottom")
+
+normal_results %>%
+  gather(statistic, value, everything()) %>%
+  ggplot() +
+  geom_density(aes(value, lty = statistic)) +
+  ggtitle("Normal(0, 1)") +
+  theme(legend.position = "bottom")
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+
+
+**Next Up** In Ch. 5, we'll look at a method that produces *unbiased* estimators of $E(g(X))$!
 
 
 
