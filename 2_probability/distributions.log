@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.5.8)  16 SEP 2019 21:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.5.8)  23 SEP 2019 15:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -652,7 +652,7 @@ Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                 on input line 112.
 
 
-Overfull \hbox (15.32632pt too wide) in paragraph at lines 107--117
+Overfull \hbox (18.58574pt too wide) in paragraph at lines 107--117
 [][] 
  []
 
@@ -692,7 +692,7 @@ ic/lm/lmr7.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmsy10
 local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/local/texli
 ve/2019/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2019/te
 xmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on distributions.pdf (1 page, 147706 bytes).
+Output written on distributions.pdf (1 page, 147704 bytes).
 PDF statistics:
  83 PDF objects out of 1000 (max. 8388607)
  66 compressed objects within 1 object stream

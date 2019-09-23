@@ -27,7 +27,7 @@ Uniform$(a, b)$ & $\frac{1}{b - a}; x \in [a, b]; -\infty < a < b < \infty$& $\f
 Distribution & pmf & Mean & Variance & \texttt{R} function \\
 \hline
 Bernoulli$(p)$ & $p^x(1-p)^{1-x}; x \in \{0,1\}; p \in [0,1]$& $p$& $p(1-p)$& \texttt{rbinom(size = 1)}\\[10pt]
-Binomial$(n, p)$ & ${n\choose x} p^x(1-p)^{n - x}; x \in \{0, 1, \dots, n\}; p \in [0, 1]$& $np$& $np(1-p$& \texttt{rbinom}\\[10pt]
+Binomial$(n, p)$ & ${n\choose x} p^x(1-p)^{n - x}; x \in \{0, 1, \dots, n\}; p \in [0, 1]$& $np$& $np(1-p)$& \texttt{rbinom}\\[10pt]
 Discrete Uniform$(N)$ & $\frac{1}{N}; x \in \{1, \dots, N\}; N \in \mathbb{N} $& $\frac{N + 1}{2}$ & $\frac{N^2 - 1}{12}$ & \texttt{sample}\\[10pt]
 Geometric$(p)$ & $(1 - p)^{x-1}p; x \in \{1, 2, 3, \dots\}; p \in [0,1]$& $\frac{1}{p}$& $\frac{1-p}{p^2}$& \texttt{rgeom}\\[10pt]
 Poisson$(\lambda)$ & $\frac{\lambda^{x}e^{-\lambda}}{x!}; x \in \{0, 1, 2, \dots\}; \lambda > 0$ & $\lambda$& $\lambda$& \texttt{rpois}\\[10pt]

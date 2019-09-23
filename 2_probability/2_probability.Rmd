@@ -613,14 +613,14 @@ There are many ways we can describe how good or bad (evaluate) an estimator is.
 ## Bias
 
 ```{definition}
-Let $X_1, \dots, X_n$ be a random sample from a population, $\theta$ a parameter of interest, and $\hat{\theta}_n = $T(X_1, \dots, X_n)$ an estimator. Then the *bias* of $\hat{\theta}_n$ is defined as
+Let $X_1, \dots, X_n$ be a random sample from a population, $\theta$ a parameter of interest, and $\hat{\theta}_n = T(X_1, \dots, X_n)$ an estimator. Then the *bias* of $\hat{\theta}_n$ is defined as
 $$
 bias(\hat{\theta}_n) = E[\hat{\theta}_n] - \theta.
 $$  
 ```
 
 ```{definition}
-An *unbiased estimator* is defined to be an estimator  $\hat{\theta}_n = $T(X_1, \dots, X_n)$ where
+An *unbiased estimator* is defined to be an estimator  $\hat{\theta}_n = T(X_1, \dots, X_n)$ where
 ```
 
 <br/>
