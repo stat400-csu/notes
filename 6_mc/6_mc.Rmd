@@ -1,0 +1,279 @@
+---
+title: "Chapter 6: Monte Carlo Integration"
+output:
+  pagedown::html_paged:
+    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
+    css: ["../style/my-style-page.css", "default-fonts", "default-page", "default"]
+    self_contained: true
+    number_sections: true
+---
+
+```{r echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(fig.height = 3)
+```
+
+```{r, echo = FALSE, message = FALSE}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+set.seed(100)
+```
+
+Monte Carlo integration is a statistical method based on random sampling in order to approximate integrals. This section could alternatively be titled, 
+
+> "Integrals are hard, how can we avoid doing them?"
+
+![https://xkcd.com/2117/](https://imgs.xkcd.com/comics/differentiation_and_integration.png)
+
+# A Tale of Two Approaches
+
+Consider a one-dimensional integral.
+
+<br/><br/><br/>
+
+The value of the integral can be derived analytically only for a few functions, $f$. For the rest, numerical approximations are often useful.
+
+**Why is integration important to statistics?**
+
+<br/><br/><br/>
+
+## Numerical Integration
+
+**Idea:** Approximate $\int_a^bf(x) dx$ via the sum of many polygons under the curve $f(x)$.
+
+To do this, we could partition the interval $[a, b]$ into $m$ subintervals $[x_i, x_{i+1}]$ for $i = 0, \dots, m - 1$ with $x_0 = a$ and $x_m = b$.
+
+Within each interval, insert $k + 1$ nodes, so for $[x_i, x_{i+1}]$ let $x^*_{ij}$ for $j = 0, \dots, k$, then
+$$
+\int\limits_a^b f(x)dx  = \sum\limits_{i = 0}^{m - 1}\int\limits_{x_i}^{x_{i + 1}} f(x) dx \approx \sum\limits_{i = 0}^{m - 1}\sum\limits_{j = 0}^{k}A_{ij}f(x_{ij}^*)
+$$
+for some set of constants, $A_{ij}$.
+
+```{r, echo = FALSE, fig.height=2}
+x <- seq(-3, 3, length.out = 1000)
+fn <- function(x) {
+  dnorm(x)
+}
+
+ggplot() +
+  geom_line(aes(x, fn(x)))
+```
+
+## Monte Carlo Integration
+
+How do we compute the mean of a distribution?
+
+```{example}
+Let $X \sim Unif(0,1)$ and $Y \sim Unif(10, 20)$.
+```
+
+```{r, fig.show="hold", out.width="50%",}
+x <- seq(0, 1, length.out = 1000)
+f <- function(x, a, b) 1/(b - a)
+ggplot() + 
+  geom_line(aes(x, f(x, 0, 1))) +
+  ylim(c(0, 1.5)) +
+  ggtitle("Uniform(0, 1)")
+
+y <- seq(10, 20, length.out = 1000)
+ggplot() + 
+  geom_line(aes(y, f(y, 10, 20))) +
+  ylim(c(0, 1.5)) +
+  ggtitle("Uniform(10, 20)")
+
+```
+
+Theory
+
+<br/><br/><br/><br/><br/><br/>
+
+
+[ ]{.pagebreak}
+
+
+### Notation
+
+$\theta$
+
+<br/>
+
+$\hat{\theta}$
+
+<br/>
+
+Distribution of $\hat{\theta}$
+
+<br/>
+
+$E[\hat{\theta}]$
+
+<br/>
+
+$Var(\hat{\theta})$
+
+<br/>
+
+$\hat{E}[{\hat{\theta}}]$
+
+<br/>
+
+$\hat{Var}({\hat{\theta}})$
+
+<br/>
+
+$se(\hat{\theta})$
+
+<br/>
+
+$\hat{se}(\hat{\theta})$
+
+<br/>
+
+### Monte Carlo Simulation
+
+What is Monte Carlo simulation?
+
+<br/><br/><br/><br/><br/><br/>
+
+
+### Monte Carlo Integration
+
+To approximate $\theta = \int x f(x) dx$, we can obtain an iid random sample $X_1, \dots, X_n$ from $f$ and then approximate $\theta$ via the sample average
+
+<br/><br/><br/><br/>
+
+```{example}
+Again, let $X \sim Unif(0,1)$ and $Y \sim Unif(10, 20)$. To estimate $E[X]$ and $E[Y]$ using a 
+Monte Carlo approach,
+```
+
+
+<br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/>
+
+
+Now consider $E[g(X)]$.
+
+$$
+\theta = E[g(X)] = \int\limits_{-\infty}^{\infty}g(x)f(x) dx.
+$$
+
+The Monte Carlo approximation of $\theta$ could then be obtained by
+
+1. <br/><br/><br/><br/>
+
+2. <br/><br/><br/><br/>
+
+```{definition}
+*Monte Carlo integration* is the statistical estimation of the value of an integral using evaluations of an integrand at a set of points drawn randomly from a distirbution with support over the range of integration.
+```
+
+<br/>
+
+```{example}
+
+```
+
+<br/><br/><br/><br/><br/><br/>
+
+Why the mean?
+
+Let $E[g(X)] = \theta$, then
+
+<br/><br/><br/><br/>
+
+and, by the strong law of large numbers,
+
+<br/><br/><br/><br/>
+
+```{example}
+Let $v(x) = (g(x) - \theta)^2$, where $\theta = E[g(X)]$, and assume $g(X)^2$ has finite expectation under $f$. Then 
+$$
+  Var(g(X)) = E[(g(X) - \theta)^2] = E[v(x)].
+$$
+We can estimate this using a Monte Carlo approach.  
+```
+
+[ ]{.pagebreak}
+
+Monte Carlo integration provides slow convergence, i.e. even though by the SLLN we know we have convergence, it may take us a while to get there.
+
+But, Monte Carlo integration is a **very** powerful tool. While numerical integration methods are difficult to extend to multiple dimensions and work best ith a smooth integrand, Monte Carlo does not suffer these weaknesses.
+
+- <br/>
+
+- <br/>
+
+### Algorithm
+
+The approach to finding a Monte Carlo estimator for $\int g(x)f(x) dx$ is as follows.
+
+1. <br/><br/>
+
+2. <br/><br/>
+
+3. <br/><br/>
+
+4. <br/><br/>
+
+```{example}
+Estimate $\theta = \int_0^1 g(x) dx$.
+```
+
+[ ]{.pagebreak}
+
+```{example}
+Estimate $\theta = \int_a^b g(x) dx$.
+```
+
+<br/><br/><br/><br/><br/><br/>
+
+Another approach:
+
+[ ]{.pagebreak}
+
+```{example}
+Monte Carlo integration for the standard Normal cdf ($N(0, 1)$). Let $X \sim N(0, 1)$, then the pdf of $X$ is
+$$\phi(x) = f(x) = \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{x^2}{2}\right), \qquad -\infty < x < \infty$$
+and the cdf of $X$ is
+$$\Phi(x) = F(x) = \int\limits_{\infty}^x \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{t^2}{2}\right)dt.$$  
+We will look at 3 methods to estimate $\Phi(x)$ for $x > 0$.  
+```
+
+[ ]{.pagebreak}
+
+[ ]{.pagebreak}
+
+### Inference for MC Estimators
+
+The Central Limit Theorem implies
+
+<br/><br/><br/><br/>
+
+So, we can construct confidence intervals for our estimates 
+
+1. <br/><br/>
+
+2. <br/><br/>
+
+But we need to estimate $Var(\hat{\theta})$.
+
+[ ]{.pagebreak}
+
+So, if $m \uparrow$ then $Var(\hat{\theta}) \downarrow$. How much does changing $m$ matter?
+
+```{example}
+If the current $se(\hat{\theta}) = 0.01$ based on $m$ samples, how many more samples do we need to get $se(\hat{\theta}) = 0.0001$?
+```
+
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/>
+
+Is there a better way to decrease the variance? **Yes!**
+
+
+# Importance Sampling
+
+
