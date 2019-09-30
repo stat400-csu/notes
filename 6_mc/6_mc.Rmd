@@ -138,7 +138,7 @@ What is Monte Carlo simulation?
 
 ### Monte Carlo Integration
 
-To approximate $\theta = \int x f(x) dx$, we can obtain an iid random sample $X_1, \dots, X_n$ from $f$ and then approximate $\theta$ via the sample average
+To approximate $\theta = E[X] = \int x f(x) dx$, we can obtain an iid random sample $X_1, \dots, X_n$ from $f$ and then approximate $\theta$ via the sample average
 
 <br/><br/><br/><br/>
 
@@ -189,16 +189,18 @@ and, by the strong law of large numbers,
 ```{example}
 Let $v(x) = (g(x) - \theta)^2$, where $\theta = E[g(X)]$, and assume $g(X)^2$ has finite expectation under $f$. Then 
 $$
-  Var(g(X)) = E[(g(X) - \theta)^2] = E[v(x)].
+  Var(g(X)) = E[(g(X) - \theta)^2] = E[v(X)].
 $$
 We can estimate this using a Monte Carlo approach.  
 ```
 
 [ ]{.pagebreak}
 
+[ ]{.pagebreak}
+
 Monte Carlo integration provides slow convergence, i.e. even though by the SLLN we know we have convergence, it may take us a while to get there.
 
-But, Monte Carlo integration is a **very** powerful tool. While numerical integration methods are difficult to extend to multiple dimensions and work best ith a smooth integrand, Monte Carlo does not suffer these weaknesses.
+But, Monte Carlo integration is a **very** powerful tool. While numerical integration methods are difficult to extend to multiple dimensions and work best with a smooth integrand, Monte Carlo does not suffer these weaknesses.
 
 - <br/>
 
@@ -217,13 +219,13 @@ The approach to finding a Monte Carlo estimator for $\int g(x)f(x) dx$ is as fol
 4. <br/><br/>
 
 ```{example}
-Estimate $\theta = \int_0^1 g(x) dx$.
+Estimate $\theta = \int_0^1 h(x) dx$.
 ```
 
 [ ]{.pagebreak}
 
 ```{example}
-Estimate $\theta = \int_a^b g(x) dx$.
+Estimate $\theta = \int_a^b h(x) dx$.
 ```
 
 <br/><br/><br/><br/><br/><br/>
@@ -233,7 +235,7 @@ Another approach:
 [ ]{.pagebreak}
 
 ```{example}
-Monte Carlo integration for the standard Normal cdf ($N(0, 1)$). Let $X \sim N(0, 1)$, then the pdf of $X$ is
+Monte Carlo integration for the standard Normal cdf. Let $X \sim N(0, 1)$, then the pdf of $X$ is
 $$\phi(x) = f(x) = \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{x^2}{2}\right), \qquad -\infty < x < \infty$$
 and the cdf of $X$ is
 $$\Phi(x) = F(x) = \int\limits_{\infty}^x \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{t^2}{2}\right)dt.$$  
@@ -250,7 +252,7 @@ The Central Limit Theorem implies
 
 <br/><br/><br/><br/>
 
-So, we can construct confidence intervals for our estimates 
+So, we can construct confidence intervals for our estimator 
 
 1. <br/><br/>
 

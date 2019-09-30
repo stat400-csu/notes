@@ -28554,7 +28554,7 @@ for some set of constants, <span class="math inline">\(A_{ij}\)</span>.</p>
 </div>
 <div id="monte-carlo-integration-1" class="section level3">
 <h3><span class="header-section-number">1.2.3</span> Monte Carlo Integration</h3>
-<p>To approximate <span class="math inline">\(\theta = \int x f(x) dx\)</span>, we can obtain an iid random sample <span class="math inline">\(X_1, \dots, X_n\)</span> from <span class="math inline">\(f\)</span> and then approximate <span class="math inline">\(\theta\)</span> via the sample average</p>
+<p>To approximate <span class="math inline">\(\theta = E[X] = \int x f(x) dx\)</span>, we can obtain an iid random sample <span class="math inline">\(X_1, \dots, X_n\)</span> from <span class="math inline">\(f\)</span> and then approximate <span class="math inline">\(\theta\)</span> via the sample average</p>
 <p><br /><br /><br /><br /></p>
 
 <div class="example">
@@ -28594,14 +28594,15 @@ Monte Carlo approach,
 <div class="example">
 <span id="exm:unnamed-chunk-9" class="example"><strong>Example 1.4  </strong></span>Let <span class="math inline">\(v(x) = (g(x) - \theta)^2\)</span>, where <span class="math inline">\(\theta = E[g(X)]\)</span>, and assume <span class="math inline">\(g(X)^2\)</span> has finite expectation under <span class="math inline">\(f\)</span>. Then
 <span class="math display">\[
-  Var(g(X)) = E[(g(X) - \theta)^2] = E[v(x)].
+  Var(g(X)) = E[(g(X) - \theta)^2] = E[v(X)].
 \]</span>
 We can estimate this using a Monte Carlo approach.
 </div>
 
 <p><span class="pagebreak"></span></p>
+<p><span class="pagebreak"></span></p>
 <p>Monte Carlo integration provides slow convergence, i.e. even though by the SLLN we know we have convergence, it may take us a while to get there.</p>
-<p>But, Monte Carlo integration is a <strong>very</strong> powerful tool. While numerical integration methods are difficult to extend to multiple dimensions and work best ith a smooth integrand, Monte Carlo does not suffer these weaknesses.</p>
+<p>But, Monte Carlo integration is a <strong>very</strong> powerful tool. While numerical integration methods are difficult to extend to multiple dimensions and work best with a smooth integrand, Monte Carlo does not suffer these weaknesses.</p>
 <ul>
 <li><p><br /></p></li>
 <li><p><br /></p></li>
@@ -28618,13 +28619,13 @@ We can estimate this using a Monte Carlo approach.
 </ol>
 
 <div class="example">
-<span id="exm:unnamed-chunk-10" class="example"><strong>Example 1.5  </strong></span>Estimate <span class="math inline">\(\theta = \int_0^1 g(x) dx\)</span>.
+<span id="exm:unnamed-chunk-10" class="example"><strong>Example 1.5  </strong></span>Estimate <span class="math inline">\(\theta = \int_0^1 h(x) dx\)</span>.
 </div>
 
 <p><span class="pagebreak"></span></p>
 
 <div class="example">
-<span id="exm:unnamed-chunk-11" class="example"><strong>Example 1.6  </strong></span>Estimate <span class="math inline">\(\theta = \int_a^b g(x) dx\)</span>.
+<span id="exm:unnamed-chunk-11" class="example"><strong>Example 1.6  </strong></span>Estimate <span class="math inline">\(\theta = \int_a^b h(x) dx\)</span>.
 </div>
 
 <p><br /><br /><br /><br /><br /><br /></p>
@@ -28632,7 +28633,7 @@ We can estimate this using a Monte Carlo approach.
 <p><span class="pagebreak"></span></p>
 
 <div class="example">
-<span id="exm:unnamed-chunk-12" class="example"><strong>Example 1.7  </strong></span>Monte Carlo integration for the standard Normal cdf (<span class="math inline">\(N(0, 1)\)</span>). Let <span class="math inline">\(X \sim N(0, 1)\)</span>, then the pdf of <span class="math inline">\(X\)</span> is
+<span id="exm:unnamed-chunk-12" class="example"><strong>Example 1.7  </strong></span>Monte Carlo integration for the standard Normal cdf. Let <span class="math inline">\(X \sim N(0, 1)\)</span>, then the pdf of <span class="math inline">\(X\)</span> is
 <span class="math display">\[\phi(x) = f(x) = \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{x^2}{2}\right), \qquad -\infty &lt; x &lt; \infty\]</span>
 and the cdf of <span class="math inline">\(X\)</span> is
 <span class="math display">\[\Phi(x) = F(x) = \int\limits_{\infty}^x \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{t^2}{2}\right)dt.\]</span><br />
@@ -28646,7 +28647,7 @@ We will look at 3 methods to estimate <span class="math inline">\(\Phi(x)\)</spa
 <h3><span class="header-section-number">1.2.5</span> Inference for MC Estimators</h3>
 <p>The Central Limit Theorem implies</p>
 <p><br /><br /><br /><br /></p>
-<p>So, we can construct confidence intervals for our estimates</p>
+<p>So, we can construct confidence intervals for our estimator</p>
 <ol style="list-style-type: decimal">
 <li><p><br /><br /></p></li>
 <li><p><br /><br /></p></li>
