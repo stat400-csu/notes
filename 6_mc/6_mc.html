@@ -146,6 +146,18 @@ content: none;
 @bottom-right {
 content: none !important;
 }
+background-image: var(--front-cover);
+background-position: center;
+background-size: contain;
+background-repeat: no-repeat;
+}
+
+.front-cover {
+break-after: recto;
+}
+
+.front-page {
+counter-reset: page;
 }
 
 @page frontmatter:left {
@@ -178,6 +190,16 @@ content: counter(page, lower-roman);
 }
 }
 
+.back-cover {
+break-before: verso;
+}
+.pagedjs_page:last-of-type {
+background-image: var(--back-cover);
+background-position: center;
+background-size: contain;
+background-repeat: no-repeat;
+}
+
 .level1 {
 break-before: recto;
 page: chapter;
@@ -185,7 +207,7 @@ page: chapter;
 .front-matter-container .level1 {
 page: frontmatter;
 }
-h1, h2, h3, h4, h5, h6 {
+.section > h1, .section > h2, .section > h3, .section > h4, .section > h5, .section > h6 {
 break-after: avoid;
 }
 .footenotes {
@@ -213,6 +235,9 @@ break-after: avoid;
 --color-mbox: rgba(0, 0, 0, 0.2);
 --running-title-width: 2.5in;
 --screen-pages-spacing: 5mm;
+}
+html {
+line-height: 1.3;
 }
 
 a[href^="http"]:not([class="uri"])::after {
@@ -346,7 +371,7 @@ flex-wrap: wrap;
 margin: 0 auto;
 }
 .pagedjs_page {
-background: var(--color-paper);
+background-color: var(--color-paper);
 box-shadow: 0 0 0 1px var(--color-mbox);
 flex-shrink: 0;
 flex-grow: 0;
@@ -354,7 +379,7 @@ margin: auto auto var(--screen-pages-spacing) auto;
 }
 }
 
-@media (min-width: 12.32in) {
+@media screen and (min-width: 12.32in) {
 .pagedjs_page {
 margin: auto 0 var(--screen-pages-spacing) 0;
 }
@@ -374,9 +399,42 @@ width: calc(var(--pagedjs-width) + 2 * var(--screen-pages-spacing));
 (function() {
   // Retrieve previous config object if defined
   window.PagedConfig = window.PagedConfig || {};
-  const afterPaged = window.PagedConfig.after;
+  const {before: beforePaged, after: afterPaged} = window.PagedConfig;
 
-  window.PagedConfig.after = () => {
+  // utils
+  const insertCSS = text => {
+    let style = document.createElement('style');
+		style.type = 'text/css';
+		style.appendChild(document.createTextNode(text));
+    document.head.appendChild(style);
+  };
+
+  // Util function for front and back covers images
+  const insertCSSForCover = type => {
+    const links = document.querySelectorAll('link[id^=' + type + ']');
+    if (!links.length) return;
+    const re = new RegExp(type + '-\\d+');
+    let text = ':root {--' + type + ': var(--' + type + '-1);';
+    for (const link of links) {
+      text += '--' + re.exec(link.id)[0] + ': url("' + link.href + '");';
+    }
+    text += '}';
+    insertCSS(text);
+  };
+
+  window.PagedConfig.before = async () => {
+    // Front and back covers support
+    let frontCover = document.querySelector('.front-cover');
+    let backCover = document.querySelector('.back-cover');
+    if (frontCover) document.body.prepend(frontCover);
+    if (backCover) document.body.append(backCover);
+    insertCSSForCover('front-cover');
+    insertCSSForCover('back-cover');
+
+    if (beforePaged) await beforePaged();
+  };
+
+  window.PagedConfig.after = (flow) => {
     // force redraw, see https://github.com/rstudio/pagedown/issues/35#issuecomment-475905361
     // and https://stackoverflow.com/a/24753578/6500804
     document.body.style.display = 'none';
@@ -384,17 +442,28 @@ width: calc(var(--pagedjs-width) + 2 * var(--screen-pages-spacing));
     document.body.style.display = '';
 
     // run previous PagedConfig.after function if defined
-    if (afterPaged) afterPaged();
+    if (afterPaged) afterPaged(flow);
 
     // pagedownListener is a binding added by the chrome_print function
     // this binding exists only when chrome_print opens the html file
     if (window.pagedownListener) {
       // the html file is opened for printing
       // call the binding to signal to the R session that Paged.js has finished
-      pagedownListener('');
-    } else {
+      pagedownListener(JSON.stringify({
+        pagedjs: true,
+        pages: flow.total,
+        elapsedtime: flow.performance
+      }));
+      return;
+    }
+    if (sessionStorage.getItem('pagedown-scroll')) {
       // scroll to the last position before the page is reloaded
       window.scrollTo(0, sessionStorage.getItem('pagedown-scroll'));
+      return;
+    }
+    if (window.location.hash) {
+      const id = window.location.hash.replace(/^#/, '');
+      document.getElementById(id).scrollIntoView({behavior: 'smooth'});
     }
   };
 })();
@@ -28226,6 +28295,13 @@ img {
     }
 
     beforeParsed(content) {
+      // remove footnotes in toc, lof, lot
+      // see https://github.com/rstudio/pagedown/issues/54
+      let removeThese = content.querySelectorAll('.toc .footnote, .lof .footnote, .lot .footnote');
+      for (const el of removeThese) {
+        el.remove();
+      }
+
       let footnotes = content.querySelectorAll('.footnote');
 
       for (let footnote of footnotes) {
@@ -28360,6 +28436,154 @@ img {
         const element = content.getElementById(ref);
         if (element.classList.contains('chapter')) {
           anchor.classList.add('chapter-ref');
+        }
+      }
+    }
+  });
+
+  // Main text line numbering,
+  // see https://github.com/rstudio/pagedown/issues/115
+  // Original idea: Julien Taquet, thanks!
+  Paged.registerHandlers(class extends Paged.Handler {
+    constructor(chunker, polisher, caller) {
+      super(chunker, polisher, caller);
+
+      // get the number-lines option from Pandoc metavariables
+      this.options = pandocMeta['number-lines'];
+      // quit early if the "number-lines" option is false or missing
+      if (!this.options) return;
+      // retrieve the selector if provided, otherwise use the default selector
+      this.selector = this.options.selector ? pandocMetaToString(this.options.selector) : '.level1:not(.front-matter) h1, .level1 h2, .level1 h3, .level1 p';
+
+      const styles = `
+      :root {
+        --line-numbers-padding-right: 10px;
+        --line-numbers-font-size: 8pt;
+      }
+      .pagedown-linenumbers-container {
+        position: absolute;
+        margin-top: var(--pagedjs-margin-top);
+        right: calc(var(--pagedjs-width) - var(--pagedjs-margin-left));
+      }
+      .maintextlinenumbers {
+        position: absolute;
+        right: 0;
+        text-align: right;
+        padding-right: var(--line-numbers-padding-right);
+        font-size: var(--line-numbers-font-size);
+      }
+      `;
+      polisher.insert(styles);
+
+      this.resetLinesCounter();
+    }
+
+    appendLineNumbersContainer(page) {
+      const pagebox = page.element.querySelector('.pagedjs_pagebox');
+      const lineNumbersContainer = document.createElement('div');
+      lineNumbersContainer.classList.add('pagedown-linenumbers-container');
+
+      return pagebox.appendChild(lineNumbersContainer);
+    }
+
+    lineHeight(element) {
+      // If the document stylesheet does not define a value for line-height,
+      // Blink returns "normal". Therefore, parseInt may return NaN.
+      return parseInt(getComputedStyle(element).lineHeight);
+    }
+
+    innerHeight(element) {
+      let outerHeight = element.getBoundingClientRect().height;
+      let {borderTopWidth,
+           borderBottomWidth,
+           paddingTop,
+           paddingBottom} = getComputedStyle(element);
+
+      borderTopWidth = parseFloat(borderTopWidth);
+      borderBottomWidth = parseFloat(borderBottomWidth);
+      paddingTop = parseFloat(paddingTop);
+      paddingBottom = parseFloat(paddingBottom);
+
+      return Math.round(outerHeight - borderTopWidth - borderBottomWidth - paddingTop - paddingBottom);
+    }
+
+    arrayOfInt(from, length) {
+      // adapted from https://stackoverflow.com/a/50234108/6500804
+      return Array.from(Array(length).keys(), n => n + from);
+    }
+
+    incrementLinesCounter(value) {
+      this.linesCounter = this.linesCounter + value;
+    }
+
+    resetLinesCounter() {
+      this.linesCounter = 0;
+    }
+
+    isDisplayMath(element) {
+      const nodes = element.childNodes;
+      if (nodes.length != 1) return false;
+      return (nodes[0].nodeName === 'SPAN') && (nodes[0].classList.value === 'math display');
+    }
+
+    afterRendered(pages) {
+      if (!this.options) return;
+
+      for (let page of pages) {
+        const lineNumbersContainer = this.appendLineNumbersContainer(page);
+        const pageAreaY = page.area.getBoundingClientRect().y;
+        let elementsToNumber = page.area.querySelectorAll(this.selector);
+
+        for (let element of elementsToNumber) {
+          // Do not add line numbers for display math environment
+          if (this.isDisplayMath(element)) continue;
+
+          // Try to retrieve line height
+          const lineHeight = this.lineHeight(element);
+          // Test against lineHeight method returns NaN
+          if (!lineHeight) {
+            console.warn('Failed to compute line height value on "' + page.id + '".');
+            continue;
+          }
+
+          const innerHeight = this.innerHeight(element);
+
+          // Number of lines estimation
+          // There is no built-in method to detect the number of lines in a block.
+          // The main caveat is that an actual line height can differ from
+          // the line-height CSS property.
+          // Mixed fonts, subscripts, superscripts, inline math... can increase
+          // the actual line height.
+          // Here, we divide the inner height of the block by the line-height
+          // computed property and round to the floor to take into account that
+          // sometimes the actual line height is greater than its property value.
+          // This is far from perfect and can be easily broken especially by
+          // inline math.
+          const nLines = Math.floor(innerHeight / lineHeight);
+
+          // do not add line numbers for void paragraphs
+          if (nLines <= 0) continue;
+
+          const linenumbers = document.createElement('div');
+          lineNumbersContainer.appendChild(linenumbers);
+          linenumbers.classList.add('maintextlinenumbers');
+
+          const elementY = element.getBoundingClientRect().y;
+          linenumbers.style.top = (elementY - pageAreaY) + 'px';
+
+          const cs = getComputedStyle(element);
+          const paddingTop = parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth);
+          linenumbers.style.paddingTop = paddingTop + 'px';
+
+          linenumbers.style.lineHeight = cs.lineHeight;
+
+          linenumbers.innerHTML = this.arrayOfInt(this.linesCounter + 1, nLines)
+                                      .reduce((t, v) => t + '<br />' + v);
+          this.incrementLinesCounter(nLines);
+        }
+
+        if (this.options['reset-page']) {
+          this.resetLinesCounter();
         }
       }
     }
@@ -28636,7 +28860,7 @@ We can estimate this using a Monte Carlo approach.
 <span id="exm:unnamed-chunk-12" class="example"><strong>Example 1.7  </strong></span>Monte Carlo integration for the standard Normal cdf. Let <span class="math inline">\(X \sim N(0, 1)\)</span>, then the pdf of <span class="math inline">\(X\)</span> is
 <span class="math display">\[\phi(x) = f(x) = \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{x^2}{2}\right), \qquad -\infty &lt; x &lt; \infty\]</span>
 and the cdf of <span class="math inline">\(X\)</span> is
-<span class="math display">\[\Phi(x) = F(x) = \int\limits_{\infty}^x \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{t^2}{2}\right)dt.\]</span><br />
+<span class="math display">\[\Phi(x) = F(x) = \int\limits_{-\infty}^x \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{t^2}{2}\right)dt.\]</span><br />
 We will look at 3 methods to estimate <span class="math inline">\(\Phi(x)\)</span> for <span class="math inline">\(x &gt; 0\)</span>.
 </div>
 
@@ -28670,6 +28894,114 @@ We will look at 3 methods to estimate <span class="math inline">\(\Phi(x)\)</spa
 </div>
 <div id="importance-sampling" class="section level1">
 <h1><span class="header-section-number">2</span> Importance Sampling</h1>
+<p>Can we do better than the simple Monte Carlo estimator of
+<span class="math display">\[
+\theta = E[g(X)] = \int g(x) f(x) dx \approx \frac{1}{m} \sum\limits_{i = 1}^m g(X_i)
+\]</span>
+where the variables <span class="math inline">\(X_1, \dots, X_m\)</span> are randomly sampled from <span class="math inline">\(f\)</span>?</p>
+<p><strong>Yes!!</strong></p>
+<p>Goal: estimate integrals with lower variance than the simplest Monte Carlo approach.</p>
+<p><br /></p>
+<p>To accomplish this, we will use <em>importance sampling</em>.</p>
+<div id="the-problem" class="section level2">
+<h2><span class="header-section-number">2.1</span> The Problem</h2>
+<p>If we are sampling an event that doesn’t occur frequently, then the naive Monte Carlo estimator will have high variance.</p>
+
+<div class="example">
+<span id="exm:unnamed-chunk-14" class="example"><strong>Example 2.1  </strong></span>Monte Carlo integration for the standard Normal cdf. Consider estimating <span class="math inline">\(\Phi(-3)\)</span> or <span class="math inline">\(\Phi(3)\)</span>.
+</div>
+
+<p><br />
+<br />
+<br />
+<br />
+<br /></p>
+<p>We want to improve accuracy by causing rare events to occur more frequently than they would under the naive Monte Carlo sampling framework, thereby enabling more precise estimation.</p>
+<p><span class="pagebreak"></span></p>
+</div>
+<div id="algorithm-1" class="section level2">
+<h2><span class="header-section-number">2.2</span> Algorithm</h2>
+<p>Consider a density function <span class="math inline">\(f(x)\)</span> with support <span class="math inline">\(\mathcal{X}\)</span>. Consider the expectation of <span class="math inline">\(g(X)\)</span>,
+<span class="math display">\[
+\theta = E[g(X)] = \int_{\mathcal{X}}g(x)f(x)dx.
+\]</span>
+Let <span class="math inline">\(\phi(x)\)</span> be a density where <span class="math inline">\(\phi(x) &gt; 0\)</span> for all <span class="math inline">\(x \in \mathcal{X}\)</span>. Then the above statement can be rewritten as</p>
+<p><br /><br /><br /><br />
+<br /><br /><br /><br /></p>
+<p>An estimator of <span class="math inline">\(\phi\)</span> is given by the <em>importance sampling algorithm</em>:</p>
+<ol style="list-style-type: decimal">
+<li><p><br /><br /></p></li>
+<li><p><br /><br /><br /><br /><br /><br /></p></li>
+</ol>
+<p>For this strategy to be convenient, it must be</p>
+<p><span class="pagebreak"></span></p>
+
+<div class="example">
+<span id="exm:unnamed-chunk-15" class="example"><strong>Example 2.2  </strong></span>Suppose you have a fair six-sided die. We want to estimate the probability that a single die roll will yield a <span class="math inline">\(1\)</span>.
+</div>
+
+<p><span class="pagebreak"></span></p>
+</div>
+<div id="choosing-phi" class="section level2">
+<h2><span class="header-section-number">2.3</span> Choosing <span class="math inline">\(\phi\)</span></h2>
+<p>In order for the estimators to avoid excessive variability, it is important that <span class="math inline">\(f(x)/\phi(x)\)</span> is bounded and that <span class="math inline">\(\phi\)</span> has heavier tails than <span class="math inline">\(f\)</span>.</p>
+<p><br /><br /><br /><br /></p>
+
+<div class="example">
+<span id="exm:unnamed-chunk-16" class="example"><strong>Example 2.3  </strong></span>
+</div>
+
+<p><br /><br /><br /><br /><br /><br /></p>
+
+<div class="example">
+<span id="exm:unnamed-chunk-17" class="example"><strong>Example 2.4  </strong></span>
+</div>
+
+<p><br /><br /><br /><br /><br /><br /></p>
+<p>A rare draw from <span class="math inline">\(\phi\)</span> with much higher density under <span class="math inline">\(f\)</span> than under <span class="math inline">\(\phi\)</span> will receive a huge weight and inflate the variance of the estimate.</p>
+<p><br /></p>
+<p>Strategy –</p>
+<p><br /></p>
+
+<div class="example">
+<span id="exm:unnamed-chunk-18" class="example"><strong>Example 2.5  </strong></span>
+</div>
+
+<p><span class="pagebreak"></span></p>
+<p>The importance sampling estimator can be shown to converge to <span class="math inline">\(\theta\)</span> under the SLLN so long as the support of <span class="math inline">\(\phi\)</span> includes all of the support of <span class="math inline">\(f\)</span>.</p>
+</div>
+<div id="compare-to-previous-monte-carlo-approach" class="section level2" data-short-title="Comparison">
+<h2><span class="header-section-number">2.4</span> Compare to Previous Monte Carlo Approach</h2>
+<p>Common goal –</p>
+<p><br /></p>
+<p><strong>Step 1</strong> Do some derivations.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Find an appropriate <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> to rewrite your integral as an expected value. <br /><br /></p></li>
+<li><p>For <strong>importance sampling</strong> only,</p>
+<p>Find an appropriate <span class="math inline">\(\phi\)</span> to rewrite <span class="math inline">\(\theta\)</span> as an expectation with respect to <span class="math inline">\(\phi\)</span>. <br /><br /><br /><br /></p></li>
+</ol>
+<p><strong>Step 2</strong> Write pseudo-code (a plan) to define estimator and set-up the algorithm.</p>
+<ul>
+<li><p>For <strong>Monte Carlo integration</strong></p>
+<ol style="list-style-type: decimal">
+<li><br /><br /><br /></li>
+<li><br /><br /><br /></li>
+</ol></li>
+<li><p>For <strong>importance sampling</strong></p>
+<ol style="list-style-type: decimal">
+<li><br /><br /><br /></li>
+<li><br /><br /><br /></li>
+</ol></li>
+</ul>
+<p><strong>Step 3</strong> Program it.</p>
+<p><span class="pagebreak"></span></p>
+</div>
+<div id="extended-example" class="section level2">
+<h2><span class="header-section-number">2.5</span> Extended Example</h2>
+<p>In this example, we will estimate <span class="math inline">\(\theta = \int_0^1 \frac{e^{-x}}{1 + x^2} dx\)</span> using MC integration and importance sampling with two different importance sampling distributions, <span class="math inline">\(\phi\)</span>.</p>
+<p><span class="pagebreak"></span></p>
+<p><span class="pagebreak"></span></p>
+</div>
 </div>
 </div>
 

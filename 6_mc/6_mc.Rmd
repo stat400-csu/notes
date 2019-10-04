@@ -238,7 +238,7 @@ Another approach:
 Monte Carlo integration for the standard Normal cdf. Let $X \sim N(0, 1)$, then the pdf of $X$ is
 $$\phi(x) = f(x) = \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{x^2}{2}\right), \qquad -\infty < x < \infty$$
 and the cdf of $X$ is
-$$\Phi(x) = F(x) = \int\limits_{\infty}^x \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{t^2}{2}\right)dt.$$  
+$$\Phi(x) = F(x) = \int\limits_{-\infty}^x \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{t^2}{2}\right)dt.$$  
 We will look at 3 methods to estimate $\Phi(x)$ for $x > 0$.  
 ```
 
@@ -277,5 +277,142 @@ Is there a better way to decrease the variance? **Yes!**
 
 
 # Importance Sampling
+
+Can we do better than the simple Monte Carlo estimator of 
+$$
+\theta = E[g(X)] = \int g(x) f(x) dx \approx \frac{1}{m} \sum\limits_{i = 1}^m g(X_i)
+$$
+where the variables $X_1, \dots, X_m$ are randomly sampled from $f$?
+    
+**Yes!!**
+
+Goal: estimate integrals with lower variance than the simplest Monte Carlo approach. 
+
+<br/>
+
+To accomplish this, we will use *importance sampling*.
+
+## The Problem
+
+If we are sampling an event that doesn't occur frequently, then the naive Monte Carlo estimator will have high variance.
+
+```{example}
+Monte Carlo integration for the standard Normal cdf. Consider estimating $\Phi(-3)$ or $\Phi(3)$. 
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+We want to improve accuracy by causing rare events to occur more frequently than they would under the naive Monte Carlo sampling framework, thereby enabling more precise estimation.
+
+[ ]{.pagebreak}
+
+
+## Algorithm
+
+Consider a density function $f(x)$ with support $\mathcal{X}$. Consider the expectation of $g(X)$,
+$$
+\theta = E[g(X)] = \int_{\mathcal{X}}g(x)f(x)dx.
+$$
+Let $\phi(x)$ be a density where $\phi(x) > 0$ for all $x \in \mathcal{X}$. Then the above statement can be rewritten as
+
+<br/><br/><br/><br/>
+<br/><br/><br/><br/>
+
+An estimator of $\phi$ is given by the *importance sampling algorithm*:
+
+1. <br/><br/>
+
+2. <br/><br/><br/><br/><br/><br/>
+
+For this strategy to be convenient, it must be
+
+[ ]{.pagebreak}
+
+```{example}
+Suppose you have a fair six-sided die. We want to estimate the probability that a single die roll will yield a $1$.
+```
+
+[ ]{.pagebreak}
+
+## Choosing $\phi$
+
+In order for the estimators to avoid excessive variability, it is important that $f(x)/\phi(x)$ is bounded and that $\phi$ has heavier tails than $f$.
+
+<br/><br/><br/><br/>
+
+```{example}
+
+```
+
+<br/><br/><br/><br/><br/><br/>
+
+
+```{example}
+
+```
+
+<br/><br/><br/><br/><br/><br/>
+
+A rare draw from $\phi$ with much higher density under $f$ than under $\phi$ will receive a huge weight and inflate the variance of the estimate.
+
+<br/>
+
+Strategy -- 
+
+<br/>
+
+```{example}
+
+```
+
+[ ]{.pagebreak}
+
+
+The importance sampling estimator can be shown to converge to $\theta$ under the SLLN so long as the support of $\phi$ includes all of the support of $f$.
+
+## Compare to Previous Monte Carlo Approach {data-short-title="Comparison"}
+
+Common goal -- 
+
+<br/>
+
+**Step 1** Do some derivations.
+
+a. Find an appropriate $f$ and $g$ to rewrite your integral as an expected value. <br/><br/>
+
+b. For **importance sampling** only,
+
+    Find an appropriate $\phi$ to rewrite $\theta$ as an expectation with respect to $\phi$. <br/><br/><br/><br/>
+
+**Step 2** Write pseudo-code (a plan) to define estimator and set-up the algorithm.
+
+- For **Monte Carlo integration**
+
+    1. <br/><br/><br/>
+    1. <br/><br/><br/>
+    
+- For **importance sampling**
+
+    1. <br/><br/><br/>
+    1. <br/><br/><br/>
+    
+
+**Step 3** Program it.
+
+[ ]{.pagebreak}
+
+## Extended Example
+
+In this example, we will estimate $\theta = \int_0^1 \frac{e^{-x}}{1 + x^2} dx$ using MC integration and importance sampling with two different importance sampling distributions, $\phi$.
+
+[ ]{.pagebreak}
+
+[ ]{.pagebreak}
+
+
 
 
