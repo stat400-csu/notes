@@ -1,0 +1,43 @@
+---
+title: "STAT400: Midterm Exam"
+author: "Fall 2019"
+output:
+  pagedown::html_paged:
+    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
+    css: ["../style/my-style-page.css", "default-fonts", "default-page", "default"]
+    self_contained: true
+    number_sections: false
+---
+
+Midterm exam to be held in class **Thursday, Oct 24**.
+
+Bring:
+
+- Pencil & eraser (No calculators allowed or necessary, don't use a pen.)
+- One page formula sheet (8.5x11in, front and back, no worked examples)
+
+I will supply:
+
+- Table of common distributions
+- Scratch paper
+
+Office hours for week of exam:
+
+- Monday, Oct 21 4pm-5pm
+- Tuesday, Oct 22 11am-12pm
+- Wednesday, Oct 23 10am-11am
+
+This exam covers material in the class notes through October 22 and Homeworks 1-7. For extra practice, see Rizzo Chapters 2,3, and 6.
+
+To study:
+
+- Go over your homework in detail. If you do not fully understand a problem, ask your peers and come to office hours.
+- Re-read you class notes. Be sure you understand every example.
+- Create a good formula sheet. This will help you learn the material.
+
+Test Format:
+
+- Similar to homework, but no R programming required.
+- Short answer, derivations, pseudo-code to demonstrate you understand how to construct an algorithm for a specific problem.
+- I could ask you to find an error in written code or tell me what the result of a block of code will be.
+- Did you understand the concept? Which method to use when?
