@@ -338,6 +338,8 @@ Suppose you have a fair six-sided die. We want to estimate the probability that 
 
 [ ]{.pagebreak}
 
+[ ]{.pagebreak}
+
 ## Choosing $\phi$
 
 In order for the estimators to avoid excessive variability, it is important that $f(x)/\phi(x)$ is bounded and that $\phi$ has heavier tails than $f$.
@@ -408,6 +410,8 @@ b. For **importance sampling** only,
 ## Extended Example
 
 In this example, we will estimate $\theta = \int_0^1 \frac{e^{-x}}{1 + x^2} dx$ using MC integration and importance sampling with two different importance sampling distributions, $\phi$.
+
+[ ]{.pagebreak}
 
 [ ]{.pagebreak}
 
