@@ -417,6 +417,21 @@ In this example, we will estimate $\theta = \int_0^1 \frac{e^{-x}}{1 + x^2} dx$ 
 
 [ ]{.pagebreak}
 
+[ ]{.pagebreak}
+
+[**Your Turn**]{.yourturn}
+
+We want to use the following distribution for inference, where we know the shape, but not the full distributional form.
+
+$$
+f(x) = c\frac{\log(x)}{1 + x^2}, \quad x \in [1, \pi]
+$$
+What do we need for this to be a valid pdf?
+
+
+
+
+
 
 
 
