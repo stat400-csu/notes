@@ -1,0 +1,61 @@
+---
+title: "STAT400: Midterm Review"
+author: "Fall 2019"
+output:
+  pagedown::html_paged:
+    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
+    css: ["../style/my-style-page.css", "default-fonts", "default-page", "default"]
+    self_contained: true
+    number_sections: false
+---
+Exam-related
+
+1. What are the difference between distribution functions in R, such as `runif()` and `dunif()` and why we need to distinguish them?
+1. Will we likely have to find our own equation to do importance sampling or will they be provided since we cannot graph them to see how they look with our $h(x)$?
+1. If we need to know things like the median statistic, or a percentile of distributions will the equation for it be provided like they have been in the homework, or should we include those on our sheets? 
+1. For the accept-reject method, when we are finding an envelope, since we cannot graph will we have a way to decide what types of equations we can have or should we just try to have an idea of what each distribution sort of looks like? 
+
+[ ]{.pagebreak}
+
+Sampling:
+
+1. Accept-reject vs. Inverse transform method of sampling.
+1. How to identify the best envelope and envelope constant while building an accept-reject algorithm?
+1. Homework 4, question 3: 
+    
+    A discrete random variable has pmf
+    ```{r, echo = FALSE}
+    pmf <- data.frame(x = 0:4, f = c(.1, .2, .2, .2, .3))
+    knitr::kable(t(pmf))
+    ```
+    Use the inverse transform method to generate a random sample of size $1000$ from the distribution of $X$. Construct a relative frequency table and compare the empirical with the theoretical probabilities. Repeat using the `R` `sample` function.
+    
+[ ]{.pagebreak}
+
+[ ]{.pagebreak}
+
+Monte Carlo:
+
+1. What are the 3 different Monte Carlo techniques?
+1. What is the general order of steps for importance sampling?
+1. Method 2 when using Monte Carlo integration from the standard normal cdf and want to estimate $\Phi(x)$?
+
+    Estimating the cdf of a normal distribution. Use $m = 1000$.
+    $$
+    \Phi(x) = \int\limits_{-infty}^0 \phi(t)dt + \int\limits_0^x \phi(t) dt
+    $$
+    Let $Y \sim Unif(0, x)$.
+1. Homework 6, question 4, part d
+
+    Estimating the cdf of a normal distribution. Use $m = 1000$.
+    For each method, compute a $95\%$ confidence interval for $\Phi(2)$. Summarise your findings. Which CI is narrower and why does that matter?
+1. Homework 6, question 3
+
+    Develop two Monte Carlo integration approaches to estimate $\int\limits_0^5 x^2 \exp(-x) dx$. (You must use different distributions in the two approaches). Check your answer using the `integrate()` function.
+    
+
+[ ]{.pagebreak}
+
+[ ]{.pagebreak}
+
+
