@@ -1,0 +1,142 @@
+---
+title: "Chapter 7: Monte Carlo Methods in Inference"
+output:
+  pagedown::html_paged:
+    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
+    css: ["../style/my-style-page.css", "default-fonts", "default-page", "default"]
+    self_contained: true
+    number_sections: true
+---
+
+Monte Carlo methods may refer to any method in statistical inference or numerical analysis were simulation is used.
+
+<br/>
+
+We have so far learned about Monte Carlo methods for estimation.
+
+<br/><br/><br/><br/><br/>
+
+We will now look at Monte Carlo methods to estimate coverage probability for confidence intervals, Type I error of a test procedure, and power of a test.
+
+
+In statistical inference there is uncertainty in an estimate. We will use repeated sampling (Monte Carlo methods) from a given probability model to investigate this uncertainty.
+
+[ ]{.pagebreak}
+
+# Monte Carlo Estimate of Coverage {data-short-title="Coverage"}
+
+## Confidence Intervals
+
+Recall from your intro stats class that a $95%$ confidence interval for $\mu$ (when $\sigma$ is known and $X_1, \dots, X_n \stackrel{iid}{\sim} N(\mu, \sigma^2)$) is of the form
+
+<br/><br/><br/>
+
+Interpretation:
+
+<br/><br/><br/><br/><br/>
+
+Comments:
+
+1. <br/><br/>
+
+2. <br/><br/>
+
+Mathematical interpretation:
+
+[ ]{.pagebreak}
+
+```{definition}
+For $X_1, \dots, X_n \stackrel{iid}{\sim} N(\mu, \sigma^2)$, $\sigma$ known, the $(1 - \alpha)100%$ *confidence interval for* $\mu$ is
+$$
+  \left(\overline{x} - z_{1 - \frac{\alpha}{2}} \frac{\sigma}{\sqrt{n}}, \overline{x} + z_{1 - \frac{\alpha}{2}} \frac{\sigma}{\sqrt{n}}\right),
+$$
+where 
+$$
+  z_{1 - \frac{\alpha}{2}}  = 1 - \frac{\alpha}{2} \text{ quantile of } N(0, 1).
+$$  
+```
+
+In general,
+
+<br/><br/><br/><br/><br/><br/>
+
+So, if we have formulas for $L$ and $U$, we can use Monte Carlo integration to estimate $\alpha$.
+
+An estimate of $1 - \alpha$ tells us about the behavior of our estimator $[L, U]$ in practice.
+
+## Vocabulary
+
+We say $P(L < \theta < U) = P(\text{CI contains } \theta) = 1 - \alpha.$
+
+<br/>
+
+$1 - \alpha =$
+
+<br/><br/>
+
+$1 - \hat{\alpha} =$
+
+[ ]{.pagebreak}
+
+
+## Algorithm
+
+Let $X \sim F_X$ and $\theta$ is the parameter of interest. 
+
+```{example}
+
+```
+<br/><br/><br/>
+
+Consider a confidence interval for $\theta$, $C = [L, U]$. 
+
+Then, a Monte Carlo Estimator of Coverage could be obtained with the following algorithm.
+
+[ ]{.pagebreak}
+
+## Motivation
+
+Why do we want empirical and nominal coverage to match?
+
+<br/><br/><br/>
+
+```{example}
+Estimates of $[L, U]$ are biased.
+```
+
+<br/><br/><br/><br/><br/><br/><br/><br/>
+
+
+```{example}
+Estimates of $[L, U]$ have variance that is smaller than it should be.
+```
+
+<br/><br/><br/><br/><br/><br/><br/><br/>
+
+
+```{example}
+Estimates of $[L, U]$ have variance that is larger than it should be.
+```
+
+
+
+[ ]{.pagebreak}
+
+[**Your Turn**]{.yourturn}
+
+We want to examine empirical coverage for confidence intervals of the mean.
+
+1. Coverage for CI for $\mu$ when $\sigma$ is known, $\left(\overline{x} - z_{1 - \frac{\alpha}{2}} \frac{\sigma}{\sqrt{n}}, \overline{x} + z_{1 - \frac{\alpha}{2}} \frac{\sigma}{\sqrt{n}}\right)$.
+    
+    a. Simulate $X_1, \dots, X_n \stackrel{iid}{\sim} N(0, 1)$. Compute the empirical coverage for a $95%$ confidence interval for $n = 5$ using $m = 1000$ MC samples.
+    
+    b.  Plot 100 confidence intervals using `geom_segment()` and add a line indicating the true value for $\mu = 0$. Color your intervals by if they contain $\mu$ or not.
+    
+    c. Repeat the Monte Carlo estimate of coverage 100 times. Plot the distribution of the results. This is the Monte Carlo estimate of the distribution of the coverage.
+    
+2. Repeat part 1 but without $\sigma$ known. Now you will plug in an estimage for $\sigma$ (using `sd()`) when you estimate the CI using the same formula that assumes $\sigma$ known. What happens to the empirical coverage? What can we do to improve the coverage? Now increase $n$. What happens to coverage?
+
+3. Repeat 2a. when the data are distributed $\text{Unif}[-1, 1]$ and variance unknown. What happens to the coverage? What can we do to improve coverage in this case and why?
+
+[ ]{.pagebreak}
+
