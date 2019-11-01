@@ -27,7 +27,7 @@ In statistical inference there is uncertainty in an estimate. We will use repeat
 
 ## Confidence Intervals
 
-Recall from your intro stats class that a $95%$ confidence interval for $\mu$ (when $\sigma$ is known and $X_1, \dots, X_n \stackrel{iid}{\sim} N(\mu, \sigma^2)$) is of the form
+Recall from your intro stats class that a $95\%$ confidence interval for $\mu$ (when $\sigma$ is known and $X_1, \dots, X_n \stackrel{iid}{\sim} N(\mu, \sigma^2)$) is of the form
 
 <br/><br/><br/>
 
@@ -46,7 +46,7 @@ Mathematical interpretation:
 [ ]{.pagebreak}
 
 ```{definition}
-For $X_1, \dots, X_n \stackrel{iid}{\sim} N(\mu, \sigma^2)$, $\sigma$ known, the $(1 - \alpha)100%$ *confidence interval for* $\mu$ is
+For $X_1, \dots, X_n \stackrel{iid}{\sim} N(\mu, \sigma^2)$, $\sigma$ known, the $(1 - \alpha)100\%$ *confidence interval for* $\mu$ is
 $$
   \left(\overline{x} - z_{1 - \frac{\alpha}{2}} \frac{\sigma}{\sqrt{n}}, \overline{x} + z_{1 - \frac{\alpha}{2}} \frac{\sigma}{\sqrt{n}}\right),
 $$
@@ -128,7 +128,7 @@ We want to examine empirical coverage for confidence intervals of the mean.
 
 1. Coverage for CI for $\mu$ when $\sigma$ is known, $\left(\overline{x} - z_{1 - \frac{\alpha}{2}} \frac{\sigma}{\sqrt{n}}, \overline{x} + z_{1 - \frac{\alpha}{2}} \frac{\sigma}{\sqrt{n}}\right)$.
     
-    a. Simulate $X_1, \dots, X_n \stackrel{iid}{\sim} N(0, 1)$. Compute the empirical coverage for a $95%$ confidence interval for $n = 5$ using $m = 1000$ MC samples.
+    a. Simulate $X_1, \dots, X_n \stackrel{iid}{\sim} N(0, 1)$. Compute the empirical coverage for a $95\%$ confidence interval for $n = 5$ using $m = 1000$ MC samples.
     
     b.  Plot 100 confidence intervals using `geom_segment()` and add a line indicating the true value for $\mu = 0$. Color your intervals by if they contain $\mu$ or not.
     
@@ -139,4 +139,159 @@ We want to examine empirical coverage for confidence intervals of the mean.
 3. Repeat 2a. when the data are distributed $\text{Unif}[-1, 1]$ and variance unknown. What happens to the coverage? What can we do to improve coverage in this case and why?
 
 [ ]{.pagebreak}
+
+# Monte Carlo Methods for Hypothesis Tests {data-short-title="Hypothesis Tests"}
+
+There are two aspects of hypothesis tests that we will investigate through the use of Monte Carlo methods: Type I error and Power.
+
+```{example}
+Assume we want to test the following hypotheses
+
+\begin{align*}
+H_0&: \mu = 5 \\
+H_a&: \mu > 5
+\end{align*}
+
+with the test statistic
+
+$$
+T^* = \frac{\overline{x} - 5}{s/\sqrt{n}}. 
+$$  
+  
+This leads to the following decision rule:
+```
+
+<br/><br/><br/>
+
+What are we assuming about $X$?
+
+<br/><br/>
+
+## Types of Errors
+
+Type I error:
+
+<br/>
+
+Type II error:
+
+[ ]{.pagebreak}
+
+Usually we set $\alpha = 0.05$ or $0.10$, and choose a sample size such that power = $1 - \beta \ge 0.80$.
+
+For simple cases, we can find formulas for $\alpha$ and $\beta$.
+
+<br/><br/>
+
+## MC Estimator of $\alpha$
+
+Assume $X_1, \dots, X_n \sim F(\theta_0)$ (i.e., assume $H_0$ is true).
+
+Then, we have the following hypothesis test --
+
+\begin{align*}
+H_0&: \theta = \theta_0 \\
+H_a&: \theta > \theta_0
+\end{align*}
+
+and the statistics $T^*$, which is a test statistic computed from data. Then we **reject $H_0$** if $T^* >$ the critical value from the distribution of the test statistic.
+
+This leads to the following algorithm to estimate the Type I error of the test ($\alpha$)
+
+[ ]{.pagebreak}
+
+[**Your Turn**]{.yourturn}
+
+```{example, name = "Pearson's moment coefficient of skewness"}
+Let $X \sim F$ where $E(X) = \mu$ and $Var(X) = \sigma^2$. Let
+$$
+\sqrt{\beta_1} = E\left[\left(\frac{X - \mu}{\sigma}\right)^3\right].  
+$$
+
+Then for a 
+
+- symmetric distribution, $\sqrt{\beta_1} = 0$,
+- positively skewed distribution, $\sqrt{\beta_1} > 0$, and 
+- negatively skewed distribution, $\sqrt{\beta_1} < 0$.
+  
+<br/>
+  
+The following is an estimator for skewness
+
+$$
+\sqrt{b_1} = \frac{\dfrac{1}{n}\sum\limits_{i = 1}^n (X_i - \overline{X})^3}{\left[\dfrac{1}{n}\sum\limits_{i = 1}^n (X_i - \overline{X})^2\right]^{3/2}}.  
+$$  
+  
+It can be shown by Statistical theory that if $X_1, \dots, X_n \sim N(\mu, sigma^2)$, then as $n \rightarrow \infty$, 
+$$
+ \sqrt{b_1} \sim N\left(0, \frac{6}{n}\right).
+$$  
+  
+Thus we can test the following hypothesis
+\begin{align*}
+H_0&: \sqrt{\beta_1} = 0 \\
+H_a&: \sqrt{\beta_1} \not= 0
+\end{align*}
+by comparing $\frac{\sqrt{b_1}}{\sqrt{\frac{6}{n}}}$ to a critical value from a $N(0, 1)$ distribution.
+
+In practice, convergence of $\sqrt{b_1}$ to a $N\left(0, \frac{6}{n}\right)$ is slow.
+
+<br/>
+
+We want to assess $P(\text{Type I error})$ for $\alpha = 0.05$ for $n = 10, 20, 30, 50, 100, 500$.
+```
+
+[ ]{.pagebreak}
+
+```{r, message=FALSE, warning=FALSE, fig.height = 3}
+library(tidyverse)
+
+# compare a symmetric and skewed distribution
+data.frame(x = seq(0, 1, length.out = 1000)) %>%
+  mutate(skewed = dbeta(x, 6, 2),
+         symmetric = dbeta(x, 5, 5)) %>%
+  gather(type, dsn, -x) %>%
+  ggplot() +
+  geom_line(aes(x, dsn, colour = type, lty = type))
+```
+```{r, fig.show="hold", out.width="50%", message = FALSE, warning = FALSE}
+## write a skewness function based on a sample x
+skew <- function(x) {
+  
+}
+
+## check skewness of some samples
+n <- 100
+a1 <- rbeta(n, 6, 2)
+a2 <- rbeta(n, 2, 6)
+
+## two symmetric samples
+b1 <- rnorm(100)
+b2 <- rnorm(100)
+
+## fill in the skewness values
+ggplot() + geom_histogram(aes(a1)) + xlab("Beta(6, 2)") + ggtitle(paste("Skewness = "))
+ggplot() + geom_histogram(aes(a2)) + xlab("Beta(2, 6)") + ggtitle(paste("Skewness = "))
+ggplot() + geom_histogram(aes(b1)) + xlab("N(0, 1)") + ggtitle(paste("Skewness = "))
+ggplot() + geom_histogram(aes(b2)) + xlab("N(0, 1)") + ggtitle(paste("Skewness = "))
+```
+
+```{r}
+## Assess the P(Type I Error) for alpha = .05, n = 10, 20, 30, 50, 100, 500
+```
+
+```{example, name = "Pearson's moment coefficient of skewness with variance correction"}
+One way to improve performance of this statistic is to adjust the variance for small samples. It can be shown that
+$$
+Var(\sqrt{b_1}) = \frac{6(n - 2)}{(n + 1)(n + 3)}.  
+$$  
+Assess the Type I error rate of a skewness test using the finite sample correction variance.
+```
+
+
+
+
+
+
+
 
