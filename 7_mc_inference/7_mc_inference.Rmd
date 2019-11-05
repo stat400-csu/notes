@@ -222,9 +222,9 @@ $$
 \sqrt{b_1} = \frac{\dfrac{1}{n}\sum\limits_{i = 1}^n (X_i - \overline{X})^3}{\left[\dfrac{1}{n}\sum\limits_{i = 1}^n (X_i - \overline{X})^2\right]^{3/2}}.  
 $$  
   
-It can be shown by Statistical theory that if $X_1, \dots, X_n \sim N(\mu, sigma^2)$, then as $n \rightarrow \infty$, 
+It can be shown by Statistical theory that if $X_1, \dots, X_n \sim N(\mu, \sigma^2)$, then as $n \rightarrow \infty$, 
 $$
- \sqrt{b_1} \sim N\left(0, \frac{6}{n}\right).
+ \sqrt{b_1} \stackrel{\cdot}{\sim} N\left(0, \frac{6}{n}\right).
 $$  
   
 Thus we can test the following hypothesis
