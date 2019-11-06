@@ -310,7 +310,7 @@ ggplot() +
 Consider a hypothesis test about the parameter $\theta$:
 \begin{align*}
 H_0: \theta &= \theta_0 \\
-H_a: \theta > \theta_0
+H_a: \theta &> \theta_0
 \end{align*}
 We let $\beta = P(\text{fail to reject } H_0 | H_0 \text{ is false}) = P(\text{Type II error})$, then Power = $P(\text{reject } H_0 | H_0 \text{ is false}) = 1 - \beta$.
 
