@@ -1,0 +1,185 @@
+---
+title: "Chapter 8: Bootstrapping"
+output:
+  pagedown::html_paged:
+    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
+    css: ["../style/my-style-page.css", "default-fonts", "default-page", "default"]
+    self_contained: true
+    number_sections: true
+---
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+set.seed(400)
+```
+
+Typically in statistics, we use **theory** to derive the sampling distribution of a statistic. From the sampling distribution, we can obtain the variance, construct conidence intervals, perform hypothesis tests, and more.
+
+**Challenge:**
+
+
+<br/><br/><br/>
+
+**Basic idea of bootstrapping:**
+
+
+[ ]{.pagebreak}
+
+# Nonparametric Bootstrap
+
+Let $X_1, \dots, X_n \sim F$ with pdf $f(x)$. Recall, the cdf is defined as
+
+<br/><br/><br/>
+
+```{definition}
+The *empirical cdf* is a function which estimates the cdf using observed data,
+$$
+\hat{F}(x) = F_n(x) = \text{ proportion of sample points that fall in } (\infty, x].
+$$
+```
+
+In practice, this leads to the following function. Let $X_{(1)} \le X_{(2)} \le \cdots \le X_{(n)}$ be the order statistics of the sample. Then,
+$$
+F_n(x) = \begin{cases} 
+0 & x < X_{(1)} \\
+\frac{i}{n} & X_{(i)} \le x < X_{(i + 1)}; \quad i = 1, \dots, n-1 \\
+1 & x \ge X_{(n)}
+\end{cases}
+$$
+
+<br/><br/><br/>
+
+Theoretical: <br/><br/>
+
+Bootstrap: <br/><br/>
+
+```{example}
+Let $\boldsymbol x = 2, 2, 1, 1, 5, 4, 4, 3, 1, 2$ be an observed sample. Find $F_n(x)$.
+```
+
+[ ]{.pagebreak}
+
+The idea behind the bootstrap is to sample many data sets from $F_n(x)$, which can be achieved by resampling from the data **with replacement**.
+
+```{r, fig.height=2.5}
+# observed data
+x <- c(2, 2, 1, 1, 5, 4, 4, 3, 1, 2)
+
+# create 10 bootstrap samples
+x_star <- matrix(NA, nrow = length(x), ncol = 10)
+for(i in 1:10) {
+  x_star[, i] <- sample(x, length(x), replace = TRUE)
+}
+x_star
+
+# compare mean of the same to the means of the bootstrap samples
+mean(x)
+colMeans(x_star)
+
+ggplot() + 
+  geom_histogram(aes(colMeans(x_star)), binwidth = .05) +
+  geom_vline(aes(xintercept = mean(x)), lty = 2, colour = "red") +
+  xlab("Sampling distribution of the mean via bootstrapping")
+
+```
+
+## Algorithm
+
+**Goal:** estimate the sampling distribution of a statistic based on observed data $x_1, \dots, x_n$.
+
+Let $\theta$ be the parameter of interest and $\hat{\theta}$ be an estimator of $\theta$. Then,
+
+[ ]{.pagebreak}
+
+## Properties of Estimators
+
+We can use the bootstrap to estimate different properties of estimators.
+
+### Standard Error
+
+Recall $se(\hat{\theta}) = \sqrt{Var(\hat{\theta})}$. We can get a **bootstrap** estimate of the standard error:
+
+<br/><br/><br/><br/><br/><br/>
+
+### Bias
+
+Recall $\text{bias}(\hat{\theta}) = E[\hat{\theta} - \theta] = E[\hat{\theta}] - \theta$.
+
+```{example}
+
+
+```
+
+<br/><br/><br/><br/><br/>
+
+We can get a **bootstrap** estimate of the bias:
+
+<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+Overall, we seek statistics with small se and small bias. 
+
+[ ]{.poagebreak}
+
+## Sample Size and # Bootstrap Samples
+
+$$
+n = \text{sample size} \quad \& \quad B = \# \text{ bootstap samples}
+$$
+
+If $n$ is too small, or sample isn't representative of the population,
+
+<br/><br/><br/><br/>
+
+Guidelines for $B$ -- 
+
+<br/><br/><br/><br/>
+
+Best approach -- 
+
+[ ]{.pagebreak}
+
+[**Your Turn**]{.yourturn}
+
+In this example, we explore bootstrapping in the rare case where we know the values for the entire population. If you have all the data from the population, you don't need to bootstrap (or really, inference). It is useful to learn about bootstrapping by comparing to the truth in this example.
+
+In the package `bootstrap` is contained the average LSAT and GPA for admission to the population of $82$ USA Law schools (an old data set -- there are now over $200$ law schools). This package also contains a random sample of size $n = 15$ from this dataset.
+
+```{r, fig.height = 2.5}
+library(bootstrap)
+
+head(law)
+
+ggplot() +
+  geom_point(aes(LSAT, GPA), data = law) +
+  geom_point(aes(LSAT, GPA), data = law82, pch = 1)
+```
+
+We will estimate the correlation $\theta = \rho(\text{LSAT}, \text{GPA})$ between these two variables and use a bootstrap to estimate the sample distribution of $\hat{\theta}$.
+
+```{r}
+# sample correlation
+cor(law$LSAT, law$GPA)
+
+# population correlation
+cor(law82$LSAT, law82$GPA)
+```
+
+```{r}
+# set up the bootstrap
+B <- 200
+n <- nrow(law)
+r <- numeric(B) # storage
+
+for(b in B) {
+  ## Your Turn: Do the bootstrap!
+}
+```
+
+
+1. Plot the sample distribution of $\hat{\theta}$. Add vertical lines for the true value $\theta$ and the sample estimate $\hat{\theta}$.
+ 
+1. Estimate $sd(\hat{\theta})$.
+
+1. Estimate the bias of $\hat{\theta}$
+
+[ ]{.pagebreak}
