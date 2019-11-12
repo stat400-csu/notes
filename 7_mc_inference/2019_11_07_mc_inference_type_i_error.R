@@ -42,7 +42,7 @@ empirical_alpha <- function(n, m, alpha, sample_function) {
   for(j in 1:m) {
     x <- sample_function(n)
     t_star <- skew(x)
-    Ij[j] <- as.numeric(t_star > qnorm(1 - alpha/2, 0, sqrt(6/n)))
+    Ij[j] <- as.numeric(abs(t_star) >= qnorm(1 - alpha/2, 0, sqrt(6/n)))
   }
   mean(Ij)
 }
@@ -60,7 +60,7 @@ empirical_alpha(20, m = 1000, .05, sample_norm)
 empirical_alpha(30, m = 1000, .05, sample_norm)
 empirical_alpha(50, m = 1000, .05, sample_norm)
 empirical_alpha(100, m = 1000, .05, sample_norm)
-empirical_alpha(10000, m = 1000, .05, sample_norm)
+empirical_alpha(500, m = 1000, .05, sample_norm)
 
 empirical_alpha(10, m = 1000, .05, sample_beta)
 empirical_alpha(20, m = 1000, .05, sample_beta)
@@ -69,7 +69,20 @@ empirical_alpha(50, m = 1000, .05, sample_beta)
 empirical_alpha(100, m = 1000, .05, sample_beta)
 empirical_alpha(500, m = 1000, .05, sample_beta)
 
-
-
 ## Assess the Type I error rate of a skewness test using the finite sample correction variance.
+empirical_alpha2 <- function(n, m, alpha, sample_function) {
+  Ij <- rep(NA, m)
+  for(j in 1:m) {
+    x <- sample_function(n)
+    t_star <- skew(x)
+    Ij[j] <- as.numeric(abs(t_star) >= qnorm(1 - alpha/2, 0, sqrt(6*(n - 2)/((n + 1)*(n + 3)))))
+  }
+  mean(Ij)
+}
 
+empirical_alpha2(10, m = 1000, .05, sample_norm)
+empirical_alpha2(20, m = 1000, .05, sample_norm)
+empirical_alpha2(30, m = 1000, .05, sample_norm)
+empirical_alpha2(50, m = 1000, .05, sample_norm)
+empirical_alpha2(100, m = 1000, .05, sample_norm)
+empirical_alpha2(500, m = 1000, .05, sample_norm)
