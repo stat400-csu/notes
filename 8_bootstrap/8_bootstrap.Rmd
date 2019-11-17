@@ -10,6 +10,7 @@ output:
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
+library(knitr)
 set.seed(400)
 ```
 
@@ -183,3 +184,381 @@ for(b in B) {
 1. Estimate the bias of $\hat{\theta}$
 
 [ ]{.pagebreak}
+
+## Bootstrap CIs
+
+We will look at five different ways to create confidence intervals using the boostrap and discuss which to use when.
+
+<br/><br/>
+
+1. Percentile Bootstrap CI
+
+1. Basic Bootstrap CI
+
+1. Standard Normal Bootstrap CI
+
+1. Bootstrap $t$
+
+1. Accelerated Bias-Corrected (BCa)
+
+<br/><br/>
+
+**Key ideas:**
+
+[ ]{.pagebreak}
+
+### Percentile Bootstrap CI
+
+Let $\hat{\theta}^{(1)}, \dots, \hat{\theta}^{(B)}$ be bootstrap replicates and let $\hat{\theta}_{\alpha/2}$ be the $\alpha/2$ quantile of $\hat{\theta}^{(1)}, \dots, \hat{\theta}^{(B)}$.
+
+Then, the $100(1 - \alpha)\%$ Percentile Bootstrap CI for $\theta$ is
+
+<br/><br/><br/><br/>
+
+In `R`, if `bootstrap.reps = c(`$\hat{\theta}^{(1)}, \dots, \hat{\theta}^{(B)}$`)`, the percentile CI is
+
+```{r, eval=FALSE}
+quantile(bootstrap.reps, c(alpha/2, 1 - alpha/2))
+```
+
+<br/><br/>
+
+**Assumptions/usage**
+
+[ ]{.pagebreak}
+
+### Basic Bootstrap CI
+
+The $100(1 - \alpha)\%$ Basic Bootstrap CI for $\theta$ is
+
+<br/><br/><br/><br/><br/><br/><br/><br/>
+
+**Assumptions/usage**
+
+[ ]{.pagebreak}
+
+### Standard Normal Bootstrap CI
+
+From the CLT,
+
+<br/><br/><br/><br/>
+
+So, the $100(1 - \alpha)\%$ Standard Normal Bootstrap CI for $\theta$ is
+
+<br/><br/><br/><br/>
+
+**Assumptions/usage**
+
+[ ]{.pagebreak}
+
+### Bootstrap $t$ CI (Studentized Bootstrap)
+
+Even if the distribution of $\hat{\theta}$ is Normal and $\hat{\theta}$ is unbiased for $\theta$, the Normal distribution is not exactly correct for $z$.
+
+<br/><br/>
+
+Additionally, the distribution of $\hat{se}(\hat{\theta})$ is unknown.
+
+<br/><br/>
+
+$\Rightarrow$ The bootstrap $t$ interval does not use a Student $t$ distribution as the reference distribuion, instead we estimate the distribution of a "t type" statistic by resampling.
+
+<br/>
+
+The $100(1 - \alpha)\%$ Boostrap $t$ CI is
+
+<br/><br/><br/><br/>
+
+**Overview**
+
+<br/><br/><br/>
+
+To estimate the "t style distribution" for $\hat{\theta}$,
+
+[ ]{.pagebreak}
+
+**Assumptions/usage**
+
+[ ]{.pagebreak}
+
+### BCa CIs
+
+Modified version of percentile intervals that adjusts for bias of estimator and skewness of the sampling distribution.
+
+This method automatically selects a transformation so that the normality assumption holds.
+
+**Idea:**
+
+<br/><br/><br/><br/><br/><br/><br/><br/>
+
+The BCa method uses bootstrapping to estimate the bias and skewness then modifies which percentiles are chosen to get the appropriate confidence limits for a given data set.
+
+**In summary,**
+
+<br/><br/><br/><br/><br/><br/><br/><br/>
+
+[ ]{.pagebreak}
+
+[**Your Turn**]{.yourturn}
+
+We will consider a telephone repair example from Hesterberg (2014). `Verizon` has repair times, with two groups, CLEC and ILEC, customers of the "Competitive" and "Incumbent" local exchange carrier.
+
+```{r, fig.height=2.5, message = FALSE, warning=FALSE}
+library(resample) # package containing the data
+
+data(Verizon)
+head(Verizon)
+
+Verizon %>%
+  group_by(Group) %>%
+  summarize(mean = mean(Time), sd = sd(Time), min = min(Time), max = max(Time)) %>%
+  kable()
+
+ggplot(Verizon) +
+  geom_histogram(aes(Time)) +
+  facet_wrap(.~Group, scales = "free")
+
+ggplot(Verizon) +
+  geom_boxplot(aes(Group, Time))
+```
+
+## Bootstrapping CIs
+
+There are many bootstrapping packages in `R`, we will use the `boot` package. The function `boot` generates $R$ resamples of the data and computes the desired statistic(s) for each sample. This function requires 3 arguments:
+
+1. data = the data from the original sample (data.frame or matrix).
+2. statistic = a function to compute the statistic from the data where the first argument is the data and the second argument is the indices of the obervations in the boostrap sample.
+3. $R$ = the number of bootstrap replicates.
+
+
+```{r, fig.height=2.5}
+library(boot) # package containing the bootstrap function
+
+mean_func <- function(x, idx) {
+  mean(x[idx])
+}
+
+ilec_times <- Verizon[Verizon$Group == "ILEC",]$Time
+boot.ilec <- boot(ilec_times, mean_func, 2000)
+
+plot(boot.ilec)
+```
+
+If we want to get Bootstrap CIs, we can use the `boot.ci` function to generate the 5 different nonparamteric bootstrap confidence intervals.
+
+```{r}
+boot.ci(boot.ilec, conf = .95, type = c("perc", "basic", "norm", "bca"))
+
+## we can do some of these on our own
+## normal
+mean(boot.ilec$t) + c(-1, 1)*qnorm(.975)*sd(boot.ilec$t)
+
+## normal is bias corrected
+2*mean(ilec_times) - (mean(boot.ilec$t) - c(-1, 1)*qnorm(.975)*sd(boot.ilec$t))
+
+## percentile
+quantile(boot.ilec$t, c(.025, .975))
+
+## basic
+2*mean(ilec_times) - quantile(boot.ilec$t, c(.975, .025))
+
+```
+
+To get the studentized bootstrap CI, we need our statistic function to also return the variance of $\hat{\theta}$.
+
+```{r}
+mean_var_func <- function(x, idx) {
+  c(mean(x[idx]), var(x[idx])/length(idx))
+}
+
+boot.ilec_2 <- boot(ilec_times, mean_var_func, 2000)
+boot.ci(boot.ilec_2, conf = .95, type = "stud")
+```
+
+Which CI should we use?
+
+[ ]{.pagebreak}
+
+## Bootstrapping for the difference of two means
+
+Given iid draws of size $n$ and $m$ from two populations, to compare the means of the two groups using the bootstrap,
+
+<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+The function `two.boot` in the `simpleboot` package is used to bootstrap the difference between univariate statistics. Use the bootstrap to compute the shape, bias, and bootstrap sample error for the samples from the `Verizon` data set of CLEC and ILEC customers.
+
+```{r, message=FALSE, warning=FALSE, fig.height = 2.5, fig.width=3, fig.show="hold"}
+library(simpleboot)
+
+clec_times <- Verizon[Verizon$Group == "CLEC",]$Time
+
+diff_means.boot <- two.boot(ilec_times, clec_times, "mean", R = 2000)
+
+ggplot() +
+  geom_histogram(aes(diff_means.boot$t)) +
+  xlab("mean(ilec) - mean(clec)")
+
+qqnorm(diff_means.boot$t) 
+qqline(diff_means.boot$t)
+```
+
+```{r}
+# Your turn: estimate the bias and se of the sampling distribution
+```
+
+Which confidence intervals should we use?
+
+
+```{r}
+# Your turn: get the chosen CI using boot.ci
+```
+
+Is there evidence that 
+$$
+H_0: \mu_1 - \mu_2 = 0 \\
+H_a: \mu_1 - \mu_2 < 0
+$$
+is rejected?
+
+[ ]{.pagebreak}
+
+# Parametric Bootstrap
+
+In a **nonparametric bootstrap**, we 
+
+<br/><br/><br/><br/><br/><br/>
+
+In a **parametric bootstrap**, 
+
+<br/><br/><br/><br/><br/><br/>
+
+For both methods,
+
+[ ]{.pagebreak}
+
+## Bootstrapping for linear regression
+
+Consider the regression model $Y_i = \boldsymbol x_i^T\boldsymbol \beta + \epsilon_i, i = 1, \dots, n$ with $\epsilon_i \stackrel{iid}{\sim}N(0, \sigma^2)$.
+
+<br/><br/><br/>
+
+Two approaches for bootstrapping linear regression models -- 
+
+1. <br/><br/>
+
+2. <br/><br/>
+
+### Bootstrapping the residuals
+
+1. Fit the regression model using the original data
+
+2. Compute the residuals from the regression model,
+    $$
+    \hat{\epsilon}_i = y_i - \hat{y}_i = y_i - \boldsymbol x_i^T\hat{\boldsymbol \beta}, \quad i = 1, \dots, n
+    $$
+
+3. Sample $\hat{\epsilon}^*_1, \dots, \hat{\epsilon}^*_n$ with replacement from $\hat{\epsilon}_1, \dots, \hat{\epsilon}_n$.
+
+4. Create the bootstrap sample
+    $$
+    y_i^* = \boldsymbol x_i^T\hat{\boldsymbol \beta} + \epsilon^*_i, \quad i = 1, \dots, n
+    $$
+
+5. Estimate $\hat{\boldsymbol\beta}^*$
+
+6. Repeat steps 2-4 $B$ times to create $B$ bootstrap estimates of $\hat{\beta}$.
+
+**Assumptions:**
+
+[ ]{.pagebreak}
+
+### Paired bootstrapping
+
+Resample $z_i^* = (y_i, \boldsymbol x_i)^*$ from the empirical distribution of the pairs $(y_i, \boldsymbol x_i)$.
+
+<br/><br/><br/><br/>
+
+**Assumptions:**
+
+<br/><br/><br/><br/>
+
+### Which to use?
+
+1. Standard inferences - <br/><br/><br/>
+
+2. Bootstrapping the residuals - <br/><br/><br/><br/><br/><br/>
+
+3. Paired bootstrapping - <br/><br/><br/><br/><br/><br/>
+
+[ ]{.pagebreak}
+
+[**Your Turn**]{.yourturn}
+
+This data set is the Puromycin data in `R`. The goal is to create a regression model about the rate of an enzymatic reaction as a function of the substrate concentration.
+
+```{r, fig.height = 2.5, fig.width=3, fig.show='hold'}
+head(Puromycin)
+dim(Puromycin)
+
+ggplot(Puromycin) +
+  geom_point(aes(conc, rate))
+
+ggplot(Puromycin) +
+  geom_point(aes(log(conc), (rate)))
+```
+
+### Standard regression
+
+```{r, fig.height = 2.5, fig.width = 3.25, fig.show="hold"}
+m0 <- lm(rate ~ conc, data = Puromycin)
+plot(m0)
+summary(m0)
+confint(m0)
+
+m1 <- lm(rate ~ log(conc), data = Puromycin)
+plot(m1)
+summary(m1)
+confint(m1)
+```
+
+### Paired bootstrap
+
+```{r}
+# Your turn
+library(boot)
+
+reg_func <- function(dat, idx) {
+  # write a regression function that returns fitted beta
+}
+
+# use the boot function to get the bootstrap samples
+
+# examing the bootstrap sampling distribution, make histograms
+
+# get confidence intervals for beta_0 and beta_1 using boot.ci
+
+```
+
+### Bootstrapping the residuals
+
+```{r}
+# Your turn
+library(boot)
+
+reg_func_2 <- function(dat, idx) {
+  # write a regression function that returns fitted beta
+  # from fitting a y that is created from the residuals
+  
+}
+
+# use the boot function to get the bootstrap samples
+
+# examing the bootstrap sampling distribution, make histograms
+
+# get confidence intervals for beta_0 and beta_1 using boot.ci
+
+```
+
+
+
+
