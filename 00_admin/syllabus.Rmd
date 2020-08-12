@@ -1,6 +1,6 @@
 ---
 title: "STAT400: Statistical Computing"
-author: "Fall 2019"
+author: "Fall 2020"
 date: "http://stat400-csu.github.io"
 output:
   pagedown::html_paged:
@@ -11,14 +11,18 @@ output:
 ---
 
 Dr. Andee Kaplan  
-208 Statistics Building  
-Lectures: TR 9:30am - 10:45am in Military Sciences 115   
-Office Hours: W 10am - 11am, R 11am - 12pm in Statistics 208  
+Lectures: TR 9:30am - 10:45am Online via Zoom (see Canvas for link and password)  
+Office Hours: TR 11am - 12pm Online via Zoom (see Canvas for link and password)  
 andee.kaplan@colostate.edu
+
 
 ## Course Objectives
 
 Computationally intensive statistical methods are a key component to modern data analysis methods. After completing this course, a successful student will be able to use statistical software to implement both traditional and state-of-the-art methods in computational statistics as well as recognize situations where these methods are required.
+
+## COVID-19
+
+This will be a learn-as-we-go situation. Please be fexible! We're going to try to have live lectures on Zoom, which I will record and post to Canvas.
 
 ## Prerequisites
 
@@ -35,9 +39,7 @@ Optional reference: Computational Statistics (2013), G. Givens and J. Hoeting --
 
 We will use RStudio (https://rstudio.com), R (https://r-project.org), GitHub (https://github.com), and ggplot2 (https://ggplot2.tidyverse.org). All software is free and open source.
 
-**Please install** on your own computer, but you can also use the computers in Weber 205. 
-
-Please read the following website regarding use of the Weber lab: https://www.cs.colostate.edu/~dzubera/lab.html.
+**Please install** on your own computer or use RStudio Cloud (details to follow). 
 
 ## Classwork and Grading
 
@@ -45,18 +47,18 @@ All graded classwork must be fully **reproducible** by the instructor and TA. In
 
 **Homework (40%)** Homework will be assigned weekly. All homework assignments are due at **4pm on the due date**. Each homework assignment will receive equal weight in the final grade and the two lowest homework assignment grades will be dropped. Late work is not accepted except in rare cases (see Documented emergencies below).
 
-**Exam (30%)** There will be one midterm exam on October 24, 2019 in class.
+**Exam (30%)** There will be one midterm exam the week of October 25, 2020. It will be open note and open book (not open friend). You will have multiple days to complete it. More details to follow.
 
 **Project (30%)** There will be a final project that will consist of either 
 
 1. an analysis of real data using the computational tools learned in class, or 
 2. an implementation of a computational task beyond the scope of lecture and homework. 
 
-You will write a paper and give an in class presentation. More details will be announced later.
+You will write a paper and give an in class presentation. More details will be announced later. 
 
 Grades will be assigned according to the following intervals:
 
-```{r echo = FALSE}
+```{r echo = FALSE, warning=FALSE}
 grades <- data.frame(Grade = c("A", "A-", "B+", "B", "B-", "C+", "C", "D", "F"),
                      Interval = c("[100, 95]", "(95, 90]", "(90, 87]", 
                                   "(87, 83]", "(83, 80]", "(80, 77]", "(77, 70]", 
@@ -75,15 +77,13 @@ Statisticians need to have high ethical standards. Thus, I expect each of you to
 
 This course adheres to the CSU Academic Integrity Policy as found on the Students' Responsibilities pages of the CSU General Catalog in the Student Conduct Code. Violations will result in zero points for the assignment as a minimum penalty. In addition, CSU policy requires instructors to report violations to CSU's Office of Conflict Resulution. 
 
-## Attendance
-
-Attendance is required every class.
-
 ## Documented Emergencies
 
 If you have a problem that will require you to miss an exam or homework due date, please discuss this with me in advance if possible. I can grant a rare exception when the reason relates to severe and unavoidable medical or personal emergency. Documentation will be required. Things that typically are not an emergency: vacation, family reunions, ordinary work commitments, job seeking, or other voluntary events. Please schedule these so that they do not conflict with your classes.
 
 ## Support Services Available
+
+[**CSU COVID-19 Recovery Page**](https://covidrecovery.colostate.edu) On our road to recovery during these unprecedented times, Colorado State University is committed to the health of our students, faculty and staff, as well as to the health of our university and our ability to continue to empower our community through our land-grant mission of academics, research and outreach.
 
 **CSU Health Network Counceling Services** A variety of services are offered (151 W. Lake St., Drop-in hours: Monday-Friday 9am-4pm). If you are having difficulty coping, are feeling depressed, or need other psychological assitance, please contact the counceling center.
 
@@ -93,4 +93,5 @@ If you have a problem that will require you to miss an exam or homework due date
 
 ## Disclaimer
 
-I reserve the right to make amendments to the syllabus and schedule throughout the semester. Updates will be posted on the class website and announced via e-mail and in class.
+I reserve the right to make amendments to the syllabus and the schedule throughout the semester. Any updates will be posted on the class website and announced via e-mail and in class.
+
