@@ -15,6 +15,7 @@ recent_grads <- read_csv(file = "https://raw.githubusercontent.com/fivethirtyeig
 # 2. What is the highest NFL salary in this dataset? Who is the highest paid player?
 # 3. Make a histogram and describe the distribution of NFL salaries.
 
+
 ## ---- eval=FALSE---------------------------------------------------------
 ## a %>% b()
 
@@ -84,6 +85,7 @@ recent_grads %>%
 # 2. What are the top 5 paid players?
 # 3. What is the highest paid position on average? the lowest? the most variable?
 
+
 ## ------------------------------------------------------------------------
 table1
 
@@ -113,22 +115,44 @@ ggplot(table1, aes(year, cases)) +
 table4a
 
 
+## ---- eval=FALSE---------------------------------------------------------
+## table4a %>%
+##   pivot_longer(-country, names_to = "year", values_to = "cases")
+
+
+## ---- eval=FALSE---------------------------------------------------------
+## table4a %>%
+##   pivot_longer(-country, names_to = "year", values_to = "cases") %>%
+##   left_join(table4b %>% pivot_longer(-country, names_to = "year", values_to = "population"))
+
+
+## ---- eval=FALSE---------------------------------------------------------
+## table2
+## 
+## table2 %>%
+##   pivot_wider(names_from = type, values_from = count)
+
+
 ## ------------------------------------------------------------------------
-table4a %>%
-  pivot_longer(-country, names_to = "year", values_to = "cases")
+table4a
 
 
 ## ------------------------------------------------------------------------
 table4a %>%
-  pivot_longer(-country, names_to = "year", values_to = "cases") %>%
-  left_join(table4b %>% pivot_longer(-country, names_to = "year", values_to = "population"))
+  gather(-country, key = "year", value = "cases")
+
+
+## ------------------------------------------------------------------------
+table4a %>%
+  gather(-country, key = "year", value = "cases") %>%
+  left_join(table4b %>% gather(-country, key = "year", value = "population"))
 
 
 ## ------------------------------------------------------------------------
 table2
 
 table2 %>%
-  pivot_wider(names_from = type, values_from = count)
+  spread(key = type, value = count)
 
 
 ## ------------------------------------------------------------------------
@@ -143,4 +167,5 @@ table3 %>%
 # 1. Is the NFL salaries from https://raw.githubusercontent.com/ada-lovecraft/ProcessingSketches/master/Bits%20and%20Pieces/Football_Stuff/data/nfl-salaries.tsv that you loaded into `R` in a previous your turn tidy? Why or why not?
 # 2. There is a data set in `tidyr` called `world_bank_pop` that contains information about population from the World Bank (https://data.worldbank.org/). Why is this data not tidy? You may want to read more about the data to answer (`?world_bank_pop`).
 # 3. Use functions in `tidyr` to turn this into a tidy form.
+
 
