@@ -21,11 +21,17 @@ F_inv <- function(u) {
   u^(1/3)
 }
 
+## pdf function
+f_X <- function(x) {
+  3*x^2 * (x <= 1 & x >= 0)
+}
+
 u <- runif(1000, 0, 1)
 sample <- F_inv(u)
 
 ggplot() +
-  geom_histogram(aes(sample))
+  geom_histogram(aes(sample, y = ..density..)) +
+  geom_line(aes(sample, f_X(sample)), colour = "red")
 
 
 
