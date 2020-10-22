@@ -1,6 +1,6 @@
 ---
 title: "STAT400: Midterm Review"
-author: "Fall 2019"
+author: "Fall 2020"
 output:
   pagedown::html_paged:
     # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
@@ -8,54 +8,62 @@ output:
     self_contained: true
     number_sections: false
 ---
-Exam-related
 
-1. What are the difference between distribution functions in R, such as `runif()` and `dunif()` and why we need to distinguish them?
-1. Will we likely have to find our own equation to do importance sampling or will they be provided since we cannot graph them to see how they look with our $h(x)$?
-1. If we need to know things like the median statistic, or a percentile of distributions will the equation for it be provided like they have been in the homework, or should we include those on our sheets? 
-1. For the accept-reject method, when we are finding an envelope, since we cannot graph will we have a way to decide what types of equations we can have or should we just try to have an idea of what each distribution sort of looks like? 
+## Sampling
 
-[ ]{.pagebreak}
+1. Would we be able to go over how to find the envelope for the accept reject method?
 
-Sampling:
+1. How to find the envelope value?
 
-1. Accept-reject vs. Inverse transform method of sampling.
-1. How to identify the best envelope and envelope constant while building an accept-reject algorithm?
-1. Homework 4, question 3: 
+1. Concerning Accept-Reject: How can we be sure that our envelope function is greater than the function we are sampling from, for infinite support?
+
+1. Can you talk more about choosing a constant to multiply by when using accept-reject and not using the uniform as an envelope function? I would like to see outliers where choosing a very large C and letting it run for longer would still not work (I know these situations exist).
+
+1. Can you do an example of the accept reject method where you cannot use the uniform(0, 1) trick using the maximum and instead have to guess and check for the value of c for the envelope?
+
+1. Can you review finding an envelope function in cases where the support is not 0 <= x <= 1? Is there a good, systematic way to go about finding an envelope if you don't immediately recognize the shape of the distribution or if you can't solve for the maximum?
+
+1. For the accept reject ratio graph (image pasted): I know that y is g distributed, f(y) is just a point on the green f(x) curve, e(y) is just a point on the purple e(x) curve, and both y and x share the x-axis, but I don't understand what the red points are. Neither of them can be points on a density, can they? I know that g(x) is just another curve, but it doesn't look like the red dots are height values in the g(x) density. So what are the red points?
+
+    ![](accept_reject.png)
+
+1. I have some practical questions regarding the accept-reject method and what you have previously stated about the support of the envelope encompassing the support of the pdf we're trying to sample from.
+
+    a. In a lecture, you gave an example of a uniform(-10,10) distribution not being appropriate for a normal(0,2) distribution since the support for the normal distribution goes from -infinity to infinity while the uniform distribution goes from -10 to 10. However, if we for example consider dnorm(100,0,2), R rounds the pdf down to 0 anyway. Wouldn't it be the case then, that any time we use a normal pdf as an envelope, we are essentially truncating the distribution we are attempting to sample from (due to rounding)? 
+    b. If this is the case wouldn't it be more realistic to use something like a uniform(-100,100) distribution (efficiency notwithstanding), where the pdf is calculated as nonzero for larger values as opposed to most distributions with infinite support?
+    c. And if we were to use a uniform distribution in such a manner on the exam, would it be technically incorrect even if it produces a better approximation? 
+    d. On a related note, I do not remember if this was mentioned in a lecture, but instead of using a single uniform distribution, can we use multiple (in a manner reminiscent of Riemann Sums) to improve efficiency?
     
-    A discrete random variable has pmf
-    ```{r, echo = FALSE}
-    pmf <- data.frame(x = 0:4, f = c(.1, .2, .2, .2, .3))
-    knitr::kable(t(pmf))
-    ```
-    Use the inverse transform method to generate a random sample of size $1000$ from the distribution of $X$. Construct a relative frequency table and compare the empirical with the theoretical probabilities. Repeat using the `R` `sample` function.
-    
-[ ]{.pagebreak}
+1. In HW 5 when we took many samples, increased sample size, or did both, was the many samples part showing unbiasedness, and was the increased sample size part showing consistency?
 
-[ ]{.pagebreak}
+1. If there is extra time can you go over how to sample from a discrete dsn? Page 4 on the Simulating notes, we skipped over how to do it the long way, but I am curious.
 
-Monte Carlo:
+\newpage
 
-1. What are the 3 different Monte Carlo techniques?
-1. What is the general order of steps for importance sampling?
-1. Method 2 when using Monte Carlo integration from the standard normal cdf and want to estimate $\Phi(x)$?
+## Monte Carlo Integration
 
-    Estimating the cdf of a normal distribution. Use $m = 1000$.
-    $$
-    \Phi(x) = \int\limits_{-infty}^0 \phi(t)dt + \int\limits_0^x \phi(t) dt
-    $$
-    Let $Y \sim Unif(0, x)$.
-1. Homework 6, question 4, part d
+1. Could we go over tips for finding g(x) and f(x) in monte carlo?
 
-    Estimating the cdf of a normal distribution. Use $m = 1000$.
-    For each method, compute a $95\%$ confidence interval for $\Phi(2)$. Summarise your findings. Which CI is narrower and why does that matter?
-1. Homework 6, question 3
+1. Can you go into more detail about the CLT's use in Monte Carlo integration, particularly why the R-calculated variance (i.e. var(sample)) of the Monte Carlo sample is different from the variance formula we used on our most recent homework?
 
-    Develop two Monte Carlo integration approaches to estimate $\int\limits_0^5 x^2 \exp(-x) dx$. (You must use different distributions in the two approaches). Check your answer using the `integrate()` function.
-    
+1. Concerning Monte Carlo Integration: 
+  
+    a. Is the indicator method of Monte Carlo integration always best when we can't use the uniform distribution (because of an infinite support or whatever)?
+    b. Is it valid to use transformation or accept-reject methods in order to sample from a density we are using in a Monte Carlo integral? Mainly I'm concerned about increased variance from the sampling making the estimated integral value less usable.
+    c. I know it is okay to reuse the same samples (samples used in estimating the estimator) when estimating the variance of a Monte Carlo estimator, but is it equally okay to generate new samples?
+    d. Slightly unrelated, is variance of the estimated variance a thing? Is variance of the estimated variance of the estimated variance a thing? Is this what moment generating functions do?
 
-[ ]{.pagebreak}
+1. Can you review how to choose phi(x) in importance sampling? I know we have certain requirements for phi(x) for importance sampling to work but is there a good way to go about finding functions that work?
 
-[ ]{.pagebreak}
+1. On page 18 in the importance sampling notes, it says "A rare draw from phi with much higher density under f than under phi will receive a huge weight and inflate the variance of the estimate". Would you be able to clarify this, perhaps using a visualization?
+
+1. we could look into another example of importance sampling where the support goes to infinity, for some reason I have some trouble working with those, especially the derivation.
+
+\newpage
+
+## Other Questions
+
+1. Will we ever have to prove why certain methods work or should we just know how to implement them?
+
 
 
