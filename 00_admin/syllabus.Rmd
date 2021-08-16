@@ -1,6 +1,6 @@
 ---
 title: "STAT400: Statistical Computing"
-author: "Fall 2020"
+author: "Fall 2021"
 date: "http://stat400-csu.github.io"
 output:
   pagedown::html_paged:
@@ -11,8 +11,8 @@ output:
 ---
 
 Dr. Andee Kaplan  
-Lectures: TR 9:30am - 10:45am Online via Zoom (see Canvas for link and password)  
-Office Hours: TR 11am - 12pm Online via Zoom (see Canvas for link and password)  
+Lectures: TR 9:30am - 10:45am Natural Resources	108  
+Office Hours: TR 11:30am - 12:30pm Online via Zoom (see Canvas for link)  
 andee.kaplan@colostate.edu
 
 
@@ -22,7 +22,12 @@ Computationally intensive statistical methods are a key component to modern data
 
 ## COVID-19
 
-This will be a learn-as-we-go situation. Please be fexible! We're going to try to have live lectures on Zoom, which I will record and post to Canvas.
+This will be a learn-as-we-go situation. Please be flexible! 
+
+We're going to have live lectures with office hours on Zoom. I will record lectures to Canvas for those who need to miss class due to vaccination or illness (quality not guaranteed). 
+
+We will follow all CSU guidelines in this class and I will update you if those change in a way that affects our class. For more on the University policies, see https://covidrecovery.colostate.edu.
+
 
 ## Prerequisites
 
@@ -47,20 +52,20 @@ All graded classwork must be fully **reproducible** by the instructor and TA. In
 
 **Homework (40%)** Homework will be assigned weekly. All homework assignments are due at **4pm on the due date**. Each homework assignment will receive equal weight in the final grade and the two lowest homework assignment grades will be dropped. Late work is not accepted except in rare cases (see Documented emergencies below).
 
-**Exam (30%)** There will be one midterm exam the week of October 25, 2020. It will be open note and open book (not open friend). You will have multiple days to complete it. More details to follow.
+**Exam (30%)** There will be one midterm exam on October 21, 2021 (subject to change). 
 
 **Project (30%)** There will be a final project that will consist of either 
 
 1. an analysis of real data using the computational tools learned in class, or 
 2. an implementation of a computational task beyond the scope of lecture and homework. 
 
-You will write a paper and give an in class presentation. More details will be announced later. 
+You will write a paper and give an in-class presentation. More details will be announced later. 
 
 Grades will be assigned according to the following intervals:
 
 ```{r echo = FALSE, warning=FALSE}
 grades <- data.frame(Grade = c("A", "A-", "B+", "B", "B-", "C+", "C", "D", "F"),
-                     Interval = c("[100, 95]", "(95, 90]", "(90, 87]", 
+                     Interval = c("[100, 93]", "(93, 90]", "(90, 87]", 
                                   "(87, 83]", "(83, 80]", "(80, 77]", "(77, 70]", 
                                   "(70, 60]", "(60, 0]"))
 
@@ -85,7 +90,7 @@ If you have a problem that will require you to miss an exam or homework due date
 
 [**CSU COVID-19 Recovery Page**](https://covidrecovery.colostate.edu) On our road to recovery during these unprecedented times, Colorado State University is committed to the health of our students, faculty and staff, as well as to the health of our university and our ability to continue to empower our community through our land-grant mission of academics, research and outreach.
 
-**CSU Health Network Counceling Services** A variety of services are offered (151 W. Lake St., Drop-in hours: Monday-Friday 9am-4pm). If you are having difficulty coping, are feeling depressed, or need other psychological assitance, please contact the counceling center.
+**CSU Health Network Counseling Services** A variety of services are offered (151 W. Lake St., Drop-in hours: Monday-Friday 9am-4pm). If you are having difficulty coping, are feeling depressed, or need other psychological assistance, please contact the counseling center.
 
 **CSU Disability Center** Located in the TILT building. Students with both permanent and temporary limitations and health conditions (physical and mental health) are eligible for support. If you need specific accommodations in this class, please meet with me outside of class to discuss your needs as early in the class as possible.
 
