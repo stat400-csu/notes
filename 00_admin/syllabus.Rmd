@@ -22,12 +22,13 @@ Computationally intensive statistical methods are a key component to modern data
 
 ## COVID-19
 
-This will be a learn-as-we-go situation. Please be flexible! 
+We will have live lectures with office hours on Zoom. I will record lectures to Canvas for those who need to miss class due to vaccination or illness (quality not guaranteed).   
 
-We're going to have live lectures with office hours on Zoom. I will record lectures to Canvas for those who need to miss class due to vaccination or illness (quality not guaranteed). 
+**Important information for students: All students are expected and required to report any COVID-19 symptoms to the university immediately, as well as exposures or positive tests from a non-CSU testing location.** 
 
-We will follow all CSU guidelines in this class and I will update you if those change in a way that affects our class. For more on the University policies, see https://covidrecovery.colostate.edu.
+If you suspect you have symptoms, or if you know you have been exposed to a positive person or have tested positive for COVID, you are required to fill out the COVID Reporter (https://covid.colostate.edu/reporter/). If you know or believe you have been exposed, including living with someone known to be COVID positive, or are symptomatic, it is important for the health of yourself and others that you complete the online COVID Reporter. Do not ask your instructor to report for you. If you do not have internet access to fill out the online COVID-19 Reporter, please call (970) 491-4600. You may also report concerns in your academic or living spaces regarding COVID exposures through the COVID Reporter. You will not be penalized in any way for reporting. When you complete the COVID Reporter for any reason, the CSU Public Health office is notified. Once notified, that office will contact you and, depending upon each situation, will conduct contact tracing, initiate any necessary public health requirements and notify you if you need to take any steps. 
 
+For the latest information about the University's COVID resources and information, please visit the **CSU COVID-19 site**: https://covid.colostate.edu/.
 
 ## Prerequisites
 
