@@ -228,6 +228,13 @@ fish <- read_csv("https://stats.idre.ucla.edu/stat/data/fish.csv")
 # with zeroes
 ggplot(fish) + geom_histogram(aes(count), binwidth = 1)
 
+mean_count <- mean(fish$count)
+x_seq <- seq(0, 150)
+
+ggplot() + 
+  geom_histogram(aes(count, y = ..density..), binwidth = 1, data = fish)+
+  geom_line(aes(x_seq, dpois(x_seq, mean_count)), colour = "red")
+
 # without zeroes
 fish %>%
   filter(count > 0) %>%
