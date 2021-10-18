@@ -1,6 +1,6 @@
 ---
 title: "STAT400: Midterm Review"
-author: "Fall 2020"
+author: "Fall 2021"
 output:
   pagedown::html_paged:
     # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
@@ -11,59 +11,76 @@ output:
 
 ## Sampling
 
-1. Would we be able to go over how to find the envelope for the accept reject method?
+1. Review mixture distributions, specifically the set up to approaching a problem? 
 
-1. How to find the envelope value?
+1. Review how to pick an envelope function when using an accept-reject algorithm to sample from a distribution. 
 
-1. Concerning Accept-Reject: How can we be sure that our envelope function is greater than the function we are sampling from, for infinite support?
-
-1. Can you talk more about choosing a constant to multiply by when using accept-reject and not using the uniform as an envelope function? I would like to see outliers where choosing a very large C and letting it run for longer would still not work (I know these situations exist).
-
-1. Can you do an example of the accept reject method where you cannot use the uniform(0, 1) trick using the maximum and instead have to guess and check for the value of c for the envelope?
-
-1. Can you review finding an envelope function in cases where the support is not 0 <= x <= 1? Is there a good, systematic way to go about finding an envelope if you don't immediately recognize the shape of the distribution or if you can't solve for the maximum?
-
-1. For the accept reject ratio graph (image pasted): I know that y is g distributed, f(y) is just a point on the green f(x) curve, e(y) is just a point on the purple e(x) curve, and both y and x share the x-axis, but I don't understand what the red points are. Neither of them can be points on a density, can they? I know that g(x) is just another curve, but it doesn't look like the red dots are height values in the g(x) density. So what are the red points?
-
-    ![](accept_reject.png)
-
-1. I have some practical questions regarding the accept-reject method and what you have previously stated about the support of the envelope encompassing the support of the pdf we're trying to sample from.
-
-    a. In a lecture, you gave an example of a uniform(-10,10) distribution not being appropriate for a normal(0,2) distribution since the support for the normal distribution goes from -infinity to infinity while the uniform distribution goes from -10 to 10. However, if we for example consider dnorm(100,0,2), R rounds the pdf down to 0 anyway. Wouldn't it be the case then, that any time we use a normal pdf as an envelope, we are essentially truncating the distribution we are attempting to sample from (due to rounding)? 
-    b. If this is the case wouldn't it be more realistic to use something like a uniform(-100,100) distribution (efficiency notwithstanding), where the pdf is calculated as nonzero for larger values as opposed to most distributions with infinite support?
-    c. And if we were to use a uniform distribution in such a manner on the exam, would it be technically incorrect even if it produces a better approximation? 
-    d. On a related note, I do not remember if this was mentioned in a lecture, but instead of using a single uniform distribution, can we use multiple (in a manner reminiscent of Riemann Sums) to improve efficiency?
-    
-1. In HW 5 when we took many samples, increased sample size, or did both, was the many samples part showing unbiasedness, and was the increased sample size part showing consistency?
-
-1. If there is extra time can you go over how to sample from a discrete dsn? Page 4 on the Simulating notes, we skipped over how to do it the long way, but I am curious.
+1. Spend a bit of time on the Accept Reject algorithm it would be the most helpful thing for me.  Do a full example problem, while skipping most of the r coding and focusing on the parts that would be most relevant to the exam.  
 
 \newpage
 
 ## Monte Carlo Integration
 
-1. Could we go over tips for finding g(x) and f(x) in monte carlo?
+1. Review a change of variable Monte Carlo problem?  Something similar to page 9 of the Monte Carlo integration notes packet. 
 
-1. Can you go into more detail about the CLT's use in Monte Carlo integration, particularly why the R-calculated variance (i.e. var(sample)) of the Monte Carlo sample is different from the variance formula we used on our most recent homework?
+1. When estimating the variance of a Monte Carlo estimate, we don't have access to the true "theta", so we instead "plug in" the Monte Carlo estimate itself. What licenses us to do this? It seems like this would increase the variance of our estimate of the variance. Perhaps we are not very concerned about this, but I have seen this in other places as well (plugging in an estimate for a parameter when the parameter is unavailable). Are we allowed to do this because of unbiasedness, or some other property?
 
-1. Concerning Monte Carlo Integration: 
-  
-    a. Is the indicator method of Monte Carlo integration always best when we can't use the uniform distribution (because of an infinite support or whatever)?
-    b. Is it valid to use transformation or accept-reject methods in order to sample from a density we are using in a Monte Carlo integral? Mainly I'm concerned about increased variance from the sampling making the estimated integral value less usable.
-    c. I know it is okay to reuse the same samples (samples used in estimating the estimator) when estimating the variance of a Monte Carlo estimator, but is it equally okay to generate new samples?
-    d. Slightly unrelated, is variance of the estimated variance a thing? Is variance of the estimated variance of the estimated variance a thing? Is this what moment generating functions do?
+1. Review selecting f(x) and g(x) for Monte Carlo integration. Doing the homework, making choices did not seem as hard due to the nature of homework reinforcing things learned in class. I am way less confident when trying to do these problems without out the specific section notes alongside. Going over strategies for selecting one of the three methods in chapter 6, section 1.7 and then choosing the correct f and g based on the decision would be great. 
 
-1. Can you review how to choose phi(x) in importance sampling? I know we have certain requirements for phi(x) for importance sampling to work but is there a good way to go about finding functions that work?
+1. When we were looking at estimating a CDF, we looked at three different Monte Carlo methods. The first involved sampling from a Unif(0,1) and using a transformation and the second sampled from a Unif(0,x) with no transformation. Based on a simulation I did, I believe both estimators have an equal variance. Is there a reason I would choose one of these methods over the other? Is there any sort of bias associated with the transformation made in the first method? If so, why? 
 
-1. On page 18 in the importance sampling notes, it says "A rare draw from phi with much higher density under f than under phi will receive a huge weight and inflate the variance of the estimate". Would you be able to clarify this, perhaps using a visualization?
+1. Another question that I have is if we can go over the derivations for question 3 on homework 6.
 
-1. we could look into another example of importance sampling where the support goes to infinity, for some reason I have some trouble working with those, especially the derivation.
+1. In the notes from 10/07 on importance sampling, can you talk more about the meaning of naive monte carlo estimators vs (presumably) non-naive? 
+
+1. How to find truncated distribution again (option 2b for importance sampling)?
+
+1. How to we pick a good phi(x) so that our sampling weights are appropriate?
+
+1. Which phi function was best when looking at the graphs
+
+1. Go step by step through an importance sampling problem. Any type of problem is good. Just getting practice would be helpful for me.
+
+1. When it comes to Monte Carlo integration and importance sampling, both f(x) and the phi are distribution samples. How do you know which distribution to use for which function? And can they be the same distribution? 
+
+1. In the importance sampling packet example 2.2, we set the coefficient of variation equal to 5%; will we always set it to this value for these types of problems? 
+
+1. how do we correct the issue of not drawing from the target distribution by weighing each role of 1 by 1/3? 
+
+1. (Less related to studying for the midterm) In practice, besides the heuristics mentioned in class (ie, that h(x)/phi(x) should be flat), are there any other considerations that go into the selection of an importance function? I found it hard to choose a good importance function on the homework, and I imagine it would be even harder for a real-life problem.
+
+1. Mathematical details of importance sampling. perhaps with the discrete example and then a corresponding continuous example.  I understand the algorithm somewhat well, but I would like to understand better why it works.  The idea as far as I got from the lecture is that we sample unlikely events to make our estimate converge quicker, but I thought that unlikely events are what messes up our estimate.  Maybe it's the trade off in bias and variance that I am not getting a good grip on. 
 
 \newpage
 
 ## Other Questions
 
-1. Will we ever have to prove why certain methods work or should we just know how to implement them?
+1. Are we expected to study limit theorems for the exam?
+
+1. Are we expected to review integration techniques for the exam?
+
+1. Are we expected to do any complex derivations or integrations or even simpler something like integration by parts or the power rule?
+
+1. A smaller and more specific question that I have is if we will have to do any integration by parts or other similarly difficult forms of integration on the exam.  It shouldn't be a problem if I allocate the space on my formula sheet, but I figure it is worth checking.  
+
+1. The notes often refer to something being unbiased, can you elaborate? For instance, in chapter 6: monte carlo integration, page 6. 
+
+1. Are we going to have to write code at any point in the exam?  Or is it mostly just going to be code interpretation from the beginning of the class?
+
+1. What topics are going to be covered on the exam? I know you mentioned since it’s not a coding exam then topics related to R will not be covered but could you be more specific?
+
+1. What do you recommend studying for for the exam? 
+
+1. Similar to the question above, any recommendations on what to put on the formula sheet? I am a little confused what I should put on it since you will be providing a distribution table and you don’t want worked through examples on it.
+
+1. Will we be allowed a calculator to use on the exam/will a calculator be needed?
+
+
+
+
+
+
+
 
 
 
