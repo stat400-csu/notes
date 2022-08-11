@@ -1,6 +1,6 @@
 ---
 title: "STAT400: Statistical Computing"
-author: "Fall 2021"
+author: "Fall 2022"
 date: "http://stat400-csu.github.io"
 output:
   pagedown::html_paged:
@@ -11,8 +11,8 @@ output:
 ---
 
 Dr. Andee Kaplan  
-Lectures: TR 9:30am - 10:45am Natural Resources	108  
-Office Hours: TR 11:30am - 12:30pm Online via Zoom (see Canvas for link)  
+Lectures: TR 9:30am - 10:45am Military Science Building 115  
+Office Hours: W 10am - 1pm Animal Science Building 31  
 andee.kaplan@colostate.edu
 
 
@@ -21,8 +21,6 @@ andee.kaplan@colostate.edu
 Computationally intensive statistical methods are a key component to modern data analysis methods. After completing this course, a successful student will be able to use statistical software to implement both traditional and state-of-the-art methods in computational statistics as well as recognize situations where these methods are required.
 
 ## COVID-19
-
-We will have live lectures with office hours on Zoom. I will record lectures to Canvas for those who need to miss class due to vaccination or illness (quality not guaranteed).   
 
 **Important information for students: All students are expected and required to report any COVID-19 symptoms to the university immediately, as well as exposures or positive tests from a non-CSU testing location.** 
 
@@ -45,15 +43,15 @@ Optional reference: Computational Statistics (2013), G. Givens and J. Hoeting --
 
 We will use RStudio (https://rstudio.com), R (https://r-project.org), GitHub (https://github.com), and ggplot2 (https://ggplot2.tidyverse.org). All software is free and open source.
 
-**Please install** on your own computer or use RStudio Cloud (details to follow). 
+**Please install** on your own computer or use RStudio class server (details to follow). 
 
 ## Classwork and Grading
 
-All graded classwork must be fully **reproducible** by the instructor and TA. In other words, we need to be able to run your code and have it produce the product you turned in. If this is not the case, it will be reflected in the grading. A copy of your homework will need to be turned in to https://canvas.colostate.edu and the corresponding document used to generate your homework will need to exist on https://rstudio.cloud for full credit.
+All graded classwork must be fully **reproducible** by the instructor and TA. In other words, we need to be able to run your code and have it produce the product you turned in. If this is not the case, it will be reflected in the grading. A copy of your homework will need to be turned in to https://canvas.colostate.edu and the corresponding document used to generate your homework will need to exist on the class server for full credit.
 
 **Homework (40%)** Homework will be assigned weekly. All homework assignments are due at **4pm on the due date**. Each homework assignment will receive equal weight in the final grade and the two lowest homework assignment grades will be dropped. Late work is not accepted except in rare cases (see Documented emergencies below).
 
-**Exam (30%)** There will be one midterm exam on October 21, 2021 (subject to change). 
+**Exam (30%)** There will be one midterm exam on October 20, 2022 (subject to change). 
 
 **Project (30%)** There will be a final project that will consist of either 
 
