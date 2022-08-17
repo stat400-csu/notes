@@ -17,7 +17,7 @@ recent_grads <- read_csv(file = "https://raw.githubusercontent.com/fivethirtyeig
 
 
 ## ---- eval=FALSE---------------------------------------------------------
-## a %>% b()
+## a |> b()
 
 
 ## ---- eval=FALSE---------------------------------------------------------
@@ -25,58 +25,58 @@ recent_grads <- read_csv(file = "https://raw.githubusercontent.com/fivethirtyeig
 
 
 ## ------------------------------------------------------------------------
-recent_grads %>% filter(Major == "STATISTICS AND DECISION SCIENCE")
+recent_grads |> filter(Major == "STATISTICS AND DECISION SCIENCE")
 
 
 ## ------------------------------------------------------------------------
-recent_grads %>% filter(Major_category == "Computers & Mathematics")
+recent_grads |> filter(Major_category == "Computers & Mathematics")
 
 
 ## ------------------------------------------------------------------------
-math_grads <- recent_grads %>% filter(Major_category == "Computers & Mathematics")
+math_grads <- recent_grads |> filter(Major_category == "Computers & Mathematics")
 
 
 ## ------------------------------------------------------------------------
-math_grads %>% arrange(ShareWomen)
+math_grads |> arrange(ShareWomen)
 
 
 ## ------------------------------------------------------------------------
-math_grads %>% arrange(desc(ShareWomen))
+math_grads |> arrange(desc(ShareWomen))
 
 
 ## ------------------------------------------------------------------------
-math_grads %>% select(Major, ShareWomen, Total, Full_time, P75th)
+math_grads |> select(Major, ShareWomen, Total, Full_time, P75th)
 
 
 ## ------------------------------------------------------------------------
-math_grads %>% select(Major, College_jobs:Low_wage_jobs)
+math_grads |> select(Major, College_jobs:Low_wage_jobs)
 
 
 ## ------------------------------------------------------------------------
-math_grads %>% rename(Code_major = Major_code)
+math_grads |> rename(Code_major = Major_code)
 
 
 ## ------------------------------------------------------------------------
-math_grads %>% mutate(Full_time_rate = Full_time_year_round/Total)
+math_grads |> mutate(Full_time_rate = Full_time_year_round/Total)
 
 # we can't see everything
-math_grads %>% 
-  mutate(Full_time_rate = Full_time_year_round/Total) %>% 
+math_grads |> 
+  mutate(Full_time_rate = Full_time_year_round/Total) |> 
   select(Major, ShareWomen, Full_time_rate)
 
 
 ## ------------------------------------------------------------------------
-math_grads %>% summarise(mean_major_size = mean(Total))
+math_grads |> summarise(mean_major_size = mean(Total))
 
 
 ## ------------------------------------------------------------------------
-math_grads %>% summarise(mean_major_size = mean(Total), num_majors = n())
+math_grads |> summarise(mean_major_size = mean(Total), num_majors = n())
 
 
 ## ------------------------------------------------------------------------
-recent_grads %>%
-  group_by(Major_category) %>%
-  summarise(mean_major_size = mean(Total, na.rm = TRUE)) %>%
+recent_grads |>
+  group_by(Major_category) |>
+  summarise(mean_major_size = mean(Total, na.rm = TRUE)) |>
   arrange(desc(mean_major_size))
 
 ## Your turn --------------------------------------------------------------
@@ -101,7 +101,7 @@ table4b
 
 ## ------------------------------------------------------------------------
 # Compute rate per 10,000
-table1 %>% 
+table1 |> 
   mutate(rate = cases / population * 10000)
 
 # Visualize cases over time
@@ -116,51 +116,25 @@ table4a
 
 
 ## ---- eval=FALSE---------------------------------------------------------
-## table4a %>%
-##   pivot_longer(-country, names_to = "year", values_to = "cases")
+table4a |>
+  pivot_longer(-country, names_to = "year", values_to = "cases")
 
 
 ## ---- eval=FALSE---------------------------------------------------------
-## table4a %>%
-##   pivot_longer(-country, names_to = "year", values_to = "cases") %>%
-##   left_join(table4b %>% pivot_longer(-country, names_to = "year", values_to = "population"))
+table4a |>
+  pivot_longer(-country, names_to = "year", values_to = "cases") |>
+  left_join(table4b |> pivot_longer(-country, names_to = "year", values_to = "population"))
 
 
 ## ---- eval=FALSE---------------------------------------------------------
-## table2
-## 
-## table2 %>%
-##   pivot_wider(names_from = type, values_from = count)
-
-
-## ------------------------------------------------------------------------
-table4a
-
-
-## ------------------------------------------------------------------------
-table4a %>%
-  gather(-country, key = "year", value = "cases")
-
-
-## ------------------------------------------------------------------------
-table4a %>%
-  gather(-country, key = "year", value = "cases") %>%
-  left_join(table4b %>% gather(-country, key = "year", value = "population"))
-
-
-## ------------------------------------------------------------------------
 table2
 
-table2 %>%
-  spread(key = type, value = count)
+table2 |>
+  pivot_wider(names_from = type, values_from = count)
 
 
 ## ------------------------------------------------------------------------
-table3
-
-
-## ------------------------------------------------------------------------
-table3 %>%
+table3 |>
   separate(rate, into = c("cases", "population"), sep = "/")
 
 ## Your turn --------------------------------------------------------------
