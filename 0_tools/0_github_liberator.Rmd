@@ -1,0 +1,56 @@
+---
+title: "Tools: Class RStudio Server"
+output:
+  pagedown::html_paged:
+    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
+    css: ["../style/my-style-page.css", "default-fonts", "default-page", "default"]
+    self_contained: true
+    number_sections: true
+---
+
+1. Go to https://github.com and create an account
+    
+    - Consider your username, want to be identifiable, professional and probably include your actual name. Do you have other handles? Twitter?
+    
+    - Don't worry about paying for a plan now, stick with the free one.
+
+1. Login to https://liberator.stat.colostate.edu
+
+    - UN/PW is available to you as a comment on the most recent "assignment" on Canvas
+    
+    - Consider saving your PW in the browser. You cannot change your passwords at this moment.
+    
+1. Click top right Home button > Open project > DSCI445 > DSCI445.Rproj
+
+1. Click notes/notes.Rproj to open the notes project
+
+1. Setup liberator to work with GitHub
+
+    - Click Tools > Global Options > Git/SVN
+    
+    - Click "Create RSA Key" 
+    
+    - **Leave "Passphrase" blank**
+    
+    - Click "View Public Key", and Copy it to your clipboard
+    
+1. Tell GitHub to expect connections from Liberator
+
+    - In a Web Browser, navigate to https://github.com
+    
+    - Click top right, your user icon dropdown > Settings
+    
+    - Click SSH and GPG keys > New SSH key
+    
+    - Paste your copied Public Key in the "Key" box and title it "liberator"
+    
+    - Click "Add SSH Key"
+    
+1. Check that it worked!
+
+    - Navigate to https://liberator.stat.colostate.edu
+    
+    - Open "notes" project
+    
+    - Top right click "Git" tab > "Pull"
+
