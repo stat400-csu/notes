@@ -20,7 +20,7 @@ output:
     
     - Consider saving your PW in the browser. You cannot change your passwords at this moment.
     
-1. Click top right Home button > Open project > DSCI445 > DSCI445.Rproj
+1. Click top right Home button > Open project > STAT400 > STAT400.Rproj
 
 1. Click notes/notes.Rproj to open the notes project
 
