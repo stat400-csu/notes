@@ -1,6 +1,6 @@
 ---
 title: "STAT400: Midterm Exam"
-author: "Fall 2021"
+author: "Fall 2022"
 output:
   pagedown::html_paged:
     # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
@@ -9,7 +9,7 @@ output:
     number_sections: false
 ---
 
-Midterm exam to be held in class **Thursday, Oct 21**.
+Midterm exam to be held in class **Thursday, Oct 20**.
 
 Bring:
 
@@ -21,12 +21,7 @@ I will supply:
 - Table of common distributions
 - Scratch paper
 
-Office hours for week of exam:
-
-- Tuesday, Oct 19 11:30pm-12:30pm
-- Wednesday, Oct 20 3pm-4pm
-
-This exam covers material in the class notes through October 19 and Homeworks 1-7. For extra practice, see Rizzo Chapters 2,3, and 6.
+This exam covers material in the class notes through October 18 and Homeworks 1-7. For extra practice, see Rizzo Chapters 2,3, and 6.
 
 To study:
 
