@@ -1,6 +1,6 @@
 ---
 title: "STAT400: Midterm Review"
-author: "Fall 2021"
+author: "Fall 2022"
 output:
   pagedown::html_paged:
     # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
@@ -11,69 +11,61 @@ output:
 
 ## Sampling
 
-1. Review mixture distributions, specifically the set up to approaching a problem? 
+1. Are there specific characteristics we should look for in pdfs/cdfs that would help us choose which method to go about using? (Inverse transform, accept reject, ...) Can we maybe go through the most important concepts/rules that need to be met of each method.
 
-1. Review how to pick an envelope function when using an accept-reject algorithm to sample from a distribution. 
+1. For all these different types of simulating, what do real-life examples look like? Sometimes, I am confused about where we are relative to our world and how it relates to what we are doing.
 
-1. Spend a bit of time on the Accept Reject algorithm it would be the most helpful thing for me.  Do a full example problem, while skipping most of the r coding and focusing on the parts that would be most relevant to the exam.  
+1. Is it possible for us to go over getting the acceptance and rejects and how to envelop exceeds target? Also show us more examples of this?
+
+1. Can you define "g" again for acceptance-reject (is there a way to choose it)?
+
+1. How do you know how to “pick” an envelope without looking at a graph—to ensure that it covers the entire support and the tails?
+
+1. The algorithm for transformation method at 3.1 I was wondering how to compute the G = g(X1,…., XP) drawn from g(X1,..., Xp).
+
+1. For the method of the Transformation Methods(section 3), is it to "add on" something to the distribution of interest to "transform" it?
+
+1. Can you give an example of what a distributions of weighted sums would be like (compared to weighted sums of distributions)?
+
+1. Mixture distribution definition how to use the 2 sources of variability?
+
+
+
 
 \newpage
 
 ## Monte Carlo Integration
 
-1. Review a change of variable Monte Carlo problem?  Something similar to page 9 of the Monte Carlo integration notes packet. 
+1. I am a little confused about Chapter 6 page 9. Could you talk about how do you structure the linear transformation? Thanks!
 
-1. When estimating the variance of a Monte Carlo estimate, we don't have access to the true "theta", so we instead "plug in" the Monte Carlo estimate itself. What licenses us to do this? It seems like this would increase the variance of our estimate of the variance. Perhaps we are not very concerned about this, but I have seen this in other places as well (plugging in an estimate for a parameter when the parameter is unavailable). Are we allowed to do this because of unbiasedness, or some other property?
+1. For the review on Tuesday, the something I would like practice / clarification on are transformation methods
 
-1. Review selecting f(x) and g(x) for Monte Carlo integration. Doing the homework, making choices did not seem as hard due to the nature of homework reinforcing things learned in class. I am way less confident when trying to do these problems without out the specific section notes alongside. Going over strategies for selecting one of the three methods in chapter 6, section 1.7 and then choosing the correct f and g based on the decision would be great. 
+1. For Monte Carlo Integration for example 1.6 how to get about another approach when we want to use unif(0,1) instead of other method we were given?
 
-1. When we were looking at estimating a CDF, we looked at three different Monte Carlo methods. The first involved sampling from a Unif(0,1) and using a transformation and the second sampled from a Unif(0,x) with no transformation. Based on a simulation I did, I believe both estimators have an equal variance. Is there a reason I would choose one of these methods over the other? Is there any sort of bias associated with the transformation made in the first method? If so, why? 
+1. How does Method 3 of the Monte Carlo integration example 1.7 (with the indicator function) work?
 
-1. Another question that I have is if we can go over the derivations for question 3 on homework 6.
+1. Is there a process for the best way to go about choosing a phi distribution or density for importance sampling?
+What rules or results are we trying to meet with choosing a phi that is the "best"? Is there like an "ideal" or "best" phi that will have the lowest variance/most constant ratio, being technically the "right" phi to use?
 
-1. In the notes from 10/07 on importance sampling, can you talk more about the meaning of naive monte carlo estimators vs (presumably) non-naive? 
+1. Going over "Your Turn Importance Sampling Example" since we ran out of time in class.
 
-1. How to find truncated distribution again (option 2b for importance sampling)?
+1. My question for the review relates to importance sampling. In the class example, we biased the die by making 3 sides have value 1. However, this causes phi to not have positive probability everywhere f does, which violates one of the requirements stated later on. Is it okay to do this if the regions where f has positive probability and phi does not are not of interest to our estimation? Will we face this situation in the future or is it only a concern in our toy discrete example?
 
-1. How to we pick a good phi(x) so that our sampling weights are appropriate?
+1. I think the one thing I am most confused about is why monte carlo integration still works, even if sampling points does not follow a uniform distribution (for integrating on an interval from a to b). In the notes, it states that the only requirement is that the points are randomly drawn from a distribution with support over the range of integration. It seems like if the distribution we are drawing from is not uniform, then some parts of the curve would be under sampled, and other parts of the curve would be over sampled. I attached a picture to help explain
 
-1. Which phi function was best when looking at the graphs
+    ![](midterm_review_question_mc.png)
 
-1. Go step by step through an importance sampling problem. Any type of problem is good. Just getting practice would be helpful for me.
 
-1. When it comes to Monte Carlo integration and importance sampling, both f(x) and the phi are distribution samples. How do you know which distribution to use for which function? And can they be the same distribution? 
+    In the picture, if we are integrating -x^2 + 4 (from 0 to 2), and the point of monte carlo is to get the ratio of: ( dots inside the curve / total dots) * area of distribution (in pink), it seems like this would be affected by the type of distribution we are taking our samples from.
 
-1. In the importance sampling packet example 2.2, we set the coefficient of variation equal to 5%; will we always set it to this value for these types of problems? 
-
-1. how do we correct the issue of not drawing from the target distribution by weighing each role of 1 by 1/3? 
-
-1. (Less related to studying for the midterm) In practice, besides the heuristics mentioned in class (ie, that h(x)/phi(x) should be flat), are there any other considerations that go into the selection of an importance function? I found it hard to choose a good importance function on the homework, and I imagine it would be even harder for a real-life problem.
-
-1. Mathematical details of importance sampling. perhaps with the discrete example and then a corresponding continuous example.  I understand the algorithm somewhat well, but I would like to understand better why it works.  The idea as far as I got from the lecture is that we sample unlikely events to make our estimate converge quicker, but I thought that unlikely events are what messes up our estimate.  Maybe it's the trade off in bias and variance that I am not getting a good grip on. 
+    Does this not matter because we are taking enough samples?
 
 \newpage
 
 ## Other Questions
 
-1. Are we expected to study limit theorems for the exam?
+1. Does convergence almost surely include both convergence in probability and convergence in distribution? Or is there no overlap with those three?
 
-1. Are we expected to review integration techniques for the exam?
-
-1. Are we expected to do any complex derivations or integrations or even simpler something like integration by parts or the power rule?
-
-1. A smaller and more specific question that I have is if we will have to do any integration by parts or other similarly difficult forms of integration on the exam.  It shouldn't be a problem if I allocate the space on my formula sheet, but I figure it is worth checking.  
-
-1. The notes often refer to something being unbiased, can you elaborate? For instance, in chapter 6: monte carlo integration, page 6. 
-
-1. Are we going to have to write code at any point in the exam?  Or is it mostly just going to be code interpretation from the beginning of the class?
-
-1. What topics are going to be covered on the exam? I know you mentioned since it’s not a coding exam then topics related to R will not be covered but could you be more specific?
-
-1. What do you recommend studying for for the exam? 
-
-1. Similar to the question above, any recommendations on what to put on the formula sheet? I am a little confused what I should put on it since you will be providing a distribution table and you don’t want worked through examples on it.
-
-1. Will we be allowed a calculator to use on the exam/will a calculator be needed?
 
 
 
