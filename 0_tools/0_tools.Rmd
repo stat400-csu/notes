@@ -1331,17 +1331,7 @@ Initialize readme (yes), .gitignore (`R` usually), license (e.g. GPL 3)
 
 [**Your Turn**]{.yourturn}
 
-1. Create a GitHub account
-
-    - [github.com](http://github.com) 
-    
-    - Consider your username, want to be identifiable, professional and probably include your actual name. Do you have other handles? Twitter?
-    
-    - Don't worry about paying for a plan now, stick with the free one.
-    
 1. Create a `hello-world` repo
-
-1. E-mail me your GitHub username so that I can add you to our class organization 
 
 [ ]{.pagebreak}
 
@@ -1392,12 +1382,12 @@ Sometimes your local repo gets borked. That's OK. There are ways that we can wor
 
 ## Git with RStudio
 
-Rstudio.cloud allows you to make projects based on GitHub repos.
+Rstudio (and our class RStudio server) allows you to make projects based on GitHub repos.
 
-![](../images/github_rstudio_cloud1.png)
+![](../images/github_rstudio_cloud1.png){width=70%}
 
-![](../images/github_rstudio_cloud2.png)
-
+![](../images/github_rstudio_cloud2.png){width=70%}
+![](../images/github_rstudio_cloud3.png){width=70%}
 
 Local RStudio works much the same way, with the ability to push/pull from a local project to a GitHub repo.
 
@@ -1434,8 +1424,6 @@ Feel free to come to office hours or setup individual time with us if you need h
 1. Commit and push changes
 
 1. Check out your commit history!
-
-1. Add me (`andeek`) as a collaborator to your hello-world repo
 
 
 
