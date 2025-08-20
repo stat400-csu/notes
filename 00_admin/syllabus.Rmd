@@ -1,6 +1,6 @@
 ---
 title: "STAT400: Statistical Computing"
-author: "Fall 2022"
+author: "Fall 2025"
 date: "http://stat400-csu.github.io"
 output:
   pagedown::html_paged:
@@ -12,21 +12,13 @@ output:
 
 Dr. Andee Kaplan  
 Lectures: TR 9:30am - 10:45am Military Science Building 115  
-Office Hours: W 10am - 1pm Statistics Building 006  
+Office Hours: Th 1pm - 3pm Statistics Building 208  
 andee.kaplan@colostate.edu
 
 
 ## Course Objectives
 
 Computationally intensive statistical methods are a key component to modern data analysis methods. After completing this course, a successful student will be able to use statistical software to implement both traditional and state-of-the-art methods in computational statistics as well as recognize situations where these methods are required.
-
-## COVID-19
-
-**Important information for students: All students are expected and required to report any COVID-19 symptoms to the university immediately, as well as exposures or positive tests from a non-CSU testing location.** 
-
-If you suspect you have symptoms, or if you know you have been exposed to a positive person or have tested positive for COVID, you are required to fill out the COVID Reporter (https://covid.colostate.edu/reporter/). If you know or believe you have been exposed, including living with someone known to be COVID positive, or are symptomatic, it is important for the health of yourself and others that you complete the online COVID Reporter. Do not ask your instructor to report for you. If you do not have internet access to fill out the online COVID-19 Reporter, please call (970) 491-4600. You may also report concerns in your academic or living spaces regarding COVID exposures through the COVID Reporter. You will not be penalized in any way for reporting. When you complete the COVID Reporter for any reason, the CSU Public Health office is notified. Once notified, that office will contact you and, depending upon each situation, will conduct contact tracing, initiate any necessary public health requirements and notify you if you need to take any steps. 
-
-For the latest information about the University's COVID resources and information, please visit the **CSU COVID-19 site**: https://covid.colostate.edu/.
 
 ## Prerequisites
 
@@ -43,13 +35,13 @@ Optional reference: Computational Statistics (2013), G. Givens and J. Hoeting --
 
 We will use RStudio (https://rstudio.com), R (https://r-project.org), GitHub (https://github.com), and ggplot2 (https://ggplot2.tidyverse.org). All software is free and open source.
 
-**Please install** on your own computer or use RStudio class server (details to follow). 
+**Please install** on your own computer or use class RStudio server (details to follow). 
 
 ## Classwork and Grading
 
 All graded classwork must be fully **reproducible** by the instructor and TA. In other words, we need to be able to run your code and have it produce the product you turned in. If this is not the case, it will be reflected in the grading. A copy of your homework will need to be turned in to https://canvas.colostate.edu and the corresponding document used to generate your homework will need to exist on the class server for full credit.
 
-**Homework (40%)** Homework will be assigned weekly. All homework assignments are due at **4pm on the due date**. Each homework assignment will receive equal weight in the final grade and the two lowest homework assignment grades will be dropped. Late work is not accepted except in rare cases (see Documented emergencies below).
+**Homework (40%)** Homework will be assigned weekly. All homework assignments are due at **11:59pm on the due date**. Each homework assignment will receive equal weight in the final grade and the two lowest homework assignment grades will be dropped. Late work is not accepted except in rare cases (see Documented emergencies below).
 
 **Exam (30%)** There will be one midterm exam on October 20, 2022 (subject to change). 
 
@@ -79,7 +71,11 @@ Any homework or exam grading dispute must be submitted in writing to me within o
 
 Statisticians need to have high ethical standards. Thus, I expect each of you to hold high ethical standards and to act with academic integrity in this class. If you have questions about what integrity means, please feel free to ask me. Behavior that will not be tolerated in this class includes turning in a copy of somebody else's homework or code as your own, copying from somebody's exam, or failure to cite sources.
 
-This course adheres to the CSU Academic Integrity Policy as found on the Students' Responsibilities pages of the CSU General Catalog in the Student Conduct Code. Violations will result in zero points for the assignment as a minimum penalty. In addition, CSU policy requires instructors to report violations to CSU's Office of Conflict Resulution. 
+This course adheres to the CSU Academic Integrity Policy as found on the Students' Responsibilities pages of the CSU General Catalog in the Student Conduct Code. Violations will result in zero points for the assignment as a minimum penalty. In addition, CSU policy requires instructors to report violations to CSU's Office of Conflict Resolution. 
+
+## Policy Regarding use of LLMs
+
+All assignments should be fully prepared by the student. Developing strong competencies in the skills associated with this course will prepare you for success in your degree pathway and, ultimately, a competitive career. Therefore, the use of LLMs (i.e., generative AI tools) to complete any aspect of assignments for this course are not permitted and will be treated as plagiarism. If you have questions about what constitutes a violation of this statement, please contact me.
 
 ## Documented Emergencies
 
@@ -87,13 +83,7 @@ If you have a problem that will require you to miss an exam or homework due date
 
 ## Support Services Available
 
-[**CSU COVID-19 Recovery Page**](https://covidrecovery.colostate.edu) On our road to recovery during these unprecedented times, Colorado State University is committed to the health of our students, faculty and staff, as well as to the health of our university and our ability to continue to empower our community through our land-grant mission of academics, research and outreach.
-
-**CSU Health Network Counseling Services** A variety of services are offered (151 W. Lake St., Drop-in hours: Monday-Friday 9am-4pm). If you are having difficulty coping, are feeling depressed, or need other psychological assistance, please contact the counseling center.
-
-**CSU Disability Center** Located in the TILT building. Students with both permanent and temporary limitations and health conditions (physical and mental health) are eligible for support. If you need specific accommodations in this class, please meet with me outside of class to discuss your needs as early in the class as possible.
-
-**CSU TILT** The Institute for Learning and Teaching has programs to help students improve their study habits, reduce test anxiety, learn about academic integrity, and more.
+CSU provides policies relevant to your courses and resources to help with various challenges you may encounter. Please see https://col.st/2FA2g for more details.
 
 ## Disclaimer
 
