@@ -22,7 +22,7 @@ output:
     
 1. Click top right Home button > Open project > STAT400 > STAT400.Rproj
 
-1. Click homeworks/homeworks.Rproj to open the homeworks project
+1. Click notes/notes.Rproj to open the notes project
 
 1. Setup liberator to work with GitHub
 
@@ -50,11 +50,13 @@ output:
 
     - Navigate to https://liberator.stat.colostate.edu
     
-    - Open "homeworks" project
+    - Open "notes" project
     
     - Top right click "Git" tab > "Pull"
     
 1. Share your homeworks project with the instructor and grader.
+
+    a. Click top right Home button > Open project > STAT400 > STAT400.Rproj. Click homeworks/homeworks.Rproj to open the homeworks project.
 
     a. Click the drop down on the project (top right side) > Share Project...
     
