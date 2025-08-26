@@ -43,7 +43,7 @@ All graded classwork must be fully **reproducible** by the instructor and TA. In
 
 **Homework (40%)** Homework will be assigned weekly. All homework assignments are due at **11:59pm on the due date**. Each homework assignment will receive equal weight in the final grade and the two lowest homework assignment grades will be dropped. Late work is not accepted except in rare cases (see Documented emergencies below).
 
-**Exam (30%)** There will be one midterm exam on October 20, 2022 (subject to change). 
+**Exam (30%)** There will be one midterm exam on October 23, 2025 (subject to change). 
 
 **Project (30%)** There will be a final project that will consist of either 
 
