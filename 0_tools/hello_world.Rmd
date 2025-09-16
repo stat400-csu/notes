@@ -1,0 +1,53 @@
+---
+title: "Untitled"
+author: "Andee Kaplan"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries, echo=FALSE, message=FALSE}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+```{r, fig.height=8, fig.cap="Scatterplot of diamond price and carat. There is a positive relationship between price and carat, although it may not be linear and has increasing noise as carat increases."}
+ggplot(diamonds) +
+  geom_point(aes(carat, price))
+```
+
+
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars, cache=TRUE}
+summary(cars)
+
+x <- 4
+```
+
+Here are my thoughts about cars. The mean speed of a car is `r mean(cars$speed)`. X is the values `r x`. $\
+mepsilon$
+
+$$
+y = f(x) + \epsilon
+$$
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
