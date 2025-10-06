@@ -1,6 +1,6 @@
 ---
 title: "STAT400: Midterm Exam"
-author: "Fall 2022"
+author: "Fall 2025"
 output:
   pagedown::html_paged:
     # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
@@ -9,11 +9,11 @@ output:
     number_sections: false
 ---
 
-Midterm exam to be held in class **Thursday, Oct 20**.
+Midterm exam to be held in class **Thursday, Oct 23**.
 
 Bring:
 
-- Pencil & eraser (No calculators allowed or necessary, don't use a pen.)
+- Pencil & eraser (No calculators allowed or necessary.)
 - One page formula sheet (8.5x11in, front and back, no worked examples)
 
 I will supply:
@@ -21,7 +21,7 @@ I will supply:
 - Table of common distributions
 - Scratch paper
 
-This exam covers material in the class notes through October 18 and Homeworks 1-7. For extra practice, see Rizzo Chapters 2,3, and 6.
+This exam covers material in the class notes through October 21 and Homeworks 1-7. For extra practice, see Rizzo Chapters 2,3, and 6.
 
 To study:
 
