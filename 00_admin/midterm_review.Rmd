@@ -1,0 +1,63 @@
+---
+title: "STAT400: Midterm Review"
+author: "Fall 2025"
+output:
+  pagedown::html_paged:
+    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
+    css: ["../style/my-style-page.css", "default-fonts", "default-page", "default"]
+    self_contained: true
+    number_sections: false
+---
+
+## Sampling
+
+- I think it would also be helpful to review how to find an inverse CDF, since I'm still a bit unsure about that. 
+
+- Could we also go over approaches for finding the $c$ constant for the envelope in the accept-reject method?
+
+- Lastly, going over the accept-reject method and Monte Carlo sampling would be great!
+
+- What are some ways to come up with an envelope when the uniform does not work?
+
+- What are some good ways to prove that the envelope is valid?
+
+- I am really confused about the method of using envelopes. I don’t really understand how to use them, nor why or when we would want to use them. 
+
+
+- I would like you to cover how to create the best 'envelope' for accept-reject method. And please provide an example, I noticed in our notes we don't really have a defined envelope in the examples provided; I just want to see the thinking process on how to create the envelope.
+
+- I would like to request that we go over envelope functions a bit more, and I am struggling a bit to understand specifically what they are and how they are found.
+
+\newpage
+
+\newpage
+
+
+## Monte Carlo Integration
+
+- Could we go over a specific example and/or a review of finding the Var(g(x)) using a Monte Carlo approach?
+
+- I was wondering if, when we are using methods 1 & 2 for Monte Carlo Integration, is the uniform distribution the only distribution we can use? In other words, if the uniform distribution isn’t a good option, is method 3 our go-to? If not, how would we use other distributions in that way?
+
+- In our review on Tuesday, would you elaborate more on why Monte Carlo integration is superior to approximating an integral via the sum of polygons? I know that we talked about how the estimate produced by Monte Carlo converges towards the true value of the integral as m increases, but I don’t quite understand why this is better than increasing the number of polygons, especially because Monte Carlo inherently involves randomness.
+
+\newpage
+
+\newpage
+
+## Other Questions
+
+
+- Also, from Homework 3, we had to do integration by parts; could we go over a similar example during Tuesday’s review?
+
+- Going over marginal densities and trying a new example that isn't the drive-up and walk-up window one used from notes.
+
+- Could we review some examples using group_by, summarise, filter (etc.) like we did earlier in the semester? 
+
+- I was wondering if it would be possible to elaborate on what we can expect from the coding-based questions on the exam.
+
+\newpage
+
+\newpage
+
+
